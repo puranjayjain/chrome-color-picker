@@ -1,0 +1,19 @@
+{
+  "name": "chrome-color-picker",
+  "main": "./lib/chrome-color-picker",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "activationCommands": {
+    "atom-workspace": "chrome-color-picker:toggle"
+  },
+  "repository": "https://github.com/atom/chrome-color-picker",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "js2coffee": "^2.2.0"
+  }
+}

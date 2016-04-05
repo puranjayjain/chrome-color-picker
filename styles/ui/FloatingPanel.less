@@ -1,0 +1,49 @@
+@import "ui-variables";
+@import "../common/colors";
+
+@arrow: 10px;
+
+// Floating panel for the editor to add stuff into
+chrome-color-picker-container {
+  position: fixed;
+  display: flex;
+  top: 20%;
+  left: 20%;
+  width: 220px;
+  height: 100px;
+  background-color: @background;
+  border: 1px solid @amber;
+
+  .invisible {
+    display: none;
+  }
+
+  &:before, &:after {
+    position: absolute;
+    content: '';
+    width: @arrow;
+    height: @arrow;
+    transform: rotate(-45deg);
+    left: calc(50% - @arrow);
+    box-shadow: -1px 1px 0 0 @amber:
+  }
+
+  &:before {
+    bottom: calc(100% - @arrow / 2);
+  }
+
+  &:after {
+    display: none;
+    top: calc(100% - @arrow / 2);
+  }
+
+  &.down {
+    &:before {
+      display: none;
+    }
+
+    &:after {
+      display: block;
+    }
+  }
+}
