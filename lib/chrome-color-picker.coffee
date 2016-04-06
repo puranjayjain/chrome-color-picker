@@ -11,6 +11,7 @@ module.exports = ChromeColorPicker =
   ChromeColorPickerContainer: null
   ChromeColorPickerCanvas: null
   ChromeColorPickerControls: null
+  ChromeColorPickerDisplay: null
   ChromeColorPickerPalette: null
   ChromeColorPickerPastColour: null
   ChromeColorPickerPresentColour: null
@@ -26,6 +27,7 @@ module.exports = ChromeColorPicker =
     @ChromeColorPickerContainer = new FloatingPanel 'chrome-color-picker-container', document.querySelector 'atom-workspace-axis.vertical'
     @ChromeColorPickerCanvas = new InnerPanel 'chrome-color-picker-canvas'
     @ChromeColorPickerControls = new InnerPanel 'chrome-color-picker-panel'
+    @ChromeColorPickerDisplay = new InnerPanel 'chrome-color-picker-panel', 'notop'
     @ChromeColorPickerPalette = new InnerPanel 'chrome-color-picker-panel'
     @ChromeColorPickerPastColour = new Swatch 'circle'
     @ChromeColorPickerPresentColour = new Swatch 'circle'
@@ -44,6 +46,7 @@ module.exports = ChromeColorPicker =
     # Adding components to main container ... adding elements to other elements
     @ChromeColorPickerContainer.add @ChromeColorPickerCanvas
     @ChromeColorPickerContainer.add @ChromeColorPickerControls
+    @ChromeColorPickerContainer.add @ChromeColorPickerDisplay
     @ChromeColorPickerContainer.add @ChromeColorPickerPalette
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
