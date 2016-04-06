@@ -7,7 +7,7 @@ class FloatingPanel
    * @method constructor
    *
    * @param  {[tag]}         name  [name of the element like x-foo]
-   * @param  {[selector]}    addTo [add to which dom element]
+   * @param  {[element]}    addTo [add to which dom element]
    *
    * @return {[type]}    [description]
   ###
@@ -18,9 +18,16 @@ class FloatingPanel
     FloatingPanelComponent = document.registerElement name
     @component = new FloatingPanelComponent
     @component.classList.add 'invisible'
-    document.querySelector(addTo).appendChild @component
+    addTo.appendChild @component
+
+  # add element to the panel
+  add: (element) ->
+    @component.appendChild element.component
 
   # toggle the visibility state of the dialog
   toggle: ->
-    console.log @component
     @component.classList.toggle 'invisible'
+
+  #destroy the element from the dom
+  destroy: ->
+    @component.parentNode.removeChild @component
