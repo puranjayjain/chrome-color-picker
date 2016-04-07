@@ -1,8 +1,6 @@
-@import "../common/colors";
-
 // The canvas container which will hold the canvas
 
-chrome-color-picker-canvas {
+ccp-canvas {
   position: relative;
   display: flex;
   width: 232px;
@@ -11,15 +9,15 @@ chrome-color-picker-canvas {
   background-image: linear-gradient(to top, black, rgba(204, 154, 129, 0));
 }
 
-chrome-color-picker-panel {
+ccp-panel {
   display: flex;
   align-items: center;
   padding: 12px;
   width: 100%;
-  min-height: 50px;
   border-top: 1px solid lighten(@background, 10%);
 
   &.notop {
     border-top: none;
+    padding-top: 0;
   }
 }

@@ -1,15 +1,13 @@
-@import "../common/colors";
-
 // Sliders like hue and alpha are here
 
-chrome-color-picker-container-slider {
+ccp-container-slider {
   display: flex;
   flex-direction: column;
   width: 130px;
   margin-left: auto;
 }
 
-chrome-color-picker-slider {
+ccp-slider {
   position: relative;
   display: flex;
   width: 100%;
@@ -50,7 +48,7 @@ chrome-color-picker-slider {
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      border: 1px solid lighten(@background, 25%);
+      border: 1px solid @background-color-info;
       height: 16px;
       width: 16px;
       border-radius: 50%;
@@ -63,7 +61,7 @@ chrome-color-picker-slider {
       outline: none;
 
       &::-webkit-slider-thumb {
-        border: 1px solid @amber;
+        border-color: @amber;
       }
     }
   }
