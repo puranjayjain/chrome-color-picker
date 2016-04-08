@@ -28,6 +28,10 @@ class FloatingPanel
   toggle: ->
     @component.classList.toggle 'invisible'
 
+  # make the dialog invisible and discard the newly edited value
+  close: ->
+    @component.classList.add 'invisible'
+
   #destroy the element from the dom
   destroy: ->
     @component.parentNode.removeChild @component

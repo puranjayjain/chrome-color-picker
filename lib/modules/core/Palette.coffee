@@ -16,6 +16,9 @@ class Palette extends helper
     # create a custom element for the inner panel if not already done
     @component = @createComponent 'ccp-palette-inner'
 
+    # add custom values and references here
+    @swatches = {}
+
     # attach a button to the right side by the main ui
     @button = document.createElement 'BUTTON'
     @button.classList.add 'btn', 'btn-primary', 'btn-sm', 'icon', 'icon-chevron-up'
@@ -27,8 +30,10 @@ class Palette extends helper
   # create the material design Palette
   initMaterial: ->
     material = new InnerPanel 'ccp-panel-inner', 'material'
+    @swatches.material = []
     for n in [1..21]
       swatch = new Swatch 'square'
+      @swatches.material.push swatch.component
       material.component.appendChild swatch.component
     material
 
