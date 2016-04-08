@@ -13,3 +13,11 @@ class Helper
   # add element to the panel
   add: (element) ->
     @component.appendChild element.component
+
+  # add class to the panel
+  addClass: (classes) ->
+    @component.classList.add classes
+
+  # remove class from the panel
+  removeClass: (classes) ->
+    @component.classList.remove classes

@@ -40,13 +40,7 @@ class Input extends helper
   createInput: (inputs) ->
     component = @createComponent 'ccp-input'
     button = document.createElement 'BUTTON'
-    button.classList.add 'btn', 'btn-primary', 'btn-xs'
-    i1 = document.createElement 'I'
-    i1.classList.add 'icon', 'icon-chevron-up'
-    i2 = document.createElement 'I'
-    i2.classList.add 'icon', 'icon-chevron-down'
-    button.appendChild i1
-    button.appendChild i2
+    button.classList.add 'btn', 'btn-primary', 'btn-xs', 'icon', 'icon-code'
     for text in inputs
       inner = @createComponent 'ccp-input-inner'
       input = document.createElement 'atom-text-editor'
@@ -62,4 +56,6 @@ class Input extends helper
       component.appendChild inner
     component.classList.add 'invisible'
     component.appendChild button
+    # set button to active button to access it from the outside
+    @active.button = button
     component

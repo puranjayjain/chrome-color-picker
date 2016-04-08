@@ -3,9 +3,8 @@
 ccp-canvas {
   position: relative;
   display: flex;
-  width: 232px;
-  height: 150px;
-  padding: 12px;
+  width: 240px;
+  height: 125px;
   background-image: linear-gradient(to top, black, rgba(204, 154, 129, 0));
 }
 
@@ -19,5 +18,14 @@ ccp-panel {
   &.notop {
     border-top: none;
     padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-top: 0;
+    padding-left: 0;
+
+    .btn:last-child {
+      margin: 8px 0 auto auto;
+    }
   }
 }
