@@ -11,5 +11,5 @@
 'atom-workspace':
   'ctrl-alt-o': 'chrome-color-picker:toggle'
 
-'body':
-  'escape': 'chrome-color-picker:close'
+# 'body':
+#   'escape': 'chrome-color-picker:close'

@@ -16,7 +16,7 @@ describe "ChromeColorPicker", ->
     it "hides and shows the modal panel", ->
       # Before the activation event the view is not on the DOM, and no panel
       # has been created
-      expect(workspaceElement.querySelector('.chrome-color-picker')).not.toExist()
+      expect(workspaceElement.querySelector('chrome-color-picker')).not.toExist()
 
       # This is an activation event, triggering it will cause the package to be
       # activated.
@@ -26,9 +26,9 @@ describe "ChromeColorPicker", ->
         activationPromise
 
       runs ->
-        expect(workspaceElement.querySelector('.chrome-color-picker')).toExist()
+        expect(workspaceElement.querySelector('chrome-color-picker')).toExist()
 
-        chromeColorPickerElement = workspaceElement.querySelector('.chrome-color-picker')
+        chromeColorPickerElement = workspaceElement.querySelector('chrome-color-picker')
         expect(chromeColorPickerElement).toExist()
 
         chromeColorPickerPanel = atom.workspace.panelForItem(chromeColorPickerElement)
@@ -45,7 +45,7 @@ describe "ChromeColorPicker", ->
       # workspaceElement to the DOM are generally slower than those off DOM.
       jasmine.attachToDOM(workspaceElement)
 
-      expect(workspaceElement.querySelector('.chrome-color-picker')).not.toExist()
+      expect(workspaceElement.querySelector('chrome-color-picker')).not.toExist()
 
       # This is an activation event, triggering it causes the package to be
       # activated.
@@ -56,7 +56,7 @@ describe "ChromeColorPicker", ->
 
       runs ->
         # Now we can test for view visibility
-        chromeColorPickerElement = workspaceElement.querySelector('.chrome-color-picker')
+        chromeColorPickerElement = workspaceElement.querySelector('chrome-color-picker')
         expect(chromeColorPickerElement).toBeVisible()
         atom.commands.dispatch workspaceElement, 'chrome-color-picker:toggle'
         expect(chromeColorPickerElement).not.toBeVisible()
