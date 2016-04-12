@@ -2,7 +2,7 @@ helper = require '../helper/helper.coffee'
 
 module.exports =
 class Swatch extends helper
-
+  color: 'rgba(0,0,0,0)'
   ###*
    * [constructor Swatch in atom]
    *
@@ -16,3 +16,12 @@ class Swatch extends helper
     # create a custom element for the inner panel if not already done
     @component = @createComponent 'ccp-swatch'
     @component.classList.add type
+
+  # set a new color to the swatch component and the info
+  setColor: (color) ->
+    @color = color
+    @component.setAttribute('style', 'background: ' + @color)
+
+  # get the color of the swatch
+  getColor: () ->
+    @color

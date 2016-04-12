@@ -17,3 +17,7 @@ class InnerPanel extends helper
 
     # set a default tab index to make it focusable
     @component.tabIndex = '2'
+
+  # set a new color to the canvas component
+  setColor: (color) ->
+    @component.setAttribute('style', 'background-image: linear-gradient(to right, white, ' + color + ')')

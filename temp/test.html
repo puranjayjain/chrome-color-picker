@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        .container {
+            width: 500px;
+            height: 500px;
+            background-color: black;
+        }
+
+        .handle {
+            position: absolute;
+            left: 140px;
+            top: 140px;
+            background-color: white;
+            height: 50px;
+            width: 50px;
+        }
+
+        .dragger {
+          background-color: yellow;
+          width: 25px;
+          height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+            <div class="dragger">
+                <div class="handle">
+            </div>
+        </div>
+    </div>
+    <script src="draggabilly.js"></script>
+    <script type="text/javascript">
+        var elem = document.querySelector('.dragger');
+        var draggie = new Draggabilly(elem, {
+            containment: '.container',
+            handle: '.handle'
+        });
+    </script>
+</body>
+
+</html>

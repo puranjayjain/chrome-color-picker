@@ -8,17 +8,22 @@ Input = require './modules/core/Input'
 Palette = require './modules/core/Palette'
 
 TinyColor = require './modules/helper/TinyColor.coffee'
+Draggabilly = require './modules/helper/Draggabilly.coffee'
 
 {CompositeDisposable} = require 'atom'
 
 module.exports = CCP =
   CCPContainer: null
   CCPCanvas: null
+  CCPCanvasOverlay: null
+  CCPHandle: null
+  CCPDraggie: null
+  CCPDragger: null
   CCPControls: null
   CCPDisplay: null
   CCPContainerPalette: null
-  CCPPastColor: null
-  CCPPresentColor: null
+  CCPOldColor: null
+  CCPNewColor: null
   CCPContainerSlider: null
   CCPSliderHue: null
   CCPSliderAlpha: null
@@ -26,9 +31,15 @@ module.exports = CCP =
   CCPPalette: null
   # CCPView: null
 
+  OldColor: TinyColor().random().toHexString()
+  NewColor: null
+
   subscriptions: null
 
   activate: (state) ->
+    # copy values
+    @NewColor = @OldColor
+
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
@@ -36,11 +47,14 @@ module.exports = CCP =
     # Initiate a new instance of the floating panel and add elements to it
     @CCPContainer = new FloatingPanel 'ccp-container', document.querySelector 'atom-workspace-axis.vertical'
     @CCPCanvas = new InnerPanel 'ccp-canvas'
+    @CCPCanvasOverlay = new InnerPanel 'ccp-canvas-overlay'
+    @CCPHandle = new InnerPanel 'ccp-handle'
+    @CCPDragger = new InnerPanel 'ccp-dragger'
     @CCPControls = new InnerPanel 'ccp-panel'
     @CCPDisplay = new InnerPanel 'ccp-panel', 'notop'
     @CCPContainerPalette = new InnerPanel 'ccp-panel'
-    @CCPPastColor = new Swatch 'circle'
-    @CCPPresentColor = new Swatch 'circle'
+    @CCPOldColor = new Swatch 'circle'
+    @CCPNewColor = new Swatch 'circle'
     @CCPContainerSlider = new InnerPanel 'ccp-container-slider'
     @CCPSliderHue = new Slider 'hue'
     @CCPSliderAlpha = new Slider 'alpha'
@@ -50,14 +64,24 @@ module.exports = CCP =
     @CCPPalette = new Palette
 
     # add properties and attributes to some of them
+    @CCPDraggie = new Draggabilly(@CCPDragger,
+      containment: @CCPCanvas.component
+      handle: @CCPHandle.component)
+
+    @CCPSliderHue.setMax 360
+    @CCPSliderHue.setValue 0
+    @CCPSliderAlpha.setValue 100
+
     @CCPContainerPalette.addClass 'palette'
 
     # Add tooltips to the relevant components
     @addTooltips()
 
     # Adding inner components to the panels
-    @CCPControls.add @CCPPastColor
-    @CCPControls.add @CCPPresentColor
+    @CCPCanvas.add @CCPCanvasOverlay
+
+    @CCPControls.add @CCPOldColor
+    @CCPControls.add @CCPNewColor
     @CCPControls.add @CCPContainerSlider
 
     @CCPContainerSlider.add @CCPSliderHue
@@ -76,7 +100,9 @@ module.exports = CCP =
     # adding event handlers
     @attachEventListeners()
 
-    console.log TinyColor '#000'
+    # set initial color
+    @CCPOldColor.setColor @OldColor
+    @CCPNewColor.setColor @NewColor
 
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
@@ -97,8 +123,8 @@ module.exports = CCP =
     @CCPContainer.close()
 
   addTooltips: ->
-    @subscriptions.add atom.tooltips.add @CCPPastColor.component, {title: 'Previously set color'}
-    @subscriptions.add atom.tooltips.add @CCPPresentColor.component, {title: 'Currently set color'}
+    @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
+    @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
     @subscriptions.add atom.tooltips.add @CCPContainerInput.active.button, {title: 'Cycle between possible colour modes'}
     @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set colour to palette'}
     # TODO change them to relevant selected formats, the hex values
@@ -111,12 +137,21 @@ module.exports = CCP =
   attachEventListeners: ->
     self = @
 
-    # the bottom palette
+    # toggle the popup palette event from the bottom palette
     @CCPPalette.button.addEventListener 'click', ->
       self.togglePopUp()
 
+    # toggle the popup palette event from the popup palette
     @CCPPalette.popUpPaletteButton.addEventListener 'click', ->
       self.togglePopUp()
+
+    @CCPSliderHue.slider.addEventListener 'input', ->
+      newColor = new TinyColor { h: (360 - @value), s: 100, v: 100 }
+      self.CCPCanvas.setColor newColor.toHexString()
+      self.CCPSliderAlpha.setColor newColor.toHexString()
+      # hsvToRgb
+      # newColor.h = (@value % 360) / 360;
+      # console.log TinyColor 'hsv(' +  + ', 100%, 100%)'
 
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->

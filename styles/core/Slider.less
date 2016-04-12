@@ -21,7 +21,7 @@ ccp-slider {
   &.alpha {
     position: relative;
     margin-top: 8px;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+    background-image: linear-gradient(to right, rgba(204, 154, 129, 0), #f00);
 
     &:before {
       position: absolute;
@@ -31,7 +31,8 @@ ccp-slider {
       height: 100%;
       width: 100%;
       border-radius: inherit;
-      background-image: linear-gradient(to right, rgba(204, 154, 129, 0), white);
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+      z-index: -1;
     }
   }
 
