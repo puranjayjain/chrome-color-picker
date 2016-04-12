@@ -14,3 +14,6 @@ class InnerPanel extends helper
   constructor: (name, type = false) ->
     @component = @createComponent name
     if type then @component.classList.add type
+
+    # set a default tab index to make it focusable
+    @component.tabIndex = '2'

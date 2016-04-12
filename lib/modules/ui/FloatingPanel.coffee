@@ -1,6 +1,7 @@
-module.exports =
-class FloatingPanel
+helper = require '../helper/helper.coffee'
 
+module.exports =
+class FloatingPanel extends helper
   ###*
    * [constructor FloatingPanel in atom]
    *
@@ -12,11 +13,8 @@ class FloatingPanel
    * @return {[type]}    [description]
   ###
   constructor: (name, addTo) ->
-    @component = null
-
     # create a custom element for the floating panel
-    FloatingPanelComponent = document.registerElement name
-    @component = new FloatingPanelComponent
+    @component = @createComponent name
     @component.classList.add 'invisible'
     addTo.appendChild @component
 

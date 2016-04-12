@@ -4,6 +4,10 @@ Swatch = require './Swatch.coffee'
 
 module.exports =
 class Palette extends helper
+  swatches: {}
+  customButton: null
+  popUpPaletteButton: null
+  palettes: {}
 
   ###*
    * [constructor Palette in atom]
@@ -16,16 +20,16 @@ class Palette extends helper
     # create a custom element for the inner panel if not already done
     @component = @createComponent 'ccp-palette-inner'
 
-    # add custom values and references here
-    @swatches = {}
-
     # attach a button to the right side by the main ui
     @button = document.createElement 'BUTTON'
     @button.classList.add 'btn', 'btn-primary', 'btn-sm', 'icon', 'icon-chevron-up'
 
-    # initiate and reference them so that they can be attached by the main ui
-    @component.appendChild @initMaterial().component
-    @popUpPaletteButton = null
+    @palettes.material = @initMaterial().component
+    @palettes.custom = @initCustom().component
+
+    @component.appendChild @palettes.material
+    @component.appendChild @palettes.custom
+
     @popUpPalette = @initPopupPalette()
 
     # add event listeners to them
@@ -48,7 +52,12 @@ class Palette extends helper
 
   # create the empty custom Palette
   initCustom: ->
-    # body...
+    custom = new InnerPanel 'ccp-panel-inner', 'custom'
+    custom.addClass 'invisible'
+    @customButton = document.createElement 'BUTTON'
+    @customButton.classList.add 'btn', 'btn-success', 'btn-sm', 'icon', 'icon-plus'
+    custom.component.appendChild @customButton
+    custom
 
   # create the page's Palette
   # TODO make this feature
@@ -67,6 +76,10 @@ class Palette extends helper
 
     panel2.addClass 'material'
     panel3.addClass 'custom'
+
+    # attach event listeners to the palettes
+    @attachEventListenersEl(panel2.component)
+    @attachEventListenersEl(panel3.component)
 
     # create internal structures of the panels
     h_panel1 = document.createElement 'H3'
@@ -103,3 +116,16 @@ class Palette extends helper
     @component.addEventListener 'click', (e) ->
       if e.target and e.target.nodeName is 'CCP-SWATCH'
         console.log e.target.getAttribute 'data-color'
+
+  # attach event listeners to given palette button
+  attachEventListenersEl: (el) ->
+    self = @
+
+    el.addEventListener 'click', (e) ->
+      # hide all palettes
+      for key, value of self.palettes
+        value.classList.add 'invisible'
+      # unhide the one to use
+      self.palettes[el.className].classList.remove 'invisible'
+      # close the popup
+      self.popUpPalette.classList.toggle 'invisible'

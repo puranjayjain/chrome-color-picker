@@ -2,6 +2,8 @@ helper = require '../helper/helper.coffee'
 
 module.exports =
 class Input extends helper
+  active: {}
+  element = ['HEX']
 
   ###*
    * [constructor Input in atom]
@@ -15,8 +17,6 @@ class Input extends helper
    * @return {[component]}  [description]
   ###
   constructor: (container, preference) ->
-    @active = {}
-    element = ['HEX']
     # dynamically create all types of input combinations
     # Hex
     hex = @createInput element

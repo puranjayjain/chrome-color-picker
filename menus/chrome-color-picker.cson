@@ -10,7 +10,7 @@
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'chrome-color-picker'
+      'label': 'Chrome Color Picker'
       'submenu': [
         {
           'label': 'Toggle'

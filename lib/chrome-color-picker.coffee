@@ -7,6 +7,8 @@ Slider = require './modules/core/Slider'
 Input = require './modules/core/Input'
 Palette = require './modules/core/Palette'
 
+TinyColor = require './modules/helper/TinyColor.coffee'
+
 {CompositeDisposable} = require 'atom'
 
 module.exports = CCP =
@@ -74,6 +76,8 @@ module.exports = CCP =
     # adding event handlers
     @attachEventListeners()
 
+    console.log TinyColor '#000'
+
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
@@ -96,6 +100,7 @@ module.exports = CCP =
     @subscriptions.add atom.tooltips.add @CCPPastColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPPresentColor.component, {title: 'Currently set color'}
     @subscriptions.add atom.tooltips.add @CCPContainerInput.active.button, {title: 'Cycle between possible colour modes'}
+    @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set colour to palette'}
     # TODO change them to relevant selected formats, the hex values
     # add to material color palettes
     palettes = @CCPPalette.swatches.materialPalette
