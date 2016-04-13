@@ -5,6 +5,7 @@ ccp-canvas {
   display: flex;
   width: 240px;
   height: 125px;
+  overflow: hidden;
   background-image: linear-gradient(to right, white, red);
 }
 
@@ -21,6 +22,7 @@ ccp-handle {
 }
 
 ccp-dragger {
+  position: absolute;
   display: block;
   width: 1px;
   height: 1px;
@@ -29,7 +31,6 @@ ccp-dragger {
 ccp-canvas-overlay {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   background-image: linear-gradient(to top, black, rgba(204, 154, 129, 0));
 }
 
@@ -43,6 +44,11 @@ ccp-panel {
   &.notop {
     border-top: none;
     padding-top: 0;
+
+    & > .btn.icon-code {
+      margin-left: 4px;
+      margin-bottom: auto;
+    }
   }
 
   &.palette {

@@ -2,7 +2,7 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Toggle chrome-color-picker'
+      'label': 'Toggle Chrome Color Picker'
       'command': 'chrome-color-picker:toggle'
     }
   ]

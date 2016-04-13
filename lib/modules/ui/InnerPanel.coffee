@@ -21,3 +21,7 @@ class InnerPanel extends helper
   # set a new color to the canvas component
   setColor: (color) ->
     @component.setAttribute('style', 'background-image: linear-gradient(to right, white, ' + color + ')')
+
+  # set left and top of the component
+  setPosition: (left, top) ->
+    @component.setAttribute('style', 'top: ' + top + 'px; left: ' + left + 'px')

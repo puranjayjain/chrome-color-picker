@@ -1,4 +1,3 @@
-# CCPView = require './chrome-color-picker-view'
 FloatingPanel = require './modules/ui/FloatingPanel'
 InnerPanel = require './modules/ui/InnerPanel'
 
@@ -31,8 +30,13 @@ module.exports = CCP =
   CCPPalette: null
   # CCPView: null
 
-  OldColor: TinyColor().random().toHexString()
+  # REVIEW change this function to pick a color if the pattern is not found
+  OldColor: TinyColor().random()
   NewColor: null
+
+  # TODO pass it from settings saved
+  # preferred output format can be hex, hsl, rgb, etc.
+  preferredFormat: 'hex'
 
   subscriptions: null
 
@@ -43,7 +47,6 @@ module.exports = CCP =
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
-    # @CCPView = new CCPView(state.CCPViewState)
     # Initiate a new instance of the floating panel and add elements to it
     @CCPContainer = new FloatingPanel 'ccp-container', document.querySelector 'atom-workspace-axis.vertical'
     @CCPCanvas = new InnerPanel 'ccp-canvas'
@@ -58,9 +61,7 @@ module.exports = CCP =
     @CCPContainerSlider = new InnerPanel 'ccp-container-slider'
     @CCPSliderHue = new Slider 'hue'
     @CCPSliderAlpha = new Slider 'alpha'
-    # TODO pass it from settings saved
-    # preferred output format can be RGB, HSL, VSL, etc.
-    @CCPContainerInput = new Input @CCPDisplay.component, 'HEX'
+    @CCPContainerInput = new Input @CCPDisplay.component, @preferredFormat
     @CCPPalette = new Palette
 
     # add properties and attributes to some of them
@@ -107,10 +108,6 @@ module.exports = CCP =
     # adding event handlers
     @attachEventListeners()
 
-    # set initial color
-    @CCPOldColor.setColor @OldColor
-    @CCPNewColor.setColor @NewColor
-
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
@@ -118,13 +115,14 @@ module.exports = CCP =
   deactivate: ->
     @CCPContainer.destroy()
     @subscriptions.dispose()
-    # @CCPView.destroy()
 
   serialize: ->
     # CCPViewState: @CCPView.serialize()
 
   toggle: ->
     @CCPContainer.toggle()
+    # REVIEW change this logic to happen only on dialog open
+    @UpdateUI @NewColor, true
 
   close: ->
     @CCPContainer.close()
@@ -132,7 +130,7 @@ module.exports = CCP =
   addTooltips: ->
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
-    @subscriptions.add atom.tooltips.add @CCPContainerInput.active.button, {title: 'Cycle between possible colour modes'}
+    @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible colour modes'}
     @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set colour to palette'}
     # TODO change them to relevant selected formats, the hex values
     # add to material color palettes
@@ -157,9 +155,35 @@ module.exports = CCP =
       self.CCPCanvas.setColor newColor.toHexString()
       self.CCPSliderAlpha.setColor newColor.toHexString()
       # hsvToRgb
-      # newColor.h = (@value % 360) / 360;
+      # newColor.h = (@value % 360) / 360; 239 and 124
       # console.log TinyColor 'hsv(' +  + ', 100%, 100%)'
 
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
+
+  # Update UI from color - from spectrum.js
+  # if old = true then update the old colour swatch as well
+  UpdateUI: (color, old = false) ->
+    @NewColor = color
+
+    # set initial color
+    if old
+      @CCPOldColor.setColor @OldColor.toHexString()
+    @CCPNewColor.setColor @NewColor.toHexString()
+
+    hsvColor = @NewColor.toHsv()
+    # update the top level spectrum's drag
+    @CCPDraggie.disable()
+    @CCPDragger.setPosition Math.abs(hsvColor.s * 239), 124 - Math.abs(hsvColor.v * 124)
+    @CCPDraggie.enable()
+    # update the color of spectrum
+    @CCPCanvas.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
+    # update the hue slider's value
+    @CCPSliderHue.setValue 360 - hsvColor.h
+    # Update the alpha slider's color
+    @CCPSliderAlpha.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
+    @CCPSliderAlpha.setValue Math.abs hsvColor.a * 100
+    # Update the display text
+    @CCPContainerInput.color = @NewColor
+    @CCPContainerInput.UpdateUI()

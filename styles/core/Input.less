@@ -1,14 +1,10 @@
 // Input container and elements
 ccp-input {
   display: flex;
-  width: 216px;
+  width: 182px;
 
   &.invisible {
     display: none;
-  }
-
-  .btn {
-    margin-left: 8px;
   }
 }
 
@@ -17,8 +13,14 @@ ccp-input-inner {
   flex-direction: column;
   flex: 1;
   text-align: center;
+  margin: 0 4px;
 
-  div:last-of-type {
+  &:first-of-type {
+    margin-left: 0;
+  }
+
+  & > div {
+    text-transform: uppercase;
     padding-top: 8px;
   }
 }

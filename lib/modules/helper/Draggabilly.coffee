@@ -227,8 +227,6 @@ class Draggabilly extends Unidragger
     container = if isElement(containment) then containment else if typeof containment == 'string' then document.querySelector(containment) else @element.parentNode
     elemSize = GetSize(@element)
     containerSize = GetSize(container)
-    console.log elemSize
-    console.log containerSize
     elemRect = @element.getBoundingClientRect()
     containerRect = container.getBoundingClientRect()
     borderSizeX = containerSize.borderLeftWidth + containerSize.borderRightWidth
