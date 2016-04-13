@@ -175,7 +175,7 @@ module.exports = CCP =
     hsvColor = @NewColor.toHsv()
     # update the top level spectrum's drag
     @CCPDraggie.disable()
-    @CCPDragger.setPosition Math.abs(hsvColor.s * 239), 124 - Math.abs(hsvColor.v * 124)
+    @CCPDragger.setPosition Math.round(hsvColor.s * 239), 124 - Math.round(hsvColor.v * 124)
     @CCPDraggie.enable()
     # update the color of spectrum
     @CCPCanvas.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
@@ -183,7 +183,7 @@ module.exports = CCP =
     @CCPSliderHue.setValue 360 - hsvColor.h
     # Update the alpha slider's color
     @CCPSliderAlpha.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
-    @CCPSliderAlpha.setValue Math.abs hsvColor.a * 100
+    @CCPSliderAlpha.setValue Math.round hsvColor.a * 100
     # Update the display text
     @CCPContainerInput.color = @NewColor
     @CCPContainerInput.UpdateUI()

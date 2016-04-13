@@ -122,19 +122,20 @@ class Input extends helper
     if format is 'hsl'
       thisColor = @color.toHsl()
       input = @hsl.querySelector 'atom-text-editor.h'
-      input.getModel().setText thisColor.h.toString()
+      input.getModel().setText Math.round(thisColor.h).toString()
       input = @hsl.querySelector 'atom-text-editor.s'
-      input.getModel().setText (thisColor.s * 100).toString()
+      input.getModel().setText Math.round(thisColor.s * 100).toString()
       input = @hsl.querySelector 'atom-text-editor.l'
-      input.getModel().setText (thisColor.l * 100).toString()
+      input.getModel().setText Math.round(thisColor.l * 100).toString()
 
     # if the alpha channel is present
     if alpha
       input = @[format].querySelector 'atom-text-editor.a'
-      input.getModel().setText thisColor.a
-      input.setAttribute 'style', 'display: none'
-    else
-      input.removeAttribute 'style'
+      input.getModel().setText thisColor.a.toString()
+      input.parentNode.removeAttribute 'style'
+    else if format isnt 'hex'
+      input = @[format].querySelector 'atom-text-editor.a'
+      input.parentNode.setAttribute 'style', 'display: none'
 
   # change the current format to the one given
   changeFormat: (format) ->
