@@ -64,10 +64,6 @@ module.exports = CCP =
     @CCPPalette = new Palette
 
     # add properties and attributes to some of them
-    @CCPDraggie = new Draggabilly(@CCPDragger,
-      containment: @CCPCanvas.component
-      handle: @CCPHandle.component)
-
     @CCPSliderHue.setMax 360
     @CCPSliderHue.setValue 0
     @CCPSliderAlpha.setValue 100
@@ -78,6 +74,10 @@ module.exports = CCP =
     @addTooltips()
 
     # Adding inner components to the panels
+    @CCPDragger.add @CCPHandle
+
+    @CCPCanvasOverlay.add @CCPDragger
+
     @CCPCanvas.add @CCPCanvasOverlay
 
     @CCPControls.add @CCPOldColor
@@ -96,6 +96,13 @@ module.exports = CCP =
     @CCPContainer.add @CCPDisplay
     @CCPContainer.add @CCPContainerPalette
     @CCPContainer.component.appendChild @CCPPalette.popUpPalette
+
+    # init draggabilly
+    @CCPDraggie = new Draggabilly(@CCPDragger.component,
+    containment: true
+    handle: 'ccp-handle')
+
+    console.log @CCPDraggie
 
     # adding event handlers
     @attachEventListeners()
