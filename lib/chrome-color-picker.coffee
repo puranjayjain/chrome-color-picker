@@ -246,6 +246,28 @@ module.exports = CCP =
         newColor = new TinyColor e.target.getAttribute 'data-color'
         self.UpdateUI color: newColor
 
+    # double click to open additional palettes
+    @CCPContainerPalette.component.addEventListener 'dblclick', (e) ->
+      if e.target and e.target.nodeName is 'CCP-SWATCH'
+        # color weights
+        weights = ['100', '200', '300', '400','500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
+        # add the popup palette
+        CCPSwatchPopup = new InnerPanel 'ccp-swatch-popup'
+        colorName = e.target.getAttribute 'data-name'.toLowerCase()
+        if colorName.indexOf '-' > -1
+          colorName = colorName.replace '-', ''
+        palette = self.CCPPalette.materialColors[colorName]
+        docfrag = document.createDocumentFragment()
+        i = palette.length
+        while i--
+          swatch = new Swatch 'square'
+          swatch.component.setAttribute 'data-color', palette[i]
+          swatch.component.setAttribute 'data-name', weights[i]
+          swatch.component.setAttribute 'style', 'background-color: ' + palette[i]
+          docfrag.appendChild swatch.component
+        CCPSwatchPopup.component.appendChild docfrag
+        e.target.appendChild CCPSwatchPopup.component
+
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'

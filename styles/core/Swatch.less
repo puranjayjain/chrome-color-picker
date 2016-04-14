@@ -1,6 +1,7 @@
 // swatch styles
 
 ccp-swatch {
+  position: relative;
   display: block;
   border: 1px solid lighten(@background, 10%);
   cursor: pointer;
@@ -18,5 +19,20 @@ ccp-swatch {
     height: 14px;
     border-radius: 3px;
     margin: 0 6px;
+  }
+}
+
+ccp-swatch-popup {
+  position: absolute;
+  left: -5px;
+  bottom: -5px;
+  background-color: @background;
+  border: 1px solid @amber;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+
+  ccp-swatch.square {
+    margin: 4px;
   }
 }
