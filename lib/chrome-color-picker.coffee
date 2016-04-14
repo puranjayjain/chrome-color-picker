@@ -103,8 +103,6 @@ module.exports = CCP =
     containment: true
     handle: 'ccp-handle')
 
-    console.log @CCPDraggie
-
     # adding event handlers
     @attachEventListeners()
 
@@ -122,7 +120,7 @@ module.exports = CCP =
   toggle: ->
     @CCPContainer.toggle()
     # REVIEW change this logic to happen only on dialog open
-    @UpdateUI @NewColor, true
+    @UpdateUI color: @NewColor, old: true
 
   close: ->
     @CCPContainer.close()
@@ -142,6 +140,98 @@ module.exports = CCP =
   attachEventListeners: ->
     self = @
 
+    # click on the main slider
+    @CCPCanvasOverlay.component.addEventListener 'click', (e) ->
+      if not (e.target.nodeName is 'CCP-DRAGGER' or e.target.nodeName is 'CCP-HANDLE')
+        x = e.offsetX / 239
+        y = (124 - e.offsetY) / 124
+        self.UpdateSlider x, y
+      e.stopPropagation()
+
+    # control the main slider
+    @CCPDraggie.on 'dragMove', (event, pointer, moveVector) ->
+      x = @position.x / 239
+      y = (124 - @position.y)/124
+      self.UpdateSlider x, y, false
+
+    # slide the main slider using mouse wheel
+    @CCPCanvasOverlay.component.addEventListener 'wheel', (e) ->
+      delta = 5 * Math.sign e.wheelDelta
+      # load initial values
+      x = parseInt self.CCPDragger.component.offsetLeft
+      y = 124 - parseInt self.CCPDragger.component.offsetTop
+      # if the ctrl key was down
+      if e.ctrlKey
+        delta *= 2
+      # if the shift key is down
+      # add delta to
+      if e.shiftKey
+        x += delta
+      else
+        y += delta
+      # if the value is less than the min cap it to min
+      if x < 0
+        x = 0
+      if y < 0
+        y = 0
+      # if the value is greater than the max cap it to max
+      if y > 124
+        y = 124
+      if x > 239
+        x = 239
+      # bring them to fractions
+      x /= 239
+      y /= 124
+      # update the slider's position and value
+      self.UpdateSlider x, y
+
+    # click on old swatch to replace the new swatch with the color
+    @CCPOldColor.component.addEventListener 'click', ->
+      self.UpdateUI color: self.OldColor
+
+    @CCPSliderHue.slider.addEventListener 'input', ->
+      self.UpdateHue @value
+
+    @CCPSliderAlpha.slider.addEventListener 'input', ->
+      self.UpdateAlpha @value
+
+    # mouse wheel events for hue and alpha
+    @CCPSliderHue.slider.addEventListener 'wheel', (e) ->
+      delta = Math.sign e.wheelDelta
+      # if the ctrl key was down
+      if e.ctrlKey
+        delta *= 10
+      newValue = parseInt @value
+      newValue += delta
+      # if the value is less than the min cap it to min
+      if newValue < 0
+        newValue = 0
+      # if the value is greater than the max cap it to max
+      if newValue > 360
+        newValue = 360
+      # update the slider with the new value
+      @value = newValue
+      # update color
+      self.UpdateHue @value
+
+    @CCPSliderAlpha.slider.addEventListener 'wheel', (e) ->
+      delta = Math.sign e.wheelDelta
+      # if the ctrl key was down
+      if e.ctrlKey
+        delta *= 10
+      newValue = parseInt @value
+      newValue += delta
+      # if the value is less than the min cap it to min
+      if newValue < 0
+        newValue = 0
+      # if the value is greater than the max cap it to max
+      if newValue > 100
+        newValue = 100
+      # update the slider with the new value
+      @value = newValue
+      # update color
+      self.UpdateAlpha @value
+
     # toggle the popup palette event from the bottom palette
     @CCPPalette.button.addEventListener 'click', ->
       self.togglePopUp()
@@ -150,13 +240,11 @@ module.exports = CCP =
     @CCPPalette.popUpPaletteButton.addEventListener 'click', ->
       self.togglePopUp()
 
-    @CCPSliderHue.slider.addEventListener 'input', ->
-      newColor = new TinyColor { h: (360 - @value), s: 100, v: 100 }
-      self.CCPCanvas.setColor newColor.toHexString()
-      self.CCPSliderAlpha.setColor newColor.toHexString()
-      # hsvToRgb
-      # newColor.h = (@value % 360) / 360; 239 and 124
-      # console.log TinyColor 'hsv(' +  + ', 100%, 100%)'
+    # bottom palette swatch click
+    @CCPContainerPalette.component.addEventListener 'click', (e) ->
+      if e.target and e.target.nodeName is 'CCP-SWATCH'
+        newColor = new TinyColor e.target.getAttribute 'data-color'
+        self.UpdateUI color: newColor
 
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->
@@ -164,26 +252,52 @@ module.exports = CCP =
 
   # Update UI from color - from spectrum.js
   # if old = true then update the old colour swatch as well
-  UpdateUI: (color, old = false) ->
+  UpdateUI: ({color, old, slider, hue, alpha} = {}) ->
+    old = if old? then old else false
+    slider = if slider? then slider else true
+    hue = if hue? then hue else true
+    alpha = if alpha? then alpha else true
     @NewColor = color
 
     # set initial color
     if old
-      @CCPOldColor.setColor @OldColor.toHexString()
-    @CCPNewColor.setColor @NewColor.toHexString()
+      @CCPOldColor.setColor @OldColor.toRgbString()
+    @CCPNewColor.setColor @NewColor.toRgbString()
 
     hsvColor = @NewColor.toHsv()
     # update the top level spectrum's drag
-    @CCPDraggie.disable()
-    @CCPDragger.setPosition Math.round(hsvColor.s * 239), 124 - Math.round(hsvColor.v * 124)
-    @CCPDraggie.enable()
+    if slider
+      @CCPDraggie.disable()
+      @CCPDragger.setPosition Math.round(hsvColor.s * 239), 124 - Math.round(hsvColor.v * 124)
+      @CCPDraggie.enable()
+
     # update the color of spectrum
     @CCPCanvas.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
     # update the hue slider's value
-    @CCPSliderHue.setValue 360 - hsvColor.h
+    if hue
+      @CCPSliderHue.setValue 360 - hsvColor.h
     # Update the alpha slider's color
-    @CCPSliderAlpha.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
-    @CCPSliderAlpha.setValue Math.round hsvColor.a * 100
+    if alpha
+      @CCPSliderAlpha.setColor TinyColor({h: hsvColor.h, s: 1, v: 1}).toRgbString()
+      @CCPSliderAlpha.setValue Math.round hsvColor.a * 100
     # Update the display text
     @CCPContainerInput.color = @NewColor
     @CCPContainerInput.UpdateUI()
+
+  # Update the color from the main slider and itself
+  UpdateSlider: (x, y, s = true) ->
+    oldColor = @NewColor.toHsv()
+    newColor = new TinyColor { h: oldColor.h, s: x, v: y, a: oldColor.a }
+    @UpdateUI color: newColor, slider: s
+
+  # Update just the hue from the slider
+  UpdateHue: (value) ->
+    oldColor = @NewColor.toHsv()
+    newColor = new TinyColor { h: (360 - value), s: oldColor.s, v: oldColor.v, a: oldColor.a }
+    @UpdateUI color: newColor, hue: false
+
+  # Update just the alpha from the slider
+  UpdateAlpha: (value) ->
+    oldColor = @NewColor.toHsv()
+    newColor = new TinyColor { h: oldColor.h, s: oldColor.s, v: oldColor.v, a: value / 100 }
+    @UpdateUI color: newColor, alpha: false

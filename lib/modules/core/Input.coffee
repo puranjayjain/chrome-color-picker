@@ -124,9 +124,9 @@ class Input extends helper
       input = @hsl.querySelector 'atom-text-editor.h'
       input.getModel().setText Math.round(thisColor.h).toString()
       input = @hsl.querySelector 'atom-text-editor.s'
-      input.getModel().setText Math.round(thisColor.s * 100).toString()
+      input.getModel().setText Math.round(thisColor.s * 100).toString() + '%'
       input = @hsl.querySelector 'atom-text-editor.l'
-      input.getModel().setText Math.round(thisColor.l * 100).toString()
+      input.getModel().setText Math.round(thisColor.l * 100).toString() + '%'
 
     # if the alpha channel is present
     if alpha

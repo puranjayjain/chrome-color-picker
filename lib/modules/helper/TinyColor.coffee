@@ -736,10 +736,20 @@ class TinyColor
     '#' + @toHex8()
 
   toRgb: ->
+    # fix to make them below 255
+    c_r = Math.round(@_r)
+    c_g = Math.round(@_g)
+    c_b = Math.round(@_b)
+    if c_r > 255
+      c_r = 255
+    if c_g > 255
+      c_g = 255
+    if c_b > 255
+      c_ b = 255 
     {
-      r: Math.round(@_r)
-      g: Math.round(@_g)
-      b: Math.round(@_b)
+      r: c_r
+      g: c_g
+      b: c_b
       a: @_a
     }
 
