@@ -28,7 +28,9 @@ module.exports = CCP =
   CCPSliderAlpha: null
   CCPContainerInput: null
   CCPPalette: null
-  # CCPView: null
+  CCPActiveSwatch: null
+  CCPSwatchPopup: null
+  CCPOverlay: null
 
   # REVIEW change this function to pick a color if the pattern is not found
   OldColor: TinyColor().random()
@@ -140,6 +142,20 @@ module.exports = CCP =
   attachEventListeners: ->
     self = @
 
+    # main dialog close on escape key
+    @CCPContainer.component.addEventListener 'keydown', (e) ->
+      # Should do nothing if the key event was already consumed.
+      if e.defaultPrevented
+        return
+
+      # if the new api is supported or the old one get the code
+      code = if e.keyCode then e.keyCode else e.code
+      if code is 27
+        # close the dialog if the escape key is pressed
+        self.toggle()
+      # Consume the event for suppressing "double action".
+      e.preventDefault()
+
     # click on the main slider
     @CCPCanvasOverlay.component.addEventListener 'click', (e) ->
       if not (e.target.nodeName is 'CCP-DRAGGER' or e.target.nodeName is 'CCP-HANDLE')
@@ -249,10 +265,18 @@ module.exports = CCP =
     # double click to open additional palettes
     @CCPContainerPalette.component.addEventListener 'dblclick', (e) ->
       if e.target and e.target.nodeName is 'CCP-SWATCH'
+        # set this swatch as active
+        self.CCPActiveSwatch = e.target
         # color weights
-        weights = ['100', '200', '300', '400','500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
+        weights = ['50', '100', '200', '300', '400','500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
         # add the popup palette
-        CCPSwatchPopup = new InnerPanel 'ccp-swatch-popup'
+        self.CCPSwatchPopup = new InnerPanel 'ccp-swatch-popup'
+        self.CCPOverlay = new InnerPanel 'ccp-overlay'
+        # add eventlistener to close the palette on click of overlay
+        self.CCPOverlay.component.addEventListener 'click', (e) ->
+          @.parentNode.removeChild @
+          self.CCPSwatchPopup.component.parentNode.removeChild self.CCPSwatchPopup.component
+        # do other stuff
         colorName = e.target.getAttribute 'data-name'.toLowerCase()
         if colorName.indexOf '-' > -1
           colorName = colorName.replace '-', ''
@@ -263,10 +287,17 @@ module.exports = CCP =
           swatch = new Swatch 'square'
           swatch.component.setAttribute 'data-color', palette[i]
           swatch.component.setAttribute 'data-name', weights[i]
-          swatch.component.setAttribute 'style', 'background-color: ' + palette[i]
+          swatch.component.setAttribute 'style', 'background: ' + palette[i]
+          self.subscriptions.add atom.tooltips.add swatch.component, {title: e.target.getAttribute('data-name') + '(' + weights[i] + '): ' + palette[i] }
           docfrag.appendChild swatch.component
-        CCPSwatchPopup.component.appendChild docfrag
-        e.target.appendChild CCPSwatchPopup.component
+        self.CCPSwatchPopup.component.appendChild docfrag
+        # position the popup correctly
+        left = e.target.offsetLeft - 5
+        bottom = self.CCPContainer.component.offsetHeight - e.target.offsetHeight - e.target.offsetTop - 5
+        self.CCPSwatchPopup.component.setAttribute 'style', 'left: ' + left + 'px; bottom: ' + bottom + 'px'
+        # attach overlay to main element
+        self.CCPContainer.add self.CCPOverlay
+        self.CCPContainer.add self.CCPSwatchPopup
 
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->
