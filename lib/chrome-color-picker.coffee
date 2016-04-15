@@ -124,14 +124,25 @@ module.exports = CCP =
     # REVIEW change this logic to happen only on dialog open
     @UpdateUI color: @NewColor, old: true
 
+    # close other stuff if already open
+    if @CCPSwatchPopup
+      @CCPSwatchPopup.component.parentNode.removeChild @CCPSwatchPopup.component
+      @CCPSwatchPopup = null
+    if @CCPOverlay
+      @CCPOverlay.component.parentNode.removeChild @CCPOverlay.component
+      @CCPOverlay = null
+    # hide popUpPalette if visible
+    if not @CCPPalette.popUpPalette.classList.contains 'invisible'
+      @CCPPalette.popUpPalette.classList.add 'invisible'
+
   close: ->
     @CCPContainer.close()
 
   addTooltips: ->
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
-    @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible colour modes'}
-    @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set colour to palette'}
+    @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible color modes'}
+    @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set color to palette'}
     # TODO change them to relevant selected formats, the hex values
     # add to material color palettes
     palettes = @CCPPalette.swatches.materialPalette
@@ -273,10 +284,13 @@ module.exports = CCP =
         self.CCPSwatchPopup = new InnerPanel 'ccp-swatch-popup'
         self.CCPOverlay = new InnerPanel 'ccp-overlay'
         # add eventlistener to close the palette on click of overlay
-        self.CCPOverlay.component.addEventListener 'click', (e) ->
+        self.CCPOverlay.component.addEventListener 'click', () ->
           @.parentNode.removeChild @
           self.CCPSwatchPopup.component.parentNode.removeChild self.CCPSwatchPopup.component
-        # do other stuff
+          self.CCPOverlay = null
+          self.CCPSwatchPopup = null
+
+        # create the palette with swatches
         colorName = e.target.getAttribute 'data-name'.toLowerCase()
         if colorName.indexOf '-' > -1
           colorName = colorName.replace '-', ''
@@ -295,16 +309,35 @@ module.exports = CCP =
         left = e.target.offsetLeft - 5
         bottom = self.CCPContainer.component.offsetHeight - e.target.offsetHeight - e.target.offsetTop - 5
         self.CCPSwatchPopup.component.setAttribute 'style', 'left: ' + left + 'px; bottom: ' + bottom + 'px'
+        # add event listener to overlay
+        self.CCPSwatchPopup.component.addEventListener 'click', (e) ->
+          if e.target and e.target.nodeName is 'CCP-SWATCH'
+            # set color
+            newColor = new TinyColor e.target.getAttribute 'data-color'
+            self.UpdateUI color: newColor
+            # hide the component again
+            self.CCPSwatchPopup.component.parentNode.removeChild self.CCPSwatchPopup.component
+            self.CCPOverlay.component.parentNode.removeChild self.CCPOverlay.component
+            self.CCPSwatchPopup = null
+            self.CCPOverlay = null
+
         # attach overlay to main element
         self.CCPContainer.add self.CCPOverlay
         self.CCPContainer.add self.CCPSwatchPopup
+
+    @CCPPalette.customButton.addEventListener 'click', () ->
+      # add a new swatch with new color
+      swatch = new Swatch 'square'
+      swatch.component.setAttribute 'style', 'background: ' + self.NewColor.toRgbString()
+      swatch.component.setAttribute 'data-color', self.NewColor.toRgbString()
+      @parentNode.appendChild swatch.component
 
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
 
   # Update UI from color - from spectrum.js
-  # if old = true then update the old colour swatch as well
+  # if old = true then update the old color swatch as well
   UpdateUI: ({color, old, slider, hue, alpha} = {}) ->
     old = if old? then old else false
     slider = if slider? then slider else true
