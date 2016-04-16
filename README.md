@@ -1,6 +1,6 @@
 # chrome-color-picker
 
-A color picker inspired from chrome's color picker
+A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)
 
 # License
 

@@ -1,3 +1,5 @@
+Config = require './config.coffee'
+
 FloatingPanel = require './modules/ui/FloatingPanel'
 InnerPanel = require './modules/ui/InnerPanel'
 
@@ -12,6 +14,10 @@ Draggabilly = require './modules/helper/Draggabilly.coffee'
 {CompositeDisposable} = require 'atom'
 
 module.exports = CCP =
+  # load default config and settings page
+  config: Config
+
+  # variables for use in plugin's UI
   CCPContainer: null
   CCPCanvas: null
   CCPCanvasOverlay: null
