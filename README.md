@@ -2,6 +2,19 @@
 
 A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)
 
+# Features
+
+## Pick Colors in these formats
+
+- hex
+- rgb
+- hsl
+
+## Integrated Palette
+
+- Use the palette with the picker as done in dev tools.
+- Contains the material palette by default
+
 # License
 
 This project is licensed under an MIT License.
