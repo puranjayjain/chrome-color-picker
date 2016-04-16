@@ -1,26 +1,26 @@
 {
-    "name": "chrome-color-picker",
-    "main": "./lib/chrome-color-picker",
-    "version": "0.0.0",
-    "description": "A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)",
-    "keywords": [
-        "chrome",
-        "color",
-        "picker",
-        "palette",
-        "material",
-        "dev-tools"
-    ],
-    "activationCommands": {
-        "atom-workspace": "chrome-color-picker:toggle"
-    },
-    "repository": "https://github.com/atom/chrome-color-picker",
-    "license": "MIT",
-    "engines": {
-        "atom": ">=1.0.0 <2.0.0"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "js2coffee": "^2.2.0"
-    }
+  "name": "chrome-color-picker",
+  "main": "./lib/chrome-color-picker",
+  "version": "0.0.0",
+  "description": "A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)",
+  "keywords": [
+    "chrome",
+    "color",
+    "picker",
+    "palette",
+    "material",
+    "dev-tools"
+  ],
+  "activationCommands": {
+    "atom-workspace": "chrome-color-picker:toggle"
+  },
+  "repository": "https://github.com/atom/chrome-color-picker",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "js2coffee": "^2.2.0"
+  }
 }

@@ -95,12 +95,15 @@ class Input extends helper
     @color = new TinyColor @color
     alpha = false
     thisColor = null
+    # fallback format to use when there is an alpha value
+    fallbackAlphaFormat = atom.config.get 'chrome-color-picker.fallbackAlphaFormat'
     # if the input format is hex but we have an alpha in the input, default to mr. muggles err rgb
     if @color.getAlpha() < 1
       alpha = true
+      # trigger the fallback alpha format property on an alpha < 1
       if format is 'hex'
-        format = 'rgb'
-        @changeFormat 'rgb'
+        format = fallbackAlphaFormat
+        @changeFormat fallbackAlphaFormat
 
     # do something according with the format
     # hex
