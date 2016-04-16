@@ -125,10 +125,10 @@ module.exports = CCP =
     @UpdateUI color: @NewColor, old: true
 
     # close other stuff if already open
-    if @CCPSwatchPopup
+    if @CCPSwatchPopup?
       @CCPSwatchPopup.component.parentNode.removeChild @CCPSwatchPopup.component
       @CCPSwatchPopup = null
-    if @CCPOverlay
+    if @CCPOverlay?
       @CCPOverlay.component.parentNode.removeChild @CCPOverlay.component
       @CCPOverlay = null
     # hide popUpPalette if visible
