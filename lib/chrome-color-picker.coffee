@@ -1,4 +1,4 @@
-Config = require './config.coffee'
+Config = require './config'
 
 FloatingPanel = require './modules/ui/FloatingPanel'
 InnerPanel = require './modules/ui/InnerPanel'
@@ -8,14 +8,16 @@ Slider = require './modules/core/Slider'
 Input = require './modules/core/Input'
 Palette = require './modules/core/Palette'
 
-TinyColor = require './modules/helper/TinyColor.coffee'
-Draggabilly = require './modules/helper/Draggabilly.coffee'
+TinyColor = require './modules/helper/TinyColor'
+Draggabilly = require './modules/helper/Draggabilly'
+ColorMatchers = require './modules/helper/TinyColor/ColorMatchers'
 
 {CompositeDisposable} = require 'atom'
 
 module.exports = CCP =
   # dialog state
   open: false
+  selection: null
 
   # load default config and settings page
   config: Config
@@ -42,6 +44,7 @@ module.exports = CCP =
   CCPOverlay: null
 
   # REVIEW change this function to pick a color if the pattern is not found
+  ColorMatcher: null
   OldColor: TinyColor().random()
   NewColor: null
 
@@ -53,9 +56,11 @@ module.exports = CCP =
   popUpSubscriptions: null
 
   activate: (state) ->
-    # copy values
+    # copy values and settings
     @preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat'
     @NewColor = @OldColor
+    # init helper classes
+    @ColorMatcher = new ColorMatchers
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
@@ -129,33 +134,80 @@ module.exports = CCP =
   serialize: ->
     # CCPViewState: @CCPView.serialize()
 
+  close: ->
+    if @open
+      @toggle()
+
   toggle: ->
-    @CCPContainer.toggle()
-    # if the dialog is being opened then do this
-    if not @open
+    # check if the dialog is openable
+    if @open
+      @CCPContainer.toggle()
+      # toggle the state of the dialog
+      @open = false
+    else
+      # if the dialog is being opened then do this
+      Editor = atom.workspace.getActiveTextEditor()
+      EditorView = atom.views.getView Editor
+      # get the current cursor
+      Cursor = Editor.getLastCursor()
+
+      # get the text buffer and true position
+      visibleRowRange = EditorView.getVisibleRowRange()
+      cursorScreenRow = Cursor.getScreenRow()
+      cursorBufferRow = Cursor.getBufferRow()
+
+      # don't open the picker if the text is out of screen
+      return if (cursorScreenRow < visibleRowRange[0]) or (cursorScreenRow > visibleRowRange[1])
+
+      # Get the current buffer's line to match it for color
+      BufferLine = Cursor.getCurrentBufferLine()
+
+      # match them from tinycolor regex
+      matches = @ColorMatcher.getMatch BufferLine
+
+      # get the current column from the buffer
+      cursorColumn = Cursor.getBufferColumn()
+      # REVIEW change this to something better performing like a negative while loop
+      # Figure out which of the matches is the one the user wants
+      match = do -> for match in matches
+        # select the match if in range
+        return match if match.start <= cursorColumn and match.end >= cursorColumn
+
+      # select the match if found
+      if match
+        Editor.clearSelections()
+
+        selection = Editor.addSelectionForBufferRange [
+          [cursorBufferRow, match.start]
+          [cursorBufferRow, match.end]]
+
+        # add to global selection for reference
+        @selection = match: match, row: cursorBufferRow
+      # even if we don't have a match place it over the last line
+      else
+        cursorPosition = Cursor.getPixelRect()
+        @selection = column: Cursor.getBufferColumn(), row: cursorBufferRow
+
+      # toggle open the dialog
+      @CCPContainer.toggle()
       # update the visible color
       @UpdateUI color: @NewColor, old: true
 
-      # close other stuff if already open
-      if @CCPSwatchPopup?
-        @CCPSwatchPopup.delete()
-        @CCPSwatchPopup = null
-      if @CCPOverlay?
-        @CCPOverlay.delete()
-        @CCPOverlay = null
+      # close the swatch popup if open
+      if @CCPSwatchPopup? or @CCPOverlay?
+        @HidePopUpOverlay()
       # hide popUpPalette if visible
       if not @CCPPalette.popUpPalette.classList.contains 'invisible'
         @CCPPalette.popUpPalette.classList.add 'invisible'
 
-    # toggle the state of the dialog
-    @open = not @open
+      # toggle the state of the dialog
+      @open = true
 
   addTooltips: ->
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
     @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible color modes'}
     @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set color to palette'}
-    # TODO change them to relevant selected formats, the hex values
     # add to material color palettes
     palettes = @CCPPalette.swatches.materialPalette
     for palette, i in palettes
@@ -163,6 +215,18 @@ module.exports = CCP =
 
   # add event listeners to elements
   attachEventListeners: ->
+    # reference the global workspace
+    workspace = atom.workspace
+    # close dialog on various workspace events
+    # close it when the active item is changed
+    @subscriptions.add workspace.onDidChangeActivePaneItem => @close()
+
+    # close it on scroll over the workspace
+    atom.workspace.observeTextEditors (editor) =>
+      editorView = atom.views.getView editor
+      @subscriptions.add editorView.onDidChangeScrollTop => @close()
+      @subscriptions.add editorView.onDidChangeScrollLeft => @close()
+
     # main dialog close on escape key
     @CCPContainer.component.addEventListener 'keydown', (e) =>
       # Should do nothing if the key event was already consumed.
@@ -285,7 +349,9 @@ module.exports = CCP =
 
     # double click to open additional palettes
     @CCPContainerPalette.component.addEventListener 'dblclick', (e) =>
-      if e.target and e.target.nodeName is 'CCP-SWATCH'
+      # open only for material palette
+      # and it doesnt even matter if you are black or white
+      if e.target and e.target.nodeName is 'CCP-SWATCH' and e.target.parentNode.classList.contains('material') and e.target.getAttribute('data-name') isnt 'black' and e.target.getAttribute('data-name') isnt 'white'
         # dispose off any previous tooltips
         if @popUpSubscriptions? then @popUpSubscriptions.dispose()
         # init the temp disposable

@@ -1,4 +1,4 @@
-helper = require '../helper/helper.coffee'
+helper = require '../helper/helper'
 
 module.exports =
 class Swatch extends helper

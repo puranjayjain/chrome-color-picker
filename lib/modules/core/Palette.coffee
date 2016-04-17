@@ -1,6 +1,6 @@
-helper = require '../helper/helper.coffee'
-InnerPanel = require '../ui/InnerPanel.coffee'
-Swatch = require './Swatch.coffee'
+helper = require '../helper/helper'
+InnerPanel = require '../ui/InnerPanel'
+Swatch = require './Swatch'
 
 module.exports =
 class Palette extends helper
@@ -135,7 +135,7 @@ class Palette extends helper
 
   # attach event listeners to given palette button
   attachEventListenersEl: (el) ->
-    el.addEventListener 'click', (e) ->
+    el.addEventListener 'click', (e) =>
       # hide all palettes
       for key, value of @palettes
         value.classList.add 'invisible'

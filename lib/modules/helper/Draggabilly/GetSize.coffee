@@ -3,6 +3,7 @@
 # measure size of elements
 # MIT license
 ###
+
 module.exports =
 class GetSize
   # -------------------------- measurements -------------------------- //

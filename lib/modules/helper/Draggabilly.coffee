@@ -1,13 +1,5 @@
-# ((window, factory) ->
-#   # module end point
-#   module.exports = factory(window)
-#   return
-# ) window, (window) ->
-#   # ----- utils ----- //
-#   arraySlice = Array::slice
-
-Unidragger = require './Draggabilly/UniDragger.coffee'
-GetSizeClass = require './Draggabilly/GetSize.coffee'
+Unidragger = require './Draggabilly/UniDragger'
+GetSizeClass = require './Draggabilly/GetSize'
 
 ###!
 # Draggabilly v2.1.0
@@ -15,8 +7,9 @@ GetSizeClass = require './Draggabilly/GetSize.coffee'
 # http://draggabilly.desandro.com
 # MIT license
 ###
-# inherit Unidragger methods
+
 module.exports =
+# inherit Unidragger methods and properties
 class Draggabilly extends Unidragger
   # vars
   defaults: {}

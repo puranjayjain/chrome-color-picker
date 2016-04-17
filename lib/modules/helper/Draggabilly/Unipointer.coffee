@@ -1,4 +1,4 @@
-EvEmitter = require('./EvEmitter.coffee')
+EvEmitter = require('./EvEmitter')
 
 ###!
 # Unipointer v2.1.0

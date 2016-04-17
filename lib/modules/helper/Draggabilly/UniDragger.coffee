@@ -5,6 +5,7 @@ Unipointer = require './Unipointer'
 # Draggable base class
 # MIT license
 ###
+
 module.exports =
 # inherit Unipointer & EvEmitter
 class Unidragger extends Unipointer

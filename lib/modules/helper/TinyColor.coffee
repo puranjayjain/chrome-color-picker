@@ -1,10 +1,13 @@
+ColorMatchers = require './TinyColor/ColorMatchers'
+
 # TinyColor v1.3.0
 # https://github.com/bgrins/TinyColor
 # Brian Grinstead, MIT License
 # Converted to coffescript
 # convert colors between formats
+
 module.exports =
-class TinyColor
+class TinyColor extends ColorMatchers
   tinyCounter: 0
   # Big List of Colors
   # ------------------
@@ -521,36 +524,11 @@ class TinyColor
   convertHexToDecimal: (h) ->
     @parseIntFromHex(h) / 255
 
-  matchers = do ->
-    # <http://www.w3.org/TR/css3-values/#integers>
-    CSS_INTEGER = '[-\\+]?\\d+%?'
-    # <http://www.w3.org/TR/css3-values/#number-value>
-    CSS_NUMBER = '[-\\+]?\\d*\\.\\d+%?'
-    # Allow positive/negative integer/number. Don't capture the either/or, just the entire outcome.
-    CSS_UNIT = "(?:#{CSS_NUMBER})|(?:#{CSS_INTEGER})"
-    # Actual matching.
-    # Parentheses and commas are optional, but not required.
-    # Whitespace can take the place of commas or opening paren
-    PERMISSIVE_MATCH3 = "[\\s|\\(]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})\\s*\\)?"
-    PERMISSIVE_MATCH4 = "[\\s|\\(]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})\\s*\\)?"
-    {
-      CSS_UNIT: new RegExp(CSS_UNIT)
-      rgb: new RegExp("rgb#{PERMISSIVE_MATCH3}")
-      rgba: new RegExp("rgba#{PERMISSIVE_MATCH4}")
-      hsl: new RegExp("hsl#{PERMISSIVE_MATCH3}")
-      hsla: new RegExp("hsla#{PERMISSIVE_MATCH4}")
-      hsv: new RegExp("hsv#{PERMISSIVE_MATCH3}")
-      hsva: new RegExp("hsva#{PERMISSIVE_MATCH4}")
-      hex3: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/
-      hex6: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
-      hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
-    }
-
   # `@isValidCSSUnit`
   # Take in a single string / number and check to see if it looks like a CSS unit
   # (see `matchers` above for definition).
   isValidCSSUnit: (color) ->
-    !! matchers.CSS_UNIT.exec color
+    !! @matchers.CSS_UNIT.exec color
 
   # `@stringInputToObject`
   # Permissive string parsing.  Take in a number of formats, and output an object
@@ -574,46 +552,46 @@ class TinyColor
     # Just return an object and let the conversion functions handle that.
     # @ way the result will be the same whether the TinyColor is initialized with string or object.
     match = undefined
-    if match = matchers.rgb.exec(color)
+    if match = @matchers.rgb.exec(color)
       return {
         r: match[1]
         g: match[2]
         b: match[3]
       }
-    if match = matchers.rgba.exec(color)
+    if match = @matchers.rgba.exec(color)
       return {
         r: match[1]
         g: match[2]
         b: match[3]
         a: match[4]
       }
-    if match = matchers.hsl.exec(color)
+    if match = @matchers.hsl.exec(color)
       return {
         h: match[1]
         s: match[2]
         l: match[3]
       }
-    if match = matchers.hsla.exec(color)
+    if match = @matchers.hsla.exec(color)
       return {
         h: match[1]
         s: match[2]
         l: match[3]
         a: match[4]
       }
-    if match = matchers.hsv.exec(color)
+    if match = @matchers.hsv.exec(color)
       return {
         h: match[1]
         s: match[2]
         v: match[3]
       }
-    if match = matchers.hsva.exec(color)
+    if match = @matchers.hsva.exec(color)
       return {
         h: match[1]
         s: match[2]
         v: match[3]
         a: match[4]
       }
-    if match = matchers.hex8.exec(color)
+    if match = @matchers.hex8.exec(color)
       return {
         a: @convertHexToDecimal(match[1])
         r: @parseIntFromHex(match[2])
@@ -621,14 +599,14 @@ class TinyColor
         b: @parseIntFromHex(match[4])
         format: if named then 'name' else 'hex8'
       }
-    if match = matchers.hex6.exec(color)
+    if match = @matchers.hex6.exec(color)
       return {
         r: @parseIntFromHex(match[1])
         g: @parseIntFromHex(match[2])
         b: @parseIntFromHex(match[3])
         format: if named then 'name' else 'hex'
       }
-    if match = matchers.hex3.exec(color)
+    if match = @matchers.hex3.exec(color)
       return {
         r: @parseIntFromHex(match[1] + '' + match[1])
         g: @parseIntFromHex(match[2] + '' + match[2])
@@ -733,7 +711,7 @@ class TinyColor
     @rgbaToHex @_r, @_g, @_b, @_a
 
   toHex8String: ->
-    '#' + @toHex8()
+    "##{@toHex8()}"
 
   toRgb: ->
     # fix to make them below 255

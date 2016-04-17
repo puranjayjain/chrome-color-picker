@@ -1,5 +1,5 @@
-helper = require '../helper/helper.coffee'
-TinyColor = require '../helper/TinyColor.coffee'
+helper = require '../helper/helper'
+TinyColor = require '../helper/TinyColor'
 
 module.exports =
 class Input extends helper
