@@ -48,7 +48,9 @@ module.exports = CCP =
   # preferred output format can be hex, hsl, rgb, etc.
   preferredFormat: null
 
+  # to manage the disposable events and tooltips
   subscriptions: null
+  popUpSubscriptions: null
 
   activate: (state) ->
     # copy values
@@ -285,6 +287,10 @@ module.exports = CCP =
     # double click to open additional palettes
     @CCPContainerPalette.component.addEventListener 'dblclick', (e) =>
       if e.target and e.target.nodeName is 'CCP-SWATCH'
+        # dispose off any previous tooltips
+        if @popUpSubscriptions? then @popUpSubscriptions.dispose()
+        # init the temp disposable
+        @popUpSubscriptions = new CompositeDisposable
         # set this swatch as active
         @CCPActiveSwatch = e.target
         # color weights
@@ -294,10 +300,7 @@ module.exports = CCP =
         @CCPOverlay = new InnerPanel 'ccp-overlay'
         # add eventlistener to close the palette on click of overlay
         @CCPOverlay.component.addEventListener 'click', =>
-          @CCPOverlay.delete()
-          @CCPSwatchPopup.delete()
-          @CCPOverlay = null
-          @CCPSwatchPopup = null
+          @HidePopUpOverlay()
 
         # create the palette with swatches
         colorName = e.target.getAttribute 'data-name'.toLowerCase()
@@ -311,7 +314,7 @@ module.exports = CCP =
           swatch.component.setAttribute 'data-color', palette[i]
           swatch.component.setAttribute 'data-name', weights[i]
           swatch.component.setAttribute 'style', 'background: ' + palette[i]
-          @subscriptions.add atom.tooltips.add swatch.component, {title: "#{e.target.getAttribute('data-name')}(#{weights[i]}): #{palette[i]}" }
+          @popUpSubscriptions.add atom.tooltips.add swatch.component, {title: "#{e.target.getAttribute('data-name')}(#{weights[i]}): #{palette[i]}" }
           docfrag.appendChild swatch.component
         @CCPSwatchPopup.component.appendChild docfrag
         # position the popup correctly
@@ -325,10 +328,7 @@ module.exports = CCP =
             newColor = new TinyColor e.target.getAttribute 'data-color'
             @UpdateUI color: newColor
             # hide the component again
-            @CCPSwatchPopup.delete()
-            @CCPOverlay.delete()
-            @CCPSwatchPopup = null
-            @CCPOverlay = null
+            @HidePopUpOverlay()
 
         # attach overlay to main element
         @CCPContainer.add @CCPOverlay
@@ -396,3 +396,11 @@ module.exports = CCP =
     oldColor = @NewColor.toHsv()
     newColor = new TinyColor { h: oldColor.h, s: oldColor.s, v: oldColor.v, a: value / 100 }
     @UpdateUI color: newColor, alpha: false
+
+  # Hide popup and overlay
+  HidePopUpOverlay: () ->
+    @CCPOverlay.delete()
+    @CCPSwatchPopup.delete()
+    @CCPSwatchPopup = null
+    @CCPOverlay = null
+    @popUpSubscriptions.dispose()
