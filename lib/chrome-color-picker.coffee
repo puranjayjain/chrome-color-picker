@@ -74,7 +74,6 @@ module.exports = CCP =
     @CCPContainerSlider = new InnerPanel 'ccp-container-slider'
     @CCPSliderHue = new Slider 'hue'
     @CCPSliderAlpha = new Slider 'alpha'
-    console.log @preferredFormat
     @CCPContainerInput = new Input @CCPDisplay.component, @preferredFormat
     @CCPPalette = new Palette
 
@@ -187,9 +186,9 @@ module.exports = CCP =
       e.stopPropagation()
 
     # control the main slider
-    @CCPDraggie.on 'dragMove', (event, pointer, moveVector) ->
-      x = @position.x / 239
-      y = (124 - @position.y)/124
+    @CCPDraggie.on 'dragMove', (e, p, m) =>
+      x = @CCPDraggie.position.x / 239
+      y = (124 - @CCPDraggie.position.y)/124
       @UpdateSlider x, y, false
 
     # slide the main slider using mouse wheel
