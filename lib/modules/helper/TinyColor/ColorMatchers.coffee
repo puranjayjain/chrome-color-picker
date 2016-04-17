@@ -1,5 +1,3 @@
-TinyColor = require '../TinyColor'
-
 module.exports =
 class ColorMatchers
 
@@ -26,17 +24,17 @@ class ColorMatchers
       match = undefined
       # if it matches add it to the matched array
       while match = @matchers[format].exec(text)
-        color = new TinyColor match[0]
-        index = string.indexOf match[0]
+        color = new @constructor match[0]
+        index = text.indexOf match[0]
         _length = match[0].length
         # only add if a valid color
         if color.isValid()
           matched.push
-            match: match[0]
+            color: match[0]
             format: format
             start: index
             end: index + _length
-        # replace the buffer with empty string to keep the text length same
+        # replace the 'text' buffer with empty string to keep the text length same
         text = text.replace(match[0], (new Array(_length + 1)).join(' '));
 
     # return the matched strings

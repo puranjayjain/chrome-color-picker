@@ -8,6 +8,7 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 # Features
 
 ## Pick Colors in these formats
+(Along with their alpha variants except for hex)
 
 - hex
 - rgb
@@ -30,9 +31,9 @@ Feel free to use the source code of the converted files as long as they adhere t
 
 # Purpose to create
 This implementation was built from ground up to:
-- aid web developers work with colors more easily and in a friendly environment
-- to learn about the hsv color model
-- learn more of [coffeescript](http://coffeescript.org/#destructuring)
+- Aid web developers to work with colors more easily and in a friendly environment
+- To learn about the hsv color model
+- Learn more of [coffeescript](http://coffeescript.org/#destructuring)
 
 # License
 

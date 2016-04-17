@@ -10,7 +10,6 @@ Palette = require './modules/core/Palette'
 
 TinyColor = require './modules/helper/TinyColor'
 Draggabilly = require './modules/helper/Draggabilly'
-ColorMatchers = require './modules/helper/TinyColor/ColorMatchers'
 
 {CompositeDisposable} = require 'atom'
 
@@ -45,23 +44,14 @@ module.exports = CCP =
 
   # REVIEW change this function to pick a color if the pattern is not found
   ColorMatcher: null
-  OldColor: TinyColor().random()
+  OldColor: null
   NewColor: null
-
-  # preferred output format can be hex, hsl, rgb, etc.
-  preferredFormat: null
 
   # to manage the disposable events and tooltips
   subscriptions: null
   popUpSubscriptions: null
 
   activate: (state) ->
-    # copy values and settings
-    @preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat'
-    @NewColor = @OldColor
-    # init helper classes
-    @ColorMatcher = new ColorMatchers
-
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
@@ -79,7 +69,7 @@ module.exports = CCP =
     @CCPContainerSlider = new InnerPanel 'ccp-container-slider'
     @CCPSliderHue = new Slider 'hue'
     @CCPSliderAlpha = new Slider 'alpha'
-    @CCPContainerInput = new Input @CCPDisplay.component, @preferredFormat
+    @CCPContainerInput = new Input @CCPDisplay.component
     @CCPPalette = new Palette
 
     # add properties and attributes to some of them
@@ -148,7 +138,7 @@ module.exports = CCP =
       # if the dialog is being opened then do this
       Editor = atom.workspace.getActiveTextEditor()
       EditorView = atom.views.getView Editor
-      # get the current cursor
+      # get the last cursor (assuming multiple cursors)
       Cursor = Editor.getLastCursor()
 
       # get the text buffer and true position
@@ -163,35 +153,55 @@ module.exports = CCP =
       BufferLine = Cursor.getCurrentBufferLine()
 
       # match them from tinycolor regex
-      matches = @ColorMatcher.getMatch BufferLine
+      matches = TinyColor().getMatch BufferLine
 
       # get the current column from the buffer
       cursorColumn = Cursor.getBufferColumn()
       # REVIEW change this to something better performing like a negative while loop
       # Figure out which of the matches is the one the user wants
-      match = do -> for match in matches
+      match = do -> for _match in matches
         # select the match if in range
-        return match if match.start <= cursorColumn and match.end >= cursorColumn
+        return _match if _match.start <= cursorColumn and _match.end >= cursorColumn
 
       # select the match if found
       if match
+        # clear any previous selection
         Editor.clearSelections()
 
+        # select the new text
         selection = Editor.addSelectionForBufferRange [
           [cursorBufferRow, match.start]
           [cursorBufferRow, match.end]]
 
         # add to global selection for reference
-        @selection = match: match, row: cursorBufferRow
-      # even if we don't have a match place it over the last line
+        @selection = color: match, row: cursorBufferRow
       else
-        cursorPosition = Cursor.getPixelRect()
+        # TODO change it to previous position
+        # even if we don't have a match place it over the last line
         @selection = column: Cursor.getBufferColumn(), row: cursorBufferRow
 
+      # get the Actual position of the Cursor
+      cursorPosition = Cursor.getPixelRect()
+      # set the color to the match if possible else a random color
+      @OldColor = if match then TinyColor(match.color) else TinyColor().random()
+      @NewColor = @OldColor
+
+      # change the format of the input
+      preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat' unless 'As authored'
+      # pass the format if given as authored if found else pass hex
+      preferredFormat = if preferredFormat is 'As authored' and match then match.format else 'hex'
+
+      # set the position of the dialog
+      console.log Editor
+      console.log EditorView
+      console.log cursorPosition
+
+      # set the format
+      @CCPContainerInput.changeFormat preferredFormat
       # toggle open the dialog
       @CCPContainer.toggle()
       # update the visible color
-      @UpdateUI color: @NewColor, old: true
+      @UpdateUI color: @OldColor, old: true
 
       # close the swatch popup if open
       if @CCPSwatchPopup? or @CCPOverlay?

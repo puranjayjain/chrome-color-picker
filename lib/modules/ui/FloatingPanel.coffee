@@ -18,6 +18,10 @@ class FloatingPanel extends helper
     @component.classList.add 'invisible'
     addTo.appendChild @component
 
+  # place the dialog according to your need
+  setPosition: (x, y) ->
+    @component.setAttribute 'style', "left: #{x}px;top: #{y}px"
+
   # add element to the panel
   add: (element) ->
     @component.appendChild element.component

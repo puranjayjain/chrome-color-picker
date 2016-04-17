@@ -8,13 +8,8 @@ module.exports =
           title: 'Preferred Color Format'
           description: 'On opening for the first time, the Color Picker uses this format.'
           type: 'string'
-          enum: ['rgb', 'hex', 'hsl']
-          default: 'hex'
-        useLastFormat:
-          title: 'Use Last Format'
-          description: 'Use the format which was selected before closing the dialog.'
-          type: 'boolean'
-          default: true
+          enum: ['rgb', 'hex', 'hsl', 'As authored']
+          default: 'As authored'
         autoSetColor:
           title: 'Auto Set Color'
           description: 'Automatically set the color values as you edit them'

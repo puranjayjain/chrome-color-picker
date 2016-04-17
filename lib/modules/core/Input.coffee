@@ -17,11 +17,9 @@ class Input extends helper
    *
    * @param  {[element]}    container   [the container element to attach to]
    *
-   * @param  {[String]}     preference  [preferred active component]
-   *
    * @return {[component]}  [description]
   ###
-  constructor: (container, preference) ->
+  constructor: (container) ->
     element = ['hex']
     # dynamically create all types of input combinations and append them
     # Hex
@@ -41,11 +39,6 @@ class Input extends helper
     container.appendChild @button
     # add event listeners
     @attachEventListeners()
-    # Set the currently active input along with it's type
-    @active.type = preference
-    # TODO switch preference according to the element and remove the invisible class
-    @active.component = @[preference]
-    @active.component.classList.remove 'invisible'
 
   ###*
    * [createInput creates an input element with text label below]
@@ -110,7 +103,7 @@ class Input extends helper
       input.getModel().setText @color.toHexString()
 
     # rgb
-    if format is 'rgb'
+    if format is 'rgb' or format is 'rgba'
       thisColor = @color.toRgb()
       input = @rgb.querySelector 'atom-text-editor.r'
       input.getModel().setText thisColor.r.toString()
@@ -120,7 +113,7 @@ class Input extends helper
       input.getModel().setText thisColor.b.toString()
 
     # toHsl
-    if format is 'hsl'
+    if format is 'hsl' or format is 'hsla'
       thisColor = @color.toHsl()
       input = @hsl.querySelector 'atom-text-editor.h'
       input.getModel().setText Math.round(thisColor.h).toString()
@@ -140,6 +133,8 @@ class Input extends helper
 
   # change the current format to the one given
   changeFormat: (format) ->
+    # convert all formats to the ones without the alpha channel
+    format.replace('a','')
     # hide all inputs
     for name in @formats
       @[name].classList.add 'invisible'
