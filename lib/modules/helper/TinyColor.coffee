@@ -505,12 +505,12 @@ class TinyColor
 
   # Force a hex value to have 2 characters
   pad2: (c) ->
-    if c.length is 1 then '0' + c else '' + c
+    if c.length is 1 then "0#{c}" else "#{c}"
 
   # Replace a decimal with it's percentage value
   convertToPercentage: (n) ->
     if n <= 1
-      n = n * 100 + '%'
+      n = "#{n * 100}%"
     n
 
   # Converts a decimal to a hex value
@@ -527,20 +527,20 @@ class TinyColor
     # <http://www.w3.org/TR/css3-values/#number-value>
     CSS_NUMBER = '[-\\+]?\\d*\\.\\d+%?'
     # Allow positive/negative integer/number. Don't capture the either/or, just the entire outcome.
-    CSS_UNIT = '(?:' + CSS_NUMBER + ')|(?:' + CSS_INTEGER + ')'
+    CSS_UNIT = "(?:#{CSS_NUMBER})|(?:#{CSS_INTEGER})"
     # Actual matching.
     # Parentheses and commas are optional, but not required.
     # Whitespace can take the place of commas or opening paren
-    PERMISSIVE_MATCH3 = '[\\s|\\(]+(' + CSS_UNIT + ')[,|\\s]+(' + CSS_UNIT + ')[,|\\s]+(' + CSS_UNIT + ')\\s*\\)?'
-    PERMISSIVE_MATCH4 = '[\\s|\\(]+(' + CSS_UNIT + ')[,|\\s]+(' + CSS_UNIT + ')[,|\\s]+(' + CSS_UNIT + ')[,|\\s]+(' + CSS_UNIT + ')\\s*\\)?'
+    PERMISSIVE_MATCH3 = "[\\s|\\(]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})\\s*\\)?"
+    PERMISSIVE_MATCH4 = "[\\s|\\(]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})[,|\\s]+(#{CSS_UNIT})\\s*\\)?"
     {
       CSS_UNIT: new RegExp(CSS_UNIT)
-      rgb: new RegExp('rgb' + PERMISSIVE_MATCH3)
-      rgba: new RegExp('rgba' + PERMISSIVE_MATCH4)
-      hsl: new RegExp('hsl' + PERMISSIVE_MATCH3)
-      hsla: new RegExp('hsla' + PERMISSIVE_MATCH4)
-      hsv: new RegExp('hsv' + PERMISSIVE_MATCH3)
-      hsva: new RegExp('hsva' + PERMISSIVE_MATCH4)
+      rgb: new RegExp("rgb#{PERMISSIVE_MATCH3}")
+      rgba: new RegExp("rgba#{PERMISSIVE_MATCH4}")
+      hsl: new RegExp("hsl#{PERMISSIVE_MATCH3}")
+      hsla: new RegExp("hsla#{PERMISSIVE_MATCH4}")
+      hsv: new RegExp("hsv#{PERMISSIVE_MATCH3}")
+      hsva: new RegExp("hsva#{PERMISSIVE_MATCH4}")
       hex3: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/
       hex6: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
       hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
@@ -705,7 +705,7 @@ class TinyColor
     h = Math.round(hsv.h * 360)
     s = Math.round(hsv.s * 100)
     v = Math.round(hsv.v * 100)
-    if @_a is 1 then 'hsv(' + h + ', ' + s + '%, ' + v + '%)' else 'hsva(' + h + ', ' + s + '%, ' + v + '%, ' + @_roundA + ')'
+    if @_a is 1 then "hsv(#{h}, #{s}%, #{v}%)" else "hsva(#{h}, #{s}%, #{v}%, #{@_roundA})"
 
   toHsl: ->
     hsl = @rgbToHsl(@_r, @_g, @_b)
@@ -721,13 +721,13 @@ class TinyColor
     h = Math.round(hsl.h * 360)
     s = Math.round(hsl.s * 100)
     l = Math.round(hsl.l * 100)
-    if @_a is 1 then 'hsl(' + h + ', ' + s + '%, ' + l + '%)' else 'hsla(' + h + ', ' + s + '%, ' + l + '%, ' + @_roundA + ')'
+    if @_a is 1 then "hsl(#{h}, #{s}%, #{l}%)" else "hsla(#{h}, #{s}%, #{l}%, #{@_roundA})"
 
   toHex: (allow3Char) ->
     @rgbToHex @_r, @_g, @_b, allow3Char
 
   toHexString: (allow3Char) ->
-    '#' + @toHex(allow3Char)
+    "##{@toHex(allow3Char)}"
 
   toHex8: ->
     @rgbaToHex @_r, @_g, @_b, @_a
@@ -745,7 +745,7 @@ class TinyColor
     if c_g > 255
       c_g = 255
     if c_b > 255
-      c_ b = 255 
+      c_ b = 255
     {
       r: c_r
       g: c_g
@@ -754,18 +754,18 @@ class TinyColor
     }
 
   toRgbString: ->
-    if @_a is 1 then 'rgb(' + Math.round(@_r) + ', ' + Math.round(@_g) + ', ' + Math.round(@_b) + ')' else 'rgba(' + Math.round(@_r) + ', ' + Math.round(@_g) + ', ' + Math.round(@_b) + ', ' + @_roundA + ')'
+    if @_a is 1 then "rgb(#{Math.round(@_r)}, #{Math.round(@_g)}, #{Math.round(@_b)})" else "rgba(#{Math.round(@_r)}, #{Math.round(@_g)},  #{Math.round(@_b)}, #{@_roundA})"
 
   toPercentageRgb: ->
     {
-      r: Math.round(@bound01(@_r, 255) * 100) + '%'
-      g: Math.round(@bound01(@_g, 255) * 100) + '%'
-      b: Math.round(@bound01(@_b, 255) * 100) + '%'
+      r: "#{Math.round(@bound01(@_r, 255) * 100)}%"
+      g: "#{Math.round(@bound01(@_g, 255) * 100)}%"
+      b: "#{Math.round(@bound01(@_b, 255) * 100)}%"
       a: @_a
     }
 
   toPercentageRgbString: ->
-    if @_a is 1 then 'rgb(' + Math.round(@bound01(@_r, 255) * 100) + '%, ' + Math.round(@bound01(@_g, 255) * 100) + '%, ' + Math.round(@bound01(@_b, 255) * 100) + '%)' else 'rgba(' + Math.round(@bound01(@_r, 255) * 100) + '%, ' + Math.round(@bound01(@_g, 255) * 100) + '%, ' + Math.round(@bound01(@_b, 255) * 100) + '%, ' + @_roundA + ')'
+    if @_a is 1 then "rgb(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)} %, #{Math.round(@bound01(@_b, 255) * 100)} %)" else "rgba(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)}%, #{Math.round(@bound01(@_b, 255) * 100)}%, #{@_roundA})"
 
   toName: ->
     if @_a is 0

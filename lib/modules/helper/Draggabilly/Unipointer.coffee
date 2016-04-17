@@ -46,7 +46,7 @@ class Unipointer extends EvEmitter
     i = 0
     while i < touches.length
       touch = touches[i]
-      if touch.identifier == @pointerIdentifier
+      if touch.identifier is @pointerIdentifier
         return touch
       i++
     return
@@ -55,7 +55,7 @@ class Unipointer extends EvEmitter
   onmousedown: (event) ->
     # dismiss clicks from right or middle buttons
     button = event.button
-    if button and button != 0 and button != 1
+    if button and button isnt 0 and button isnt 1
       return
     @_pointerDown event, event
     return
@@ -144,7 +144,7 @@ class Unipointer extends EvEmitter
     return
 
   onpointermove: (event) ->
-    if event.pointerId == @pointerIdentifier
+    if event.pointerId is @pointerIdentifier
       @_pointerMove event, event
     return
 
@@ -179,7 +179,7 @@ class Unipointer extends EvEmitter
     return
 
   onpointerup: (event) ->
-    if event.pointerId == @pointerIdentifier
+    if event.pointerId is @pointerIdentifier
       @_pointerUp event, event
     return
 
@@ -224,7 +224,7 @@ class Unipointer extends EvEmitter
 
   # ----- pointer cancel ----- //
   onpointercancel: (event) ->
-    if event.pointerId == @pointerIdentifier
+    if event.pointerId is @pointerIdentifier
       @_pointerCancel event, event
     return
 

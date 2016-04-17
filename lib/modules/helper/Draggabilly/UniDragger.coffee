@@ -36,7 +36,7 @@ class Unidragger extends Unipointer
 
   _bindHandles: (isBind) ->
     # munge isBind, default to true
-    isBind = if isBind == undefined then true else ! !isBind
+    isBind = if isBind is undefined then true else ! !isBind
     # extra bind logic
     binderExtra = undefined
     if navigator.pointerEnabled
@@ -67,7 +67,7 @@ class Unidragger extends Unipointer
 
   pointerDown: (event, pointer) ->
     # dismiss range sliders
-    if event.target.nodeName == 'INPUT' and event.target.type == 'range'
+    if event.target.nodeName is 'INPUT' and event.target.type is 'range'
       # reset pointerDown logic
       @isPointerDown = false
       delete @pointerIdentifier
@@ -99,7 +99,7 @@ class Unidragger extends Unipointer
 
   canPreventDefaultOnPointerDown: (event) ->
     # prevent default, unless touchstart or <select>
-    event.target.nodeName != 'SELECT'
+    event.target.nodeName isnt 'SELECT'
 
   # ----- move event ----- //
 
@@ -229,15 +229,15 @@ class Unidragger extends Unipointer
 
   _staticClick: (event, pointer) ->
     # ignore emulated mouse up clicks
-    if @isIgnoringMouseUp and event.type == 'mouseup'
+    if @isIgnoringMouseUp and event.type is 'mouseup'
       return
     # allow click in <input>s and <textarea>s
     nodeName = event.target.nodeName
-    if nodeName == 'INPUT' or nodeName == 'TEXTAREA'
+    if nodeName is 'INPUT' or nodeName is 'TEXTAREA'
       event.target.focus()
     @staticClick event, pointer
     # set flag for emulated clicks 300ms after touchend
-    if event.type != 'mouseup'
+    if event.type isnt 'mouseup'
       @isIgnoringMouseUp = true
       # reset flag after 300ms
       setTimeout (->

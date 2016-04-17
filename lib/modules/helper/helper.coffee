@@ -2,7 +2,7 @@
 module.exports =
 class Helper
   String::isRegistered = ->
-    document.createElement(this).constructor != HTMLElement
+    document.createElement(this).constructor isnt HTMLElement
 
   # create a new component
   createComponent: (name) ->
@@ -15,6 +15,10 @@ class Helper
   # add element to the panel
   add: (element) ->
     @component.appendChild element.component
+
+  # delete the element from it's parentNode
+  delete: ->
+    @component.parentNode.removeChild @component
 
   # add class to the panel
   addClass: (classes) ->

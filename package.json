@@ -2,7 +2,7 @@
   "name": "chrome-color-picker",
   "main": "./lib/chrome-color-picker",
   "version": "0.0.0",
-  "description": "A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)",
+  "description": "A color picker inspired by chrome's dev tools color picker",
   "keywords": [
     "chrome",
     "color",

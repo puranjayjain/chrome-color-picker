@@ -31,7 +31,7 @@ class GetSize
   getStyleSize = (value) ->
     num = parseFloat(value)
     # not a percent like '100%', and a number
-    isValid = value.indexOf('%') == -1 and !isNaN(num)
+    isValid = value.indexOf('%') is -1 and !isNaN(num)
     isValid and num
 
   getZeroSize = ->
@@ -124,10 +124,10 @@ class GetSize
     isBorderBoxSizeOuter = isBorderBox and isBoxSizeOuter
     # overwrite width and height if we can get it from style
     styleWidth = getStyleSize(style.width)
-    if styleWidth != false
+    if styleWidth isnt false
       size.width = styleWidth + (if isBorderBoxSizeOuter then 0 else paddingWidth + borderWidth)
     styleHeight = getStyleSize(style.height)
-    if styleHeight != false
+    if styleHeight isnt false
       size.height = styleHeight + (if isBorderBoxSizeOuter then 0 else paddingHeight + borderHeight)
     size.innerWidth = size.width - (paddingWidth + borderWidth)
     size.innerHeight = size.height - (paddingHeight + borderHeight)

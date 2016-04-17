@@ -94,7 +94,7 @@ class Draggabilly extends Unidragger
     @startPosition = extend({}, @position)
     # set relative positioning
     style = getComputedStyle(@element)
-    if style.position != 'relative' and style.position != 'absolute'
+    if style.position isnt 'relative' and style.position isnt 'absolute'
       @element.style.position = 'relative'
     @enable()
     @setHandles()
@@ -135,7 +135,7 @@ class Draggabilly extends Unidragger
     return
 
   Draggabilly::_getPositionCoord = (styleSide, measure) ->
-    if styleSide.indexOf('%') != -1
+    if styleSide.indexOf('%') isnt -1
       # convert percent into pixel for Safari, #75
       parentSize = GetSize(@element.parentNode)
       return parseFloat(styleSide) / 100 * parentSize[measure]
@@ -146,12 +146,12 @@ class Draggabilly extends Unidragger
   _addTransformPosition: (style) ->
     transform = style[@transformProperty]
     # bail out if value is 'none'
-    if transform.indexOf('matrix') != 0
+    if transform.indexOf('matrix') isnt 0
       return
     # split matrix(1, 0, 0, 1, x, y)
     matrixValues = transform.split(',')
     # translate X value is in 12th or 4th position
-    xIndex = if transform.indexOf('matrix3d') == 0 then 12 else 4
+    xIndex = if transform.indexOf('matrix3d') is 0 then 12 else 4
     translateX = parseInt(matrixValues[xIndex], 10)
     # translate Y value is in 13th or 5th position
     translateY = parseInt(matrixValues[xIndex + 1], 10)
@@ -172,7 +172,7 @@ class Draggabilly extends Unidragger
     # kludge to blur focused inputs in dragger
     focused = document.activeElement
     # do not blur body for IE10, metafizzy/flickity#117
-    if focused and focused.blur and focused != document.body
+    if focused and focused.blur and focused isnt document.body
       focused.blur()
     # bind move and end events
     @_bindPostStartEvents event
@@ -224,7 +224,7 @@ class Draggabilly extends Unidragger
     if not containment
       return
     # use element if element
-    container = if isElement(containment) then containment else if typeof containment == 'string' then document.querySelector(containment) else @element.parentNode
+    container = if isElement(containment) then containment else if typeof containment is 'string' then document.querySelector(containment) else @element.parentNode
     elemSize = GetSize(@element)
     containerSize = GetSize(container)
     elemRect = @element.getBoundingClientRect()
@@ -260,8 +260,8 @@ class Draggabilly extends Unidragger
     dragX = @containDrag('x', dragX, gridX)
     dragY = @containDrag('y', dragY, gridY)
     # constrain to axis
-    dragX = if @options.axis == 'y' then 0 else dragX
-    dragY = if @options.axis == 'x' then 0 else dragY
+    dragX = if @options.axis is 'y' then 0 else dragX
+    dragY = if @options.axis is 'x' then 0 else dragY
     @position.x = @startPosition.x + dragX
     @position.y = @startPosition.y + dragY
     # set dragPoint properties
@@ -330,12 +330,12 @@ class Draggabilly extends Unidragger
   # left/top positioning
 
   setLeftTop: ->
-    @element.style.left = @position.x + 'px'
-    @element.style.top = @position.y + 'px'
+    @element.style.left = "#{@position.x}px"
+    @element.style.top = "#{@position.y}px"
     return
 
   positionDrag: ->
-    @element.style[@transformProperty] = 'translate3d( ' + @dragPoint.x + 'px, ' + @dragPoint.y + 'px, 0)'
+    @element.style[@transformProperty] = "translate3d(#{@dragPoint.x}px, #{@dragPoint.y}px, 0)"
     return
 
   # ----- staticClick ----- //

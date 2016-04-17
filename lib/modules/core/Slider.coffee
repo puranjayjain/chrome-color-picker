@@ -34,4 +34,4 @@ class Sliders extends helper
 
   # set a new color to the alpha slider
   setColor: (color) ->
-    @component.setAttribute('style', 'background-image: linear-gradient(to right, rgba(204, 154, 129, 0), ' + color + ')')
+    @component.setAttribute('style', "background-image: linear-gradient(to right, rgba(204, 154, 129, 0), #{color})")

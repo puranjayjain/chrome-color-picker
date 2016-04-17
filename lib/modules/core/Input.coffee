@@ -77,12 +77,10 @@ class Input extends helper
 
   # add event listenerss to buttons
   attachEventListeners: ->
-    self = @
-
-    @button.addEventListener 'click', ->
+    @button.addEventListener 'click', =>
       # cycle between active component states
-      self.next()
-      self.UpdateUI()
+      @next()
+      @UpdateUI()
 
   ###*
    * [UpdateUI update the active text element]
@@ -90,13 +88,13 @@ class Input extends helper
    * @method UpdateUI
    *
   ###
-  UpdateUI: () ->
+  UpdateUI: ->
     format = @active.type
     @color = new TinyColor @color
     alpha = false
     thisColor = null
     # fallback format to use when there is an alpha value
-    fallbackAlphaFormat = atom.config.get 'chrome-color-picker.fallbackAlphaFormat'
+    fallbackAlphaFormat = atom.config.get 'chrome-color-picker.HexColors.fallbackAlphaFormat'
     # if the input format is hex but we have an alpha in the input, default to mr. muggles err rgb
     if @color.getAlpha() < 1
       alpha = true
@@ -127,9 +125,9 @@ class Input extends helper
       input = @hsl.querySelector 'atom-text-editor.h'
       input.getModel().setText Math.round(thisColor.h).toString()
       input = @hsl.querySelector 'atom-text-editor.s'
-      input.getModel().setText Math.round(thisColor.s * 100).toString() + '%'
+      input.getModel().setText "#{Math.round(thisColor.s * 100).toString()}%"
       input = @hsl.querySelector 'atom-text-editor.l'
-      input.getModel().setText Math.round(thisColor.l * 100).toString() + '%'
+      input.getModel().setText "#{Math.round(thisColor.l * 100).toString()}%"
 
     # if the alpha channel is present
     if alpha

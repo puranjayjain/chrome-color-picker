@@ -135,13 +135,11 @@ class Palette extends helper
 
   # attach event listeners to given palette button
   attachEventListenersEl: (el) ->
-    self = @
-
     el.addEventListener 'click', (e) ->
       # hide all palettes
-      for key, value of self.palettes
+      for key, value of @palettes
         value.classList.add 'invisible'
       # unhide the one to use
-      self.palettes[el.className].classList.remove 'invisible'
+      @palettes[el.className].classList.remove 'invisible'
       # close the popup
-      self.popUpPalette.classList.toggle 'invisible'
+      @popUpPalette.classList.toggle 'invisible'

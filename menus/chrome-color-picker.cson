@@ -6,17 +6,3 @@
       'command': 'chrome-color-picker:toggle'
     }
   ]
-'menu': [
-  {
-    'label': 'Packages'
-    'submenu': [
-      'label': 'Chrome Color Picker'
-      'submenu': [
-        {
-          'label': 'Toggle'
-          'command': 'chrome-color-picker:toggle'
-        }
-      ]
-    ]
-  }
-]

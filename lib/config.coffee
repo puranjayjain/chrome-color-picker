@@ -21,7 +21,7 @@ module.exports =
           type: 'boolean'
           default: false
     HexColors:
-      title: 'Hex Color Settings'
+      title: 'Hex Color Specific Settings'
       type: 'object'
       properties:
         fallbackAlphaFormat:

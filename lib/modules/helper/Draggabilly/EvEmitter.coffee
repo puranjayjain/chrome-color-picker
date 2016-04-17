@@ -15,7 +15,7 @@ class EvEmitter
     # set listeners array
     listeners = events[eventName] = events[eventName] or []
     # only add once
-    if listeners.indexOf(listener) == -1
+    if listeners.indexOf(listener) is -1
       listeners.push listener
     this
 
@@ -38,7 +38,7 @@ class EvEmitter
     if !listeners or !listeners.length
       return
     index = listeners.indexOf(listener)
-    if index != -1
+    if index isnt -1
       listeners.splice index, 1
     this
 
