@@ -15,34 +15,22 @@ ccp-container {
 
   @arrow: 10px;
 
-  &:before, &:after {
+  & ccp-triangle {
     position: absolute;
-    content: '';
     width: @arrow;
     height: @arrow;
-    background-color: inherit;
-    transform: rotate(-45deg);
     left: ~"calc(50% - "@arrow~")";
-  }
-
-  &:before {
     bottom: ~"calc(100% - "(@arrow / 2)~")";
     box-shadow: 1px -1px 0 0 @amber;
-  }
-
-  &:after {
-    display: none;
-    top: ~"calc(100% - "(@arrow / 2)~")";
-    box-shadow: -1px 1px 0 0 @amber;
+    background-color: inherit;
+    transform: rotate(-45deg);
   }
 
   &.down {
-    &:before {
-      display: none;
-    }
-
-    &:after {
-      display: block;
+    ccp-triangle {
+      top: ~"calc(100% - "(@arrow / 2)~")";
+      bottom: auto;
+      box-shadow: -1px 1px 0 0 @amber;
     }
   }
 }

@@ -114,8 +114,14 @@ module.exports = CCP =
     # adding event handlers
     @attachEventListeners()
 
+    # add keyboard events
+    @addKeyBoardEvents()
+
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
+    # TODO implement this
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:confirm': => @close()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
 
   deactivate: ->
     @CCPContainer.destroy()
@@ -190,11 +196,8 @@ module.exports = CCP =
       preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat' unless 'As authored'
       # pass the format if given as authored if found else pass hex
       preferredFormat = if preferredFormat is 'As authored' and match then match.format else 'hex'
-
       # set the position of the dialog
-      console.log Editor
-      console.log EditorView
-      console.log cursorPosition
+      @CCPContainer.setPlace cursorPosition, EditorView, match
 
       # set the format
       @CCPContainerInput.changeFormat preferredFormat
@@ -236,20 +239,6 @@ module.exports = CCP =
       editorView = atom.views.getView editor
       @subscriptions.add editorView.onDidChangeScrollTop => @close()
       @subscriptions.add editorView.onDidChangeScrollLeft => @close()
-
-    # main dialog close on escape key
-    @CCPContainer.component.addEventListener 'keydown', (e) =>
-      # Should do nothing if the key event was already consumed.
-      if e.defaultPrevented
-        return
-
-      # if the new api is supported or the old one get the code
-      code = if e.keyCode then e.keyCode else e.code
-      if code is 27
-        # close the dialog if the escape key is pressed
-        @toggle()
-      # Consume the event for suppressing "double action".
-      e.preventDefault()
 
     # click on the main slider
     @CCPCanvasOverlay.component.addEventListener 'click', (e) =>

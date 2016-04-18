@@ -2,6 +2,7 @@
   "name": "chrome-color-picker",
   "main": "./lib/chrome-color-picker",
   "version": "0.0.0",
+  "private": true,
   "description": "A color picker inspired by chrome's dev tools color picker",
   "keywords": [
     "chrome",
@@ -14,7 +15,10 @@
   "activationCommands": {
     "atom-workspace": "chrome-color-picker:toggle"
   },
-  "repository": "https://github.com/atom/chrome-color-picker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atom/chrome-color-picker"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
