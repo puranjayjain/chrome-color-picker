@@ -9,7 +9,4 @@
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 
 'atom-workspace':
-  'ctrl-alt-o': 'chrome-color-picker:toggle'
-
-# 'body':
-#   'escape': 'chrome-color-picker:close'
+  'ctrl-shift-c': 'chrome-color-picker:toggle'

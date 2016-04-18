@@ -3,3 +3,4 @@
 * Minor ui tweaks from chrome -> white colored sliders as opposed to black contrasted to be easily visible
 * Added color format switching
 * Added option to add custom palettes
+* Option to scroll on the sliders and the main canvas
