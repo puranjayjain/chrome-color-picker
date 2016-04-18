@@ -41,7 +41,7 @@ Open your **keymap** file and add this line to it:
 'atom-workspace':
   'your-keybinding': 'chrome-color-picker:toggle'
 ```
-**Note: Your-keybinding can be e.g ctrl+shift+c and also make sure to disable the default keybinding from the package's settings**
+**Note: Your keybinding can be e.g ctrl+alt+c and also make sure to disable the default keybinding from the package's settings or resolve it using the keybinding resolver**
 
 # Purpose to create
 This implementation was built from ground up to:

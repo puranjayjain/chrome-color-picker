@@ -11,8 +11,3 @@
 # toggle the editor's state
 'atom-workspace':
   'ctrl-alt-c': 'chrome-color-picker:toggle'
-
-# close the editor if open
-'ccp-container':
-  'enter': 'chrome-color-picker:confirm'
-  'escape': 'chrome-color-picker:close'

@@ -405,6 +405,11 @@ module.exports = CCP =
       swatch.component.setAttribute 'data-color', @NewColor.toRgbString()
       e.target.parentNode.appendChild swatch.component
 
+  # add keybindings to close and open the editor
+  addKeyBoardEvents: ->
+    # add event keyup for escape and enter key on the workspace and also be able to remove them later
+    return 0
+
   # toggle the popup palette function TODO dblclick
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
