@@ -164,6 +164,9 @@ class TinyColor extends ColorMatchers
     yellowgreen: '9acd32'
   }
 
+  # Make it easy to access colors via `hexNames[hex]`
+  hexNames: []
+
   constructor: (color = '', opts = {}) ->
     # If input is already a TinyColor, return itself
     if color instanceof TinyColor
@@ -171,6 +174,8 @@ class TinyColor extends ColorMatchers
     # If we are called as a function, call using new instead
     if not (@ instanceof TinyColor)
       return new TinyColor color, opts
+    # Make it easy to access colors via `hexNames[hex]`
+    @hexNames = @flip @names
     rgb = @inputToRGB color
     @_originalInput = color
     @_r = rgb.r
@@ -750,7 +755,7 @@ class TinyColor extends ColorMatchers
       return 'transparent'
     if @_a < 1
       return false
-    hexNames(@rgbToHex(@_r, @_g, @_b, true)) or false
+    @hexNames[@rgbToHex(@_r, @_g, @_b, true)] or false
 
   toString: (format) ->
     formatSet = !!format
@@ -797,7 +802,3 @@ class TinyColor extends ColorMatchers
     if not color1 or not color2
       return false
     TinyColor(color1).toRgbString() is TinyColor(color2).toRgbString()
-
-  # Make it easy to access colors via `hexNames[hex]`
-  hexNames: ->
-    @flip @names

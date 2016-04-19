@@ -159,12 +159,30 @@ class Input extends helper
 
     @changeFormat @formats[current]
 
-  # return formated color in string format
+  # return formated color in a string format
   getColor: ->
-    # return color according to format
-    if @active.type is 'hex'
-      return @color.toHexString()
-    if @active.type is 'rgb'
-      return @color.toRgbString()
-    if @active.type is 'hsl'
-      return @color.toHslString()
+    # copy values
+    color = @color.toString @active.type
+    hexFormat = atom.config.get 'chrome-color-picker.HexColors.forceHexSize'
+    # if the color needs to be shortened and can be
+    if @color.getAlpha() < 1 and atom.config.get 'chrome-color-picker.General.autoShortColor'
+      # remove spaces
+      color = color.replace(RegExp(' ', 'g'), '')
+      # remove '0'
+      color = color.replace '0.','.'
+    # if uppercase color settings
+    if @active.type is 'hex' and atom.config.get 'chrome-color-picker.HexColors.uppercaseHex'
+      color = color.toUpperCase()
+    # force hex format
+    if @active.type is 'hex' and hexFormat
+      hexForceColor = @color.toString(hexFormat)
+      # if possible then do it
+      if hexForceColor
+        color = hexForceColor
+    # if shortened hex settings
+    if @color.toString('hex3') and atom.config.get 'chrome-color-picker.HexColors.autoShortHex'
+      color = @color.toString('hex3')
+    # if color can be converted to a name and the user wants it then just do it
+    if @color.toName() and atom.config.get 'chrome-color-picker.General.autoColorNames'
+      color = @color.toName()
+    color
