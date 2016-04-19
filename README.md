@@ -2,15 +2,16 @@
 A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)
 
 # Preview
+![Demo Image](https://raw.githubusercontent.com/puranjayjain/chrome-color-picker/master/demo.gif)
 
+**Note: The color highlight or marker is not part of this package, to obtain that functionality we use [pigments](https://atom.io/packages/pigments)**
 
 # Features
 ## Pick Colors in these formats
-(Along with their alpha variants except for hex)
-
 - hex
 - rgb
 - hsl
+(Along with their alpha variants except for hex)
 
 ## Integrated Palette
 - Use the palette with the picker as done in dev tools.

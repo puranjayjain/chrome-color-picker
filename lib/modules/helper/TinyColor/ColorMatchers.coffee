@@ -13,9 +13,7 @@ class ColorMatchers
       'hsla'
       'hsv'
       'hsva'
-      'hex8'
-      'hex6'
-      'hex3'
+      'hex'
     ]
 
     # loop through each of the regexs
@@ -64,4 +62,5 @@ class ColorMatchers
       hex3: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/
       hex6: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
       hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
+      hex: /(\#[0-9a-f]{8}|\#[0-9a-f]{6}|\#[0-9a-f]{3})/i
     }

@@ -118,9 +118,6 @@ module.exports = CCP =
 
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
-    # TODO implement this
-    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:confirm': => @close()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
 
   deactivate: ->
     @CCPContainer.destroy()
@@ -196,9 +193,9 @@ module.exports = CCP =
       @NewColor = @OldColor
 
       # change the format of the input
-      preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat' unless 'As authored'
+      preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat'
       # pass the format if given as authored if found else pass hex
-      preferredFormat = if preferredFormat is 'As authored' and match then match.format else 'hex'
+      preferredFormat = if preferredFormat is 'As authored' and !!match then match.format else 'hex'
       # set the position of the dialog
       @CCPContainer.setPlace cursorPosition, @EditorView, match
 

@@ -134,7 +134,7 @@ class Input extends helper
   # change the current format to the one given
   changeFormat: (format) ->
     # convert all formats to the ones without the alpha channel
-    format.replace('a','')
+    format = format.replace('a','')
     # hide all inputs
     for name in @formats
       @[name].classList.add 'invisible'
