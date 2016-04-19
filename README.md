@@ -6,11 +6,18 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 
 **Note: The color highlight or marker is not part of this package, to obtain that functionality we use [pigments](https://atom.io/packages/pigments)**
 
+# Simple Usage
+- Open the dialog using the shortcut key or using the context menu
+- Press Escape to close it.
+or
+- Press Enter to update the color
+
 # Features
 ## Pick Colors in these formats
 - hex
 - rgb
 - hsl
+
 (Along with their alpha variants except for hex)
 
 ## Integrated Palette
@@ -53,8 +60,8 @@ Open your **keymap** file and add this line to it:
 **Note: Your keybinding can be e.g ctrl+alt+c and also make sure to disable the default keybinding from the package's settings or resolve it using the keybinding resolver**
 
 ## More keys (cannot be modified)
-- escape: close the dialog if open
-- enter: save the color from the dialog to the editor
+- Press `escape` to close the dialog
+- Press `enter` to update the color
 
 # Purpose to create
 This implementation was built from ground up to:
