@@ -7,3 +7,6 @@
 ## 0.2.0
 * Implemented all settings except Auto Set Color
 * Added FAQ section to readme
+## 0.3.0
+* Fixed depreciation warning for pixelRectForScreenRange issue
+* Center triangle on the selection's center

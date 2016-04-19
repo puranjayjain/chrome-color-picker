@@ -187,8 +187,7 @@ module.exports = CCP =
         @selection = column: Cursor.getBufferColumn(), row: cursorBufferRow
 
       # get the Actual position of the Cursor
-      cursorPosition = Cursor.getPixelRect()
-      # set the color to the match if possible else a random color
+      cursorPosition = @EditorView.pixelRectForScreenRange @Editor.getSelectedScreenRange()
       @OldColor = if match then TinyColor(match.color) else TinyColor().random()
       @NewColor = @OldColor
 
