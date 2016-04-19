@@ -16,6 +16,12 @@ module.exports =
           description: 'Automatically set the color values as you edit them'
           type: 'boolean'
           default: false
+        # TODO implementation
+        autoShortHex:
+          title: 'Compressed text colors'
+          description: 'Place the color format without any spaces and zeroes (if possible), e.g rgba(0, 0, 0, 0.26) becomes rgba(0,0,0,.26)'
+          type: 'boolean'
+          default: false
     HexColors:
       title: 'Hex Color Specific Settings'
       type: 'object'
@@ -34,7 +40,7 @@ module.exports =
           default: false
         # TODO implementation
         autoShortHex:
-          title: 'Automatically Short Hex'
+          title: 'Auto Shorten Hex'
           description: 'Automatically shorten **hex** values if possible. e.g color #f00f00 becomes #f00'
           type: 'boolean'
           default: false

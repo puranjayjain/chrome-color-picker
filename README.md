@@ -25,8 +25,16 @@ You can also do the following:
 - Use `shift + wheel` to slide from left to right or vice-versa on the main slider (or canvas).
 - Similarly Use `ctrl + shift + wheel` to increment more value.
 
+**Note: ctrl also means cmd in unix based operating systems like linux or OS X**
+
+## Supports multiple cursors
+When you have multiple cursors it inserts the color in each of their locations
+
+**Note: this feature is still not stable so feel free to point out any issues with it**
+
 # Powered by
-The plugin uses the following projects (or their sources) in some manner:
+The plugin uses the following projects (or their sources) or technologies in some manner:
+- [Custom Elements](http://www.html5rocks.com/en/tutorials/webcomponents/customelements)
 - [https://github.com/js2coffee/js2coffee](https://github.com/js2coffee/js2coffee) to convert the code
 - [https://github.com/bgrins/spectrum](https://github.com/bgrins/spectrum) for the original inspiration
 - [https://github.com/auchenberg/chrome-devtools-app](https://github.com/auchenberg/chrome-devtools-app) to understand the working of the devtools
@@ -37,17 +45,21 @@ Feel free to use the source code of the converted files as long as you adhere to
 
 # Customise the key binding to your taste
 Open your **keymap** file and add this line to it:
-```
+```CoffeeScript
 'atom-workspace':
   'your-keybinding': 'chrome-color-picker:toggle'
 ```
 **Note: Your keybinding can be e.g ctrl+alt+c and also make sure to disable the default keybinding from the package's settings or resolve it using the keybinding resolver**
 
+## More keys (cannot be modified)
+- escape: close the dialog if open
+- enter: save the color from the dialog to the editor
+
 # Purpose to create
 This implementation was built from ground up to:
 - Aid web developers to work with colors more easily and in a friendly environment
 - To learn about the hsv color model
-- Learn more of [coffeescript](http://coffeescript.org/#destructuring)
+- Learn more of [coffeescript](http://coffeescript.org)
 
 # License
 

@@ -23,5 +23,5 @@ class Swatch extends helper
     @component.setAttribute('style', 'background: ' + @color)
 
   # get the color of the swatch
-  getColor: () ->
+  getColor: ->
     @color

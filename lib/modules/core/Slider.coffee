@@ -26,7 +26,7 @@ class Sliders extends helper
   setValue: (value) ->
     @slider.value = value
 
-  getValue: () ->
+  getValue: ->
     @slider.value
 
   setMax: (max) ->

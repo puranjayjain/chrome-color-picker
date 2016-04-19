@@ -144,9 +144,13 @@ class Input extends helper
     @active.component = @[format]
     # show the format
     @active.component.classList.remove 'invisible'
+    # focus the first input
+    setTimeout (=>
+      @active.component.querySelector('atom-text-editor').focus()
+    ), 100
 
   # sets the next component of the active array
-  next: () ->
+  next: ->
     current = @formats.indexOf(@active.type)
     if current is (@formats.length - 1)
       current = 0
@@ -154,3 +158,13 @@ class Input extends helper
       current++
 
     @changeFormat @formats[current]
+
+  # return formated color in string format
+  getColor: ->
+    # return color according to format
+    if @active.type is 'hex'
+      return @color.toHexString()
+    if @active.type is 'rgb'
+      return @color.toRgbString()
+    if @active.type is 'hsl'
+      return @color.toHslString()

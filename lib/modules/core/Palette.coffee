@@ -82,10 +82,8 @@ class Palette extends helper
     custom.component.appendChild @customButton
     custom
 
-  # create the page's Palette
-  # TODO make this feature
-  # create the project's Palette
-  # TODO make this feature
+  # TODO create the page's Palette
+  # TODO create the project's Palette
 
   # create the page popup palette
   initPopupPalette: ->

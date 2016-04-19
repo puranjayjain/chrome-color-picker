@@ -732,7 +732,7 @@ class TinyColor extends ColorMatchers
     }
 
   toRgbString: ->
-    if @_a is 1 then "rgb(#{Math.round(@_r)}, #{Math.round(@_g)}, #{Math.round(@_b)})" else "rgba(#{Math.round(@_r)}, #{Math.round(@_g)},  #{Math.round(@_b)}, #{@_roundA})"
+    if @_a is 1 then "rgb(#{Math.round(@_r)}, #{Math.round(@_g)}, #{Math.round(@_b)})" else "rgba(#{Math.round(@_r)}, #{Math.round(@_g)}, #{Math.round(@_b)}, #{@_roundA})"
 
   toPercentageRgb: ->
     {

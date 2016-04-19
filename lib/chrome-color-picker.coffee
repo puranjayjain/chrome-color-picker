@@ -42,14 +42,16 @@ module.exports = CCP =
   CCPSwatchPopup: null
   CCPOverlay: null
 
-  # REVIEW change this function to pick a color if the pattern is not found
   ColorMatcher: null
   OldColor: null
   NewColor: null
+  Editor: null
+  EditorView: null
 
   # to manage the disposable events and tooltips
   subscriptions: null
   popUpSubscriptions: null
+  keyboardSubscriptions:null
 
   activate: (state) ->
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -114,9 +116,6 @@ module.exports = CCP =
     # adding event handlers
     @attachEventListeners()
 
-    # add keyboard events
-    @addKeyBoardEvents()
-
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
     # TODO implement this
@@ -138,17 +137,21 @@ module.exports = CCP =
     # check if the dialog is openable
     if @open
       @CCPContainer.toggle()
+      # dispose temp events
+      @keyboardSubscriptions.dispose()
+      # focus the editor back
+      @EditorView.focus()
       # toggle the state of the dialog
       @open = false
     else
       # if the dialog is being opened then do this
-      Editor = atom.workspace.getActiveTextEditor()
-      EditorView = atom.views.getView Editor
+      @Editor = atom.workspace.getActiveTextEditor()
+      @EditorView = atom.views.getView @Editor
       # get the last cursor (assuming multiple cursors)
-      Cursor = Editor.getLastCursor()
+      Cursor = @Editor.getLastCursor()
 
       # get the text buffer and true position
-      visibleRowRange = EditorView.getVisibleRowRange()
+      visibleRowRange = @EditorView.getVisibleRowRange()
       cursorScreenRow = Cursor.getScreenRow()
       cursorBufferRow = Cursor.getBufferRow()
 
@@ -172,10 +175,10 @@ module.exports = CCP =
       # select the match if found
       if match
         # clear any previous selection
-        Editor.clearSelections()
+        @Editor.clearSelections()
 
-        # select the new text
-        selection = Editor.addSelectionForBufferRange [
+        # select the new color
+        selection = @Editor.addSelectionForBufferRange [
           [cursorBufferRow, match.start]
           [cursorBufferRow, match.end]]
 
@@ -197,7 +200,7 @@ module.exports = CCP =
       # pass the format if given as authored if found else pass hex
       preferredFormat = if preferredFormat is 'As authored' and match then match.format else 'hex'
       # set the position of the dialog
-      @CCPContainer.setPlace cursorPosition, EditorView, match
+      @CCPContainer.setPlace cursorPosition, @EditorView, match
 
       # set the format
       @CCPContainerInput.changeFormat preferredFormat
@@ -212,6 +215,9 @@ module.exports = CCP =
       # hide popUpPalette if visible
       if not @CCPPalette.popUpPalette.classList.contains 'invisible'
         @CCPPalette.popUpPalette.classList.add 'invisible'
+
+      # add keyboard events
+      @addKeyBoardEvents()
 
       # toggle the state of the dialog
       @open = true
@@ -407,10 +413,18 @@ module.exports = CCP =
 
   # add keybindings to close and open the editor
   addKeyBoardEvents: ->
-    # add event keyup for escape and enter key on the workspace and also be able to remove them later
-    return 0
+    # create a disposable to get rid of later
+    @keyboardSubscriptions = new CompositeDisposable
+    # create the event to moniter
+    @keyboardSubscriptions.add atom.keymaps.onDidMatchBinding (e) =>
+      # if the escape key is pressed close
+      if e.keystrokes is 'escape'
+        @close()
+      # if the enter key is pressed inside the picker close it
+      if e.keystrokes is 'enter' and @inside e.keyboardEventTarget
+        @Editor.insertText @CCPContainerInput.getColor().toString()
+        @close()
 
-  # toggle the popup palette function TODO dblclick
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
 
@@ -467,9 +481,13 @@ module.exports = CCP =
     @UpdateUI color: newColor, alpha: false
 
   # Hide popup and overlay
-  HidePopUpOverlay: () ->
+  HidePopUpOverlay: ->
     @CCPOverlay.delete()
     @CCPSwatchPopup.delete()
     @CCPSwatchPopup = null
     @CCPOverlay = null
     @popUpSubscriptions.dispose()
+
+  # inside the ccp-panel
+  inside: (child) ->
+    @CCPContainer.component.contains(child)
