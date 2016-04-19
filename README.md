@@ -16,9 +16,9 @@ or
 ## Pick Colors in these formats
 - hex
 - rgb
+- rgba
 - hsl
-
-(Along with their alpha variants except for hex)
+- hsla
 
 ## Integrated Palette
 - Use the palette with the picker as done in dev tools.

@@ -5,7 +5,5 @@
 * Added option to add custom palettes
 * Option to scroll on the sliders and the main canvas
 ## 0.2.0
-Implemented the following config:
-* Compress text colors
-* Moved Auto Color Names to correct category and Implemented it
+* Implemented all settings except Auto Set Color
 * Added FAQ section to readme

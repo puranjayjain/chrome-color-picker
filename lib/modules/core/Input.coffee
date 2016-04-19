@@ -164,6 +164,8 @@ class Input extends helper
     # copy values
     color = @color.toString @active.type
     hexFormat = atom.config.get 'chrome-color-picker.HexColors.forceHexSize'
+    hex3 = @color.toString('hex3')
+    colorName = @color.toName()
     # if the color needs to be shortened and can be
     if @color.getAlpha() < 1 and atom.config.get 'chrome-color-picker.General.autoShortColor'
       # remove spaces
@@ -180,9 +182,9 @@ class Input extends helper
       if hexForceColor
         color = hexForceColor
     # if shortened hex settings
-    if @color.toString('hex3') and atom.config.get 'chrome-color-picker.HexColors.autoShortHex'
-      color = @color.toString('hex3')
+    if hex3 and atom.config.get 'chrome-color-picker.HexColors.autoShortHex'
+      color = hex3
     # if color can be converted to a name and the user wants it then just do it
-    if @color.toName() and atom.config.get 'chrome-color-picker.General.autoColorNames'
-      color = @color.toName()
+    if colorName and atom.config.get 'chrome-color-picker.General.autoColorNames'
+      color = colorName
     color
