@@ -154,7 +154,7 @@ module.exports = CCP =
       Cursor = @Editor.getLastCursor()
 
       # dont open on no cursor match
-      return unless @Cursor
+      return unless Cursor
 
       # get the text buffer and true position
       visibleRowRange = @EditorView.getVisibleRowRange()

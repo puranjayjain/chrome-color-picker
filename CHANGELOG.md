@@ -17,3 +17,7 @@
 * Working text editing to change colors
 * performance fixes
 * Fixed error message when trying to open on non text editor windows
+
+## 0.4.1
+* Fixes not opening on multiple windows
+* Supports opening on any text editor

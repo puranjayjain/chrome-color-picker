@@ -14,11 +14,11 @@ or
 
 # Features
 ## Pick Colors in these formats
-- hex
-- rgb
-- rgba
-- hsl
-- hsla
+* HEX
+* RGB
+* RGBa
+* HSL
+* HSLa
 
 ## Integrated Palette
 - Use the palette with the picker as done in dev tools.
@@ -83,6 +83,13 @@ This implementation was built from ground up to:
 **Solution**
   - Although there is no guide (yet) for the specificity of settings or which settings are above which ones.
 But you can know about some of them [here](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/modules/core/Input.coffee#L163)
+
+Feel free to update the [wiki](https://github.com/puranjayjain/chrome-color-picker/wiki/Setting's-specificity) with your findings.
+
+3) Do you mind feature requests or suggestions?
+
+**Solution**
+Not at all they are always welcome, even if they are present in the [milestone](https://github.com/puranjayjain/chrome-color-picker/milestones)
 
 # License
 
