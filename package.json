@@ -1,7 +1,7 @@
 {
   "name": "chrome-color-picker",
   "main": "./lib/chrome-color-picker",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "A color picker inspired by chrome's dev tools color picker",
   "keywords": [
