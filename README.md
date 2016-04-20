@@ -71,17 +71,17 @@ This implementation was built from ground up to:
 
 # FAQs
 
-1. I am seeing strange settings which I'm not able to edit
+1) I am seeing strange settings which I'm not able to edit
 
-**Sol**:
-
+**Solution**
   1. Open the developer tools in atom (View > Developers > Toggle Developer Mode or Using `ctrl + alt + i`)
 
   2. Enter this command in the developer tools console `atom.config.unset('chrome-color-picker')` and restart atom
 
-2. How do I know which settings override which ones?
+2) How do I know which settings override which ones?
 
-Although there is no guide (yet) for the specificity of settings or which settings are above which ones.
+**Solution**
+  - Although there is no guide (yet) for the specificity of settings or which settings are above which ones.
 But you can know about some of them [here](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/modules/core/Input.coffee#L163)
 
 # License

@@ -33,7 +33,7 @@ class ColorMatchers
             start: index
             end: index + _length
         # replace the 'text' buffer with empty string to keep the text length same
-        text = text.replace(match[0], (new Array(_length + 1)).join(' '));
+        text = text.replace(match[0], (new Array(_length + 1)).join(' '))
 
     # return the matched strings
     matched

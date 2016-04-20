@@ -143,9 +143,18 @@ module.exports = CCP =
     else
       # if the dialog is being opened then do this
       @Editor = atom.workspace.getActiveTextEditor()
+
+      # dont open on non editor windows
+      return unless @Editor
+
+      # get the editor's view (htmlelement)
       @EditorView = atom.views.getView @Editor
+
       # get the last cursor (assuming multiple cursors)
       Cursor = @Editor.getLastCursor()
+
+      # dont open on no cursor match
+      return unless @Cursor
 
       # get the text buffer and true position
       visibleRowRange = @EditorView.getVisibleRowRange()
@@ -407,6 +416,58 @@ module.exports = CCP =
       swatch.component.setAttribute 'data-color', @NewColor.toRgbString()
       e.target.parentNode.appendChild swatch.component
 
+    # get all the editors
+    hexEditor = @CCPContainerInput.hex.querySelector('atom-text-editor.hex').getModel()
+    rgbEditor = {
+      'r': @CCPContainerInput.rgb.querySelector('atom-text-editor.r').getModel()
+      'g': @CCPContainerInput.rgb.querySelector('atom-text-editor.g').getModel()
+      'b': @CCPContainerInput.rgb.querySelector('atom-text-editor.b').getModel()
+      'a': @CCPContainerInput.rgb.querySelector('atom-text-editor.a').getModel()
+    }
+    hslEditor = {
+      'h': @CCPContainerInput.hsl.querySelector('atom-text-editor.h').getModel()
+      's': @CCPContainerInput.hsl.querySelector('atom-text-editor.s').getModel()
+      'l': @CCPContainerInput.hsl.querySelector('atom-text-editor.l').getModel()
+      'a': @CCPContainerInput.hsl.querySelector('atom-text-editor.a').getModel()
+    }
+    # events for text editor changes and delay them using stop changing to prevent rendering issues
+    @subscriptions.add hexEditor.onDidStopChanging =>
+      color = TinyColor(hexEditor.getText())
+      # if the color is valid
+      if color.isValid()
+        @NewColor = color
+        @UpdateUI color: @NewColor, text: false
+
+    for type, _editor of rgbEditor
+      @subscriptions.add _editor.onDidStopChanging =>
+        color = TinyColor({
+          r: rgbEditor.r.getText()
+          g: rgbEditor.g.getText()
+          b: rgbEditor.b.getText()
+        })
+        # set alpha if required
+        if @CCPContainerInput.alpha
+          color.setAlpha rgbEditor.a.getText()
+        # if the color is valid
+        if color.isValid()
+          @NewColor = color
+          @UpdateUI color: @NewColor, text: false
+
+    for type, _editor of hslEditor
+      @subscriptions.add _editor.onDidStopChanging =>
+        color = TinyColor({
+          h: hslEditor.h.getText()
+          s: hslEditor.s.getText()
+          l: hslEditor.l.getText()
+        })
+        # set alpha if required
+        if @CCPContainerInput.alpha
+          color.setAlpha hslEditor.a.getText()
+        # if the color is valid
+        if color.isValid()
+          @NewColor = color
+          @UpdateUI color: @NewColor, text: false
+
   # add keybindings to close and open the editor
   addKeyBoardEvents: ->
     # create a disposable to get rid of later
@@ -426,11 +487,12 @@ module.exports = CCP =
 
   # Update UI from color - from spectrum.js
   # if old = true then update the old color swatch as well
-  UpdateUI: ({color, old, slider, hue, alpha} = {}) ->
+  UpdateUI: ({color, old, slider, hue, alpha, text} = {}) ->
     old = if old? then old else false
     slider = if slider? then slider else true
     hue = if hue? then hue else true
     alpha = if alpha? then alpha else true
+    text = if text? then text else true
     @NewColor = color
 
     # set initial color
@@ -456,7 +518,9 @@ module.exports = CCP =
       @CCPSliderAlpha.setValue Math.round hsvColor.a * 100
     # Update the display text
     @CCPContainerInput.color = @NewColor
-    @CCPContainerInput.UpdateUI()
+    # Update text if it is wanted to be updated
+    if text
+      @CCPContainerInput.UpdateUI()
 
   # Update the color from the main slider and itself
   UpdateSlider: (x, y, s = true) ->

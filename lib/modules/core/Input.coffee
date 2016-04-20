@@ -127,9 +127,11 @@ class Input extends helper
       input = @[format].querySelector 'atom-text-editor.a'
       input.getModel().setText thisColor.a.toString()
       input.parentNode.removeAttribute 'style'
+      @alpha = true
     else if format isnt 'hex'
       input = @[format].querySelector 'atom-text-editor.a'
       input.parentNode.setAttribute 'style', 'display: none'
+      @alpha = false
 
   # change the current format to the one given
   changeFormat: (format) ->

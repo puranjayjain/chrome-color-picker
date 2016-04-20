@@ -23,7 +23,6 @@ class FloatingPanel extends helper
 
   # place the dialog according to your need
   setPlace: (Cursor, Editor, Match) ->
-    console.log Cursor
     # get all relevant elements
     extraWidth = 0
     bounds = Editor.getBoundingClientRect()
