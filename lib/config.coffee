@@ -10,7 +10,6 @@ module.exports =
           type: 'string'
           enum: ['rgb', 'hex', 'hsl', 'As authored']
           default: 'As authored'
-        # TODO implementation
         autoSetColor:
           title: 'Auto Set Color'
           description: 'Automatically set the color values as you edit them'

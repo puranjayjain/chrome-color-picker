@@ -118,6 +118,8 @@ module.exports = CCP =
 
     # Register commands for the keymaps
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:save': => @save()
 
   deactivate: ->
     @CCPContainer.destroy()
@@ -126,9 +128,15 @@ module.exports = CCP =
   serialize: ->
     # CCPViewState: @CCPView.serialize()
 
+  # save the dialog if open
   close: ->
     if @open
       @toggle()
+
+  # save the color value if the dialog is open
+  save: ->
+    if @open
+      @Editor.insertText @CCPContainerInput.getColor().toString()
 
   toggle: ->
     # check if the dialog is openable
@@ -358,7 +366,7 @@ module.exports = CCP =
     @CCPContainerPalette.component.addEventListener 'click', (e) =>
       if e.target and e.target.nodeName is 'CCP-SWATCH'
         newColor = new TinyColor e.target.getAttribute 'data-color'
-        @UpdateUI color: newColor
+        @UpdateUI color: newColor, forced: false
 
     # double click to open additional palettes
     @CCPContainerPalette.component.addEventListener 'dblclick', (e) =>
@@ -404,7 +412,7 @@ module.exports = CCP =
           if e.target and e.target.nodeName is 'CCP-SWATCH'
             # set color
             newColor = new TinyColor e.target.getAttribute 'data-color'
-            @UpdateUI color: newColor
+            @UpdateUI color: newColor, forced: false
             # hide the component again
             @HidePopUpOverlay()
 
@@ -439,7 +447,9 @@ module.exports = CCP =
       # if the color is valid
       if color.isValid()
         @NewColor = color
-        @UpdateUI color: @NewColor, text: false
+        # if the text was set forcefully then dont do it
+        @UpdateUI color: @NewColor, text: false, forced: @CCPContainerInput.forced
+        @CCPContainerInput.forced = false
 
     for type, _editor of rgbEditor
       @subscriptions.add _editor.onDidStopChanging =>
@@ -454,7 +464,9 @@ module.exports = CCP =
         # if the color is valid
         if color.isValid()
           @NewColor = color
-          @UpdateUI color: @NewColor, text: false
+          # if the text was set forcefully then dont do it
+          @UpdateUI color: @NewColor, text: false, forced: @CCPContainerInput.forced
+          @CCPContainerInput.forced = false
 
     for type, _editor of hslEditor
       @subscriptions.add _editor.onDidStopChanging =>
@@ -469,7 +481,9 @@ module.exports = CCP =
         # if the color is valid
         if color.isValid()
           @NewColor = color
-          @UpdateUI color: @NewColor, text: false
+          # if the text was set forcefully then dont do it
+          @UpdateUI color: @NewColor, text: false, forced: @CCPContainerInput.forced
+          @CCPContainerInput.forced = false
 
   # add keybindings to close and open the editor
   addKeyBoardEvents: ->
@@ -482,20 +496,29 @@ module.exports = CCP =
         @close()
       # if the enter key is pressed inside the picker close it
       if e.keystrokes is 'enter' and @inside e.keyboardEventTarget
-        @Editor.insertText @CCPContainerInput.getColor().toString()
-        @close()
+        @save()
 
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
 
-  # Update UI from color - from spectrum.js
-  # if old = true then update the old color swatch as well
-  UpdateUI: ({color, old, slider, hue, alpha, text} = {}) ->
+  ###*
+   * [UpdateUI update the ui controls of the dialog]
+   * @param {[type]} color  [the color to be updated with]
+   * @param {[type]} old    [update the old color swatch as well]
+   * @param {[type]} slider [update the main slider]
+   * @param {[type]} hue    [update the hue slider]
+   * @param {[type]} alpha  [update the alpha slider]
+   * @param {[type]} text   [update the inner editors]
+   * @param {[type]} forced  [if the updated was forced or not]
+  ###
+  UpdateUI: ({color, old, slider, hue, alpha, text, forced} = {}) ->
+    # load the default values of the values
     old = if old? then old else false
     slider = if slider? then slider else true
     hue = if hue? then hue else true
     alpha = if alpha? then alpha else true
     text = if text? then text else true
+    forced = if forced? then forced else true
     @NewColor = color
 
     # set initial color
@@ -524,24 +547,28 @@ module.exports = CCP =
     # Update text if it is wanted to be updated
     if text
       @CCPContainerInput.UpdateUI()
+    # if the setting to change color as edit is being set then just do it also only do it for a selection
+    if atom.config.get('chrome-color-picker.General.autoSetColor') and not forced
+      # console.log 'init'
+      @save()
 
   # Update the color from the main slider and itself
   UpdateSlider: (x, y, s = true) ->
     oldColor = @NewColor.toHsv()
     newColor = new TinyColor { h: oldColor.h, s: x, v: y, a: oldColor.a }
-    @UpdateUI color: newColor, slider: s
+    @UpdateUI color: newColor, slider: s, forced: false
 
   # Update just the hue from the slider
   UpdateHue: (value) ->
     oldColor = @NewColor.toHsv()
     newColor = new TinyColor { h: (360 - value), s: oldColor.s, v: oldColor.v, a: oldColor.a }
-    @UpdateUI color: newColor, hue: false
+    @UpdateUI color: newColor, hue: false, forced: false
 
   # Update just the alpha from the slider
   UpdateAlpha: (value) ->
     oldColor = @NewColor.toHsv()
     newColor = new TinyColor { h: oldColor.h, s: oldColor.s, v: oldColor.v, a: value / 100 }
-    @UpdateUI color: newColor, alpha: false
+    @UpdateUI color: newColor, alpha: false, forced: false
 
   # Hide popup and overlay
   HidePopUpOverlay: ->

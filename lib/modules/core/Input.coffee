@@ -9,6 +9,8 @@ class Input extends helper
   rgb: null
   hsl: null
   formats: ['hex','rgb','hsl']
+  # if the value was set using setText api
+  forced: true
 
   ###*
    * [constructor Input in atom]
@@ -132,6 +134,9 @@ class Input extends helper
       input = @[format].querySelector 'atom-text-editor.a'
       input.parentNode.setAttribute 'style', 'display: none'
       @alpha = false
+
+    # reflect that the text was set forcefully
+    @forced = true
 
   # change the current format to the one given
   changeFormat: (format) ->

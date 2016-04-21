@@ -38,9 +38,7 @@ class FloatingPanel extends helper
       ActualCursor = EditorRoot.querySelector('.cursor:last-of-type').getBoundingClientRect()
       left = ActualCursor.left - (compBounds.width / 2)
     else
-      console.log ActualCursor
       ActualCursor = ActualCursor.getBoundingClientRect()
-      console.log ActualCursor
       left = ActualCursor.left - (ActualCursor.width / 2)
     # check if the dialog is out of the area in the x axis, if yes put it in and position the triangle accordingly
     if left < bounds.left
