@@ -1,5 +1,5 @@
 ## 0.4.3
-* removed changelogs from code 
+* removed console logs from code
 
 ## 0.4.2
 * Working on `Auto Set Color` config [issue](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/config.coffee#L13)
