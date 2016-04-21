@@ -59,6 +59,11 @@ Open your **keymap** file and add this line to it:
 ```
 **Note: Your keybinding can be e.g ctrl+alt+c and also make sure to disable the default keybinding from the package's settings or resolve it using the keybinding resolver**
 
+## The commands that are supported currently are:
+* chrome-color-picker:toggle - triggers dialog open/close
+* chrome-color-picker:close  - triggers dialog close
+* chrome-color-picker:save   - triggers the color to be updated back to the editor
+
 ## More keys (cannot be modified)
 - Press `escape` to close the dialog
 - Press `enter` to update the color
@@ -88,8 +93,8 @@ Feel free to update the [wiki](https://github.com/puranjayjain/chrome-color-pick
 
 3) Do you mind feature requests or suggestions?
 
-**Solution**
-Not at all they are always welcome, even if they are present in the [milestone](https://github.com/puranjayjain/chrome-color-picker/milestones)
+**Solution**<br>
+They are always welcome, even if they are present in the [milestone](https://github.com/puranjayjain/chrome-color-picker/milestones)
 
 # Versioning
 

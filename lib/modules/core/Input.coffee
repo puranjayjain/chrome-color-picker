@@ -84,6 +84,8 @@ class Input extends helper
    *
   ###
   UpdateUI: ->
+    # reflect that the text was set forcefully
+    @forced = true
     format = @active.type
     @color = new TinyColor @color
     alpha = false
@@ -135,9 +137,6 @@ class Input extends helper
       input.parentNode.setAttribute 'style', 'display: none'
       @alpha = false
 
-    # reflect that the text was set forcefully
-    @forced = true
-
   # change the current format to the one given
   changeFormat: (format) ->
     # convert all formats to the ones without the alpha channel
@@ -154,6 +153,8 @@ class Input extends helper
     # focus the first input
     setTimeout (=>
       @active.component.querySelector('atom-text-editor').focus()
+      # reflect that the text was set forcefully
+      @forced = true
     ), 100
 
   # sets the next component of the active array

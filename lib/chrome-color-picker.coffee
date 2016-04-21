@@ -134,9 +134,11 @@ module.exports = CCP =
       @toggle()
 
   # save the color value if the dialog is open
-  save: ->
+  save: (close) ->
     if @open
       @Editor.insertText @CCPContainerInput.getColor().toString()
+    if close
+      @close()
 
   toggle: ->
     # check if the dialog is openable
@@ -442,17 +444,17 @@ module.exports = CCP =
       'a': @CCPContainerInput.hsl.querySelector('atom-text-editor.a').getModel()
     }
     # events for text editor changes and delay them using stop changing to prevent rendering issues
-    @subscriptions.add hexEditor.onDidStopChanging =>
+    # replaced onDidStopChanging
+    @subscriptions.add hexEditor.onDidInsertText =>
       color = TinyColor(hexEditor.getText())
       # if the color is valid
       if color.isValid()
         @NewColor = color
         # if the text was set forcefully then dont do it
-        @UpdateUI color: @NewColor, text: false, forced: @CCPContainerInput.forced
-        @CCPContainerInput.forced = false
+        @UpdateUI color: @NewColor, text: false
 
     for type, _editor of rgbEditor
-      @subscriptions.add _editor.onDidStopChanging =>
+      @subscriptions.add _editor.onDidInsertText =>
         color = TinyColor({
           r: rgbEditor.r.getText()
           g: rgbEditor.g.getText()
@@ -465,11 +467,10 @@ module.exports = CCP =
         if color.isValid()
           @NewColor = color
           # if the text was set forcefully then dont do it
-          @UpdateUI color: @NewColor, text: false, forced: @CCPContainerInput.forced
-          @CCPContainerInput.forced = false
+          @UpdateUI color: @NewColor, text: false
 
     for type, _editor of hslEditor
-      @subscriptions.add _editor.onDidStopChanging =>
+      @subscriptions.add _editor.onDidInsertText =>
         color = TinyColor({
           h: hslEditor.h.getText()
           s: hslEditor.s.getText()
@@ -482,8 +483,7 @@ module.exports = CCP =
         if color.isValid()
           @NewColor = color
           # if the text was set forcefully then dont do it
-          @UpdateUI color: @NewColor, text: false, forced: @CCPContainerInput.forced
-          @CCPContainerInput.forced = false
+          @UpdateUI color: @NewColor, text: false
 
   # add keybindings to close and open the editor
   addKeyBoardEvents: ->
@@ -496,7 +496,7 @@ module.exports = CCP =
         @close()
       # if the enter key is pressed inside the picker close it
       if e.keystrokes is 'enter' and @inside e.keyboardEventTarget
-        @save()
+        @save(true)
 
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
