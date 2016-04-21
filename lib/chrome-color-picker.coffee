@@ -42,6 +42,7 @@ module.exports = CCP =
   CCPSwatchPopup: null
   CCPOverlay: null
 
+  ColorRange: null
   ColorMatcher: null
   OldColor: null
   NewColor: null
@@ -136,7 +137,7 @@ module.exports = CCP =
   # save the color value if the dialog is open
   save: (close) ->
     if @open
-      @Editor.insertText @CCPContainerInput.getColor().toString()
+      @ColorRange = @Editor.insertText @CCPContainerInput.getColor().toString()
     if close
       @close()
 
@@ -198,6 +199,9 @@ module.exports = CCP =
 
         # select the new color
         selection = @Editor.addSelectionForBufferRange [
+          [cursorBufferRow, match.start]
+          [cursorBufferRow, match.end]]
+        console.log [
           [cursorBufferRow, match.start]
           [cursorBufferRow, match.end]]
 
@@ -451,7 +455,7 @@ module.exports = CCP =
       if color.isValid()
         @NewColor = color
         # if the text was set forcefully then dont do it
-        @UpdateUI color: @NewColor, text: false
+        @UpdateUI color: @NewColor, text: false, forced: false
 
     for type, _editor of rgbEditor
       @subscriptions.add _editor.onDidInsertText =>
@@ -467,7 +471,7 @@ module.exports = CCP =
         if color.isValid()
           @NewColor = color
           # if the text was set forcefully then dont do it
-          @UpdateUI color: @NewColor, text: false
+          @UpdateUI color: @NewColor, text: false, forced: false
 
     for type, _editor of hslEditor
       @subscriptions.add _editor.onDidInsertText =>
@@ -483,7 +487,7 @@ module.exports = CCP =
         if color.isValid()
           @NewColor = color
           # if the text was set forcefully then dont do it
-          @UpdateUI color: @NewColor, text: false
+          @UpdateUI color: @NewColor, text: false, forced: false
 
   # add keybindings to close and open the editor
   addKeyBoardEvents: ->
@@ -549,8 +553,14 @@ module.exports = CCP =
       @CCPContainerInput.UpdateUI()
     # if the setting to change color as edit is being set then just do it also only do it for a selection
     if atom.config.get('chrome-color-picker.General.autoSetColor') and not forced
-      # console.log 'init'
       @save()
+      # select the new color
+      console.log @ColorRange
+      # add selection for the range
+      selection = @Editor.addSelectionForBufferRange [
+        [@ColorRange[0].start.row, @ColorRange[0].start.column]
+        [@ColorRange[0].end.row, @ColorRange[0].end.column]
+      ]
 
   # Update the color from the main slider and itself
   UpdateSlider: (x, y, s = true) ->
