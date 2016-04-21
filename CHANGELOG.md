@@ -1,3 +1,6 @@
+## 0.4.3
+* removed changelogs from code 
+
 ## 0.4.2
 * Working on `Auto Set Color` config [issue](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/config.coffee#L13)
 * Fixes for aligning the dialog correctly [issue](https://github.com/puranjayjain/chrome-color-picker/issues/2)

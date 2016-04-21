@@ -201,9 +201,6 @@ module.exports = CCP =
         selection = @Editor.addSelectionForBufferRange [
           [cursorBufferRow, match.start]
           [cursorBufferRow, match.end]]
-        console.log [
-          [cursorBufferRow, match.start]
-          [cursorBufferRow, match.end]]
 
         # add to global selection for reference
         @selection = color: match, row: cursorBufferRow
@@ -554,8 +551,6 @@ module.exports = CCP =
     # if the setting to change color as edit is being set then just do it also only do it for a selection
     if atom.config.get('chrome-color-picker.General.autoSetColor') and not forced
       @save()
-      # select the new color
-      console.log @ColorRange
       # add selection for the range
       selection = @Editor.addSelectionForBufferRange [
         [@ColorRange[0].start.row, @ColorRange[0].start.column]
