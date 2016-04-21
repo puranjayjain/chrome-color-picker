@@ -1,7 +1,7 @@
 # chrome-color-picker
 A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)
 
-# Preview
+## Preview
 ![Demo Image](https://raw.githubusercontent.com/puranjayjain/chrome-color-picker/master/demo.gif)
 
 **Note: The color highlight or marker is not part of this package, to obtain that functionality we use [pigments](https://atom.io/packages/pigments)**
@@ -9,7 +9,7 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 # Simple Usage
 - Open the dialog using the shortcut key or using the context menu
 - Press Escape to close it.
-or
+<br>**or**
 - Press Enter to update the color
 
 # Features
@@ -90,6 +90,13 @@ Feel free to update the [wiki](https://github.com/puranjayjain/chrome-color-pick
 
 **Solution**
 Not at all they are always welcome, even if they are present in the [milestone](https://github.com/puranjayjain/chrome-color-picker/milestones)
+
+# Versioning
+
+For transparency into our release cycle and in striving to maintain backward
+compatibility, Material Design Lite is maintained under
+[the Semantic Versioning guidelines](http://semver.org/). Sometimes we screw up,
+but we'll adhere to those rules whenever possible.
 
 # License
 

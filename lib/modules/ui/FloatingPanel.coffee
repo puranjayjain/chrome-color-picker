@@ -22,34 +22,39 @@ class FloatingPanel extends helper
     addTo.appendChild @component
 
   # place the dialog according to your need
-  setPlace: (Cursor, Editor, Match) ->
+  setPlace: (Cursor, EditorRoot, Editor, Match) ->
     # get all relevant elements
-    extraWidth = 0
     bounds = Editor.getBoundingClientRect()
     compBounds = @component.getBoundingClientRect()
     tabs = document.querySelector('[is=atom-tabs]')
     # clean slate
     @component.classList.remove 'down'
     @triangle.removeAttribute 'style'
-    # calculated from selection
-    centerFactor = 0
     top = Cursor.top - Editor.getScrollTop() + Cursor.height + tabs.clientHeight + 10
-    if Cursor.width > 0
-      extraWidth = Cursor.width / 2
-    left = Cursor.left + (compBounds.width / 2) + extraWidth + 2 - centerFactor
+    # get the actual cursor's bounds and prefer the selection
+    ActualCursor = EditorRoot.querySelector('.highlight.selection > .region')
+    # if this is not found then the region must be present
+    if not ActualCursor
+      ActualCursor = EditorRoot.querySelector('.cursor:last-of-type').getBoundingClientRect()
+      left = ActualCursor.left - (compBounds.width / 2)
+    else
+      console.log ActualCursor
+      ActualCursor = ActualCursor.getBoundingClientRect()
+      console.log ActualCursor
+      left = ActualCursor.left - (ActualCursor.width / 2)
     # check if the dialog is out of the area in the x axis, if yes put it in and position the triangle accordingly
     if left < bounds.left
-      @triangle.setAttribute 'style', "left: calc(50% - #{10 + (Math.abs(bounds.left) - Math.abs(left))}px)"
+      @triangle.setAttribute 'style', "left: calc(50% - #{bounds.left - left + 4}px)"
       left = bounds.left
     if (left + compBounds.width) > bounds.right
-      @triangle.setAttribute 'style', "left: auto;right: calc(50% - #{10 - (bounds.right - left)}px)"
+      @triangle.setAttribute 'style', "left: initial;right: calc(50% - #{10 - (bounds.right - left)}px)"
       left -= (bounds.right - left)
     # check if it is going out from the bottom
     if (top + compBounds.height) > bounds.bottom
       bottom = document.body.getBoundingClientRect().height + Cursor.height + 20 - top
       @component.classList.add 'down'
       # set the bottom and left
-      @component.setAttribute 'style', "top: auto;bottom: #{bottom}px; left: #{left}px"
+      @component.setAttribute 'style', "bottom: #{bottom}px; left: #{left}px"
     else
       # set the top and left
       @component.setAttribute 'style', "top: #{top}px; left: #{left}px"

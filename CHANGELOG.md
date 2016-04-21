@@ -6,7 +6,7 @@
 * Option to scroll on the sliders and the main canvas
 
 ## 0.2.0
-* Implemented all settings except Auto Set Color
+* Implemented all settings except Auto Set Color [here](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/config.coffee)
 * Added FAQ section to readme
 
 ## 0.3.0
@@ -21,3 +21,7 @@
 ## 0.4.1
 * Fixes not opening on multiple windows
 * Supports opening on any text editor
+
+## 0.4.2
+* Working on `Auto Set Color` config [issue](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/config.coffee#L13)
+* Fixes for aligning the dialog correctly [issue](https://github.com/puranjayjain/chrome-color-picker/issues/2)

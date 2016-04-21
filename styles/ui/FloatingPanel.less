@@ -2,8 +2,6 @@
 ccp-container {
   position: fixed;
   display: flex;
-  top: 20%;
-  left: 20%;
   border-radius: 3px;
   background-color: @background;
   border: 1px solid @amber;
@@ -20,7 +18,7 @@ ccp-container {
     position: absolute;
     width: @arrow;
     height: @arrow;
-    left: ~"calc(50% - "@arrow~")";
+    left: ~"calc(50% - "(@arrow / 2)~")";
     bottom: ~"calc(100% - "(@arrow / 2)~")";
     box-shadow: 1px -1px 0 0 @amber;
     background-color: inherit;

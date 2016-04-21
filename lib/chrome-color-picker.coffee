@@ -150,6 +150,9 @@ module.exports = CCP =
       # get the editor's view (htmlelement)
       @EditorView = atom.views.getView @Editor
 
+      # get the shadow root of the editor
+      @EditorRoot = @EditorView.shadowRoot
+
       # get the last cursor (assuming multiple cursors)
       Cursor = @Editor.getLastCursor()
 
@@ -205,7 +208,7 @@ module.exports = CCP =
       # pass the format if given as authored if found else pass hex
       preferredFormat = if preferredFormat is 'As authored' and !!match then match.format else 'hex'
       # set the position of the dialog
-      @CCPContainer.setPlace cursorPosition, @EditorView, match
+      @CCPContainer.setPlace cursorPosition, @EditorRoot, @EditorView, match
 
       # set the format
       @CCPContainerInput.changeFormat preferredFormat
