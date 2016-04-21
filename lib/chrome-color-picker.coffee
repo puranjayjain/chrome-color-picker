@@ -52,7 +52,7 @@ module.exports = CCP =
   # to manage the disposable events and tooltips
   subscriptions: null
   popUpSubscriptions: null
-  keyboardSubscriptions:null
+  keyboardSubscriptions: null
 
   activate: (state) ->
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -127,6 +127,7 @@ module.exports = CCP =
     @subscriptions.dispose()
 
   serialize: ->
+    # TODO serialize palettes
     # CCPViewState: @CCPView.serialize()
 
   # save the dialog if open
@@ -276,7 +277,7 @@ module.exports = CCP =
     # control the main slider
     @CCPDraggie.on 'dragMove', (e, p, m) =>
       x = @CCPDraggie.position.x / 239
-      y = (124 - @CCPDraggie.position.y)/124
+      y = (124 - @CCPDraggie.position.y) / 124
       @UpdateSlider x, y, false
 
     # slide the main slider using mouse wheel
@@ -383,7 +384,7 @@ module.exports = CCP =
         # set this swatch as active
         @CCPActiveSwatch = e.target
         # color weights
-        weights = ['50', '100', '200', '300', '400','500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
+        weights = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700']
         # add the popup palette
         @CCPSwatchPopup = new InnerPanel 'ccp-swatch-popup'
         @CCPOverlay = new InnerPanel 'ccp-overlay'
@@ -403,7 +404,7 @@ module.exports = CCP =
           swatch.component.setAttribute 'data-color', palette[i]
           swatch.component.setAttribute 'data-name', weights[i]
           swatch.component.setAttribute 'style', 'background: ' + palette[i]
-          @popUpSubscriptions.add atom.tooltips.add swatch.component, {title: "#{e.target.getAttribute('data-name')}(#{weights[i]}): #{palette[i]}" }
+          @popUpSubscriptions.add atom.tooltips.add swatch.component, {title: "#{e.target.getAttribute('data-name')}(#{weights[i]}): #{palette[i]}"}
           docfrag.appendChild swatch.component
         @CCPSwatchPopup.component.appendChild docfrag
         # position the popup correctly
@@ -560,19 +561,19 @@ module.exports = CCP =
   # Update the color from the main slider and itself
   UpdateSlider: (x, y, s = true) ->
     oldColor = @NewColor.toHsv()
-    newColor = new TinyColor { h: oldColor.h, s: x, v: y, a: oldColor.a }
+    newColor = new TinyColor {h: oldColor.h, s: x, v: y, a: oldColor.a}
     @UpdateUI color: newColor, slider: s, forced: false
 
   # Update just the hue from the slider
   UpdateHue: (value) ->
     oldColor = @NewColor.toHsv()
-    newColor = new TinyColor { h: (360 - value), s: oldColor.s, v: oldColor.v, a: oldColor.a }
+    newColor = new TinyColor {h: (360 - value), s: oldColor.s, v: oldColor.v, a: oldColor.a}
     @UpdateUI color: newColor, hue: false, forced: false
 
   # Update just the alpha from the slider
   UpdateAlpha: (value) ->
     oldColor = @NewColor.toHsv()
-    newColor = new TinyColor { h: oldColor.h, s: oldColor.s, v: oldColor.v, a: value / 100 }
+    newColor = new TinyColor {h: oldColor.h, s: oldColor.s, v: oldColor.v, a: value / 100}
     @UpdateUI color: newColor, alpha: false, forced: false
 
   # Hide popup and overlay

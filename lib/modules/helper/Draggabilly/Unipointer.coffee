@@ -10,9 +10,6 @@ module.exports =
 class Unipointer extends EvEmitter
   noop: ->
 
-  constructor: ->
-    # body...
-
   bindStartEvent: (elem) ->
     @_bindStartEvent elem, true
     return

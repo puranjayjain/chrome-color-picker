@@ -93,8 +93,13 @@ Feel free to update the [wiki](https://github.com/puranjayjain/chrome-color-pick
 
 3) Do you mind feature requests or suggestions?
 
-**Solution**<br>
+**Solution**<br><br>
 They are always welcome, even if they are present in the [milestone](https://github.com/puranjayjain/chrome-color-picker/milestones)
+
+4) Help! the picker won't open !
+
+**Solution**<br><br>
+Try restarting atom or closing and opening atom or reloading atom (`View > Developer > Reload Window`)
 
 # Versioning
 

@@ -7,4 +7,4 @@ If you want to make a contribution to the project's source code, follow the guid
 3. Be precise as to what are you trying to correct in your title and/or comment.
 4. Make sure to open a pull request to the correct branch.
 5. Try to make as little changes as possible to make the diff more readable.
-6. Respect the coding guidelines as mentioned in the linter guide.
+6. Respect the coding guidelines as mentioned in the linter guide. (.hound.yml and coffeelint.json)

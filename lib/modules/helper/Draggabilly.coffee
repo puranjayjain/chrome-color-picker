@@ -195,7 +195,7 @@ class Draggabilly extends Unidragger
   ###
 
   dragStart: (event, pointer) ->
-    if !@isEnabled
+    if not @isEnabled
       return
     @_getPosition()
     @measureContainment()
@@ -241,7 +241,7 @@ class Draggabilly extends Unidragger
   ###
 
   dragMove: (event, pointer, moveVector) ->
-    if !@isEnabled
+    if not @isEnabled
       return
     dragX = moveVector.x
     dragY = moveVector.y
@@ -297,7 +297,7 @@ class Draggabilly extends Unidragger
   ###
 
   dragEnd: (event, pointer) ->
-    if !@isEnabled
+    if not @isEnabled
       return
     # use top left position when complete
     if @transformProperty
@@ -314,7 +314,7 @@ class Draggabilly extends Unidragger
     if not @isDragging
       return
     @positionDrag()
-    _this = this
+    _this = @
     requestAnimationFrame ->
       _this.animate()
       return

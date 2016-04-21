@@ -748,7 +748,10 @@ class TinyColor extends ColorMatchers
     }
 
   toPercentageRgbString: ->
-    if @_a is 1 then "rgb(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)} %, #{Math.round(@bound01(@_b, 255) * 100)} %)" else "rgba(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)}%, #{Math.round(@bound01(@_b, 255) * 100)}%, #{@_roundA})"
+    if @_a is 1
+      "rgb(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)} %, #{Math.round(@bound01(@_b, 255) * 100)} %)"
+    else
+      "rgba(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)}%, #{Math.round(@bound01(@_b, 255) * 100)}%, #{@_roundA})"
 
   toName: ->
     if @_a is 0

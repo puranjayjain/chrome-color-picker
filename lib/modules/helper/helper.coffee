@@ -2,7 +2,7 @@
 module.exports =
 class Helper
   String::isRegistered = ->
-    document.createElement(this).constructor isnt HTMLElement
+    document.createElement(@).constructor isnt HTMLElement
 
   # create a new component
   createComponent: (name) ->

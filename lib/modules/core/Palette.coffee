@@ -29,7 +29,7 @@ class Palette extends helper
     deeporange: ['#fbe9e7', '#ffccbc', '#ffab91', '#ff8a65', '#ff7043', '#ff5722', '#f4511e', '#e64a19', '#d84315', '#bf360c', '#ff9e80', '#ff6e40', '#ff3d00', '#dd2c00']
     brown: ['#efebe9', '#d7ccc8', '#bcaaa4', '#a1887f', '#8d6e63', '#795548', '#6d4c41', '#5d4037', '#4e342e', '#3e2723']
     grey: ['#fafafa', '#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd', '#9e9e9e', '#757575', '#616161', '#424242', '#212121']
-    bluegrey:['#eceff1', '#cfd8dc', '#b0bec5', '#90a4ae', '#78909c', '#607d8b', '#546e7a', '#455a64', '#37474f', '#263238']
+    bluegrey: ['#eceff1', '#cfd8dc', '#b0bec5', '#90a4ae', '#78909c', '#607d8b', '#546e7a', '#455a64', '#37474f', '#263238']
   }
 
   ###*
@@ -60,7 +60,28 @@ class Palette extends helper
     material = new InnerPanel 'ccp-panel-inner', 'material'
 
     # swatch material palette
-    @swatches.materialPalette = [{color: 'Red', hex: '#F44336'}, {color: 'Pink', hex: '#E91E63'}, {color: 'Purple', hex: '#9C27B0'}, {color: 'Deep-purple', hex: '#673AB7'}, {color: 'Indigo', hex: '#3F51B5'}, {color: 'Blue', hex: '#2196F3'}, {color: 'Light-blue', hex: '#03A9F4'}, {color: 'Cyan', hex: '#00BCD4'}, {color: 'Teal', hex: '#009688'}, {color: 'Green', hex: '#4CAF50'}, {color: 'Light-green', hex: '#8BC34A'}, {color: 'Lime', hex: '#CDDC39'}, {color: 'Yellow', hex: '#FFEB3B'}, {color: 'Amber', hex: '#FFC107'}, {color: 'Orange', hex: '#FF9800'}, {color: 'Deep-orange', hex: '#FF5722'}, {color: 'Brown', hex: '#795548'}, {color: 'Grey', hex: '#9E9E9E'}, {color: 'Blue-grey', hex: '#607D8B'}, {color: 'Black', hex: '#000'}, {color: 'White', hex: '#fff'}]
+    @swatches.materialPalette = [
+      {color: 'Red', hex: '#F44336'}
+      {color: 'Pink', hex: '#E91E63'}
+      {color: 'Purple', hex: '#9C27B0'}
+      {color: 'Deep-purple', hex: '#673AB7'}
+      {color: 'Indigo', hex: '#3F51B5'}
+      {color: 'Blue', hex: '#2196F3'}
+      {color: 'Light-blue', hex: '#03A9F4'}
+      {color: 'Cyan', hex: '#00BCD4'}
+      {color: 'Teal', hex: '#009688'}
+      {color: 'Green', hex: '#4CAF50'}
+      {color: 'Light-green', hex: '#8BC34A'}
+      {color: 'Lime', hex: '#CDDC39'}
+      {color: 'Yellow', hex: '#FFEB3B'}
+      {color: 'Amber', hex: '#FFC107'}
+      {color: 'Orange', hex: '#FF9800'}
+      {color: 'Deep-orange', hex: '#FF5722'}
+      {color: 'Brown', hex: '#795548'}
+      {color: 'Grey', hex: '#9E9E9E'}
+      {color: 'Blue-grey', hex: '#607D8B'}
+      {color: 'Black', hex: '#000'}
+      {color: 'White', hex: '#fff'}]
 
     @swatches.material = []
     docfrag = document.createDocumentFragment()

@@ -8,7 +8,7 @@ class Input extends helper
   hex: null
   rgb: null
   hsl: null
-  formats: ['hex','rgb','hsl']
+  formats: ['hex', 'rgb', 'hsl']
   # if the value was set using setText api
   forced: true
 
@@ -28,11 +28,11 @@ class Input extends helper
     @hex = @createInput 'hex', element
     container.appendChild @hex
     # Rgb/a
-    element = ['r','g','b','a']
+    element = ['r', 'g', 'b', 'a']
     @rgb = @createInput 'rgb', element
     container.appendChild @rgb
     # Hsl/a
-    element = ['h','s','l','a']
+    element = ['h', 's', 'l', 'a']
     @hsl = @createInput 'hsl', element
     container.appendChild @hsl
     # add a button to go through the list
@@ -140,7 +140,7 @@ class Input extends helper
   # change the current format to the one given
   changeFormat: (format) ->
     # convert all formats to the ones without the alpha channel
-    format = format.replace('a','')
+    format = format.replace('a', '')
     # hide all inputs
     for name in @formats
       @[name].classList.add 'invisible'
@@ -179,7 +179,7 @@ class Input extends helper
       # remove spaces
       color = color.replace(RegExp(' ', 'g'), '')
       # remove '0'
-      color = color.replace '0.','.'
+      color = color.replace '0.', '.'
     # if uppercase color settings
     if @active.type is 'hex' and atom.config.get 'chrome-color-picker.HexColors.uppercaseHex'
       color = color.toUpperCase()
