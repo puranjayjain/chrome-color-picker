@@ -35,10 +35,19 @@ class Input extends helper
     element = ['h', 's', 'l', 'a']
     @hsl = @createInput 'hsl', element
     container.appendChild @hsl
+    innerButtons = @createComponent 'ccp-side-buttons'
     # add a button to go through the list
     @button = document.createElement 'BUTTON'
     @button.classList.add 'btn', 'btn-primary', 'btn-sm', 'icon', 'icon-code'
-    container.appendChild @button
+    innerButtons.appendChild @button
+    # add a toggle button to open / close the palette
+    @toggle = document.createElement 'BUTTON'
+    @toggle.classList.add 'btn', 'btn-info', 'btn-sm', 'icon'
+    # add icon according to the setting of the palette on open
+    @toggle.classList.add if atom.config.get 'chrome-color-picker.General.paletteOpen' then 'icon-fold' else 'icon-unfold'
+    innerButtons.appendChild @toggle
+    # append the inner to the main container
+    container.appendChild innerButtons
     # add event listeners
     @attachEventListeners()
 
@@ -63,6 +72,9 @@ class Input extends helper
       # innerEditor = input.getModel() to get inner text editor instance
       # innerEditor.getText and setText api to change the text
       div = document.createElement 'DIV'
+      # exception for hex color
+      if name is 'hex'
+        text += ' or Named'
       div.textContent = text
       inner.appendChild input
       inner.appendChild div
@@ -172,12 +184,24 @@ class Input extends helper
     # copy values
     color = @color.toString @active.type
     hexFormat = atom.config.get 'chrome-color-picker.HexColors.forceHexSize'
+    rgbFormat = atom.config.get 'chrome-color-picker.RgbColors.preferredFormat'
+    hslFormat = atom.config.get 'chrome-color-picker.HslColors.preferredFormat'
     hex3 = @color.toString('hex3')
     colorName = @color.toName()
+    # if the color is rgb and needed to converted to a format
+    if @active.type is 'rgb' and rgbFormat isnt 'standard'
+      color = @color.toString rgbFormat
+    # if the color is hsl and needed to converted to a format
+    if @active.type is 'hsl' and hslFormat isnt 'standard'
+      color = @color.toString hslFormat
     # if the color needs to be shortened and can be
     if @color.getAlpha() < 1 and atom.config.get 'chrome-color-picker.General.autoShortColor'
       # remove spaces
       color = color.replace(RegExp(' ', 'g'), '')
+      # 0% => 0
+      color = color.replace '0%', '0'
+      # 1.0 => 1
+      color = color.replace '1.0', '1'
       # remove '0'
       color = color.replace '0.', '.'
     # if uppercase color settings

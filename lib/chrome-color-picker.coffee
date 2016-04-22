@@ -217,8 +217,19 @@ module.exports = CCP =
 
       # change the format of the input
       preferredFormat = atom.config.get 'chrome-color-picker.General.preferredFormat'
+
       # pass the format if given as authored if found else pass hex
       preferredFormat = if preferredFormat is 'As authored' and !!match then match.format else 'hex'
+
+      # show palette according to preference
+      @CCPContainerInput.toggle.classList.remove 'icon-fold', 'icon-unfold'
+      if atom.config.get 'chrome-color-picker.General.paletteOpen'
+        @CCPContainerPalette.component.classList.remove 'invisible'
+        @CCPContainerInput.toggle.classList.add 'icon-fold'
+      else
+        @CCPContainerPalette.component.classList.add 'invisible'
+        @CCPContainerInput.toggle.classList.add 'icon-unfold'
+
       # set the position of the dialog
       @CCPContainer.setPlace cursorPosition, @EditorRoot, @EditorView, match
 
@@ -246,6 +257,7 @@ module.exports = CCP =
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
     @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible color modes'}
+    @subscriptions.add atom.tooltips.add @CCPContainerInput.toggle, {title: 'Toggle open / close the palette'}
     @subscriptions.add atom.tooltips.add @CCPPalette.customButton, {title: 'Add currently set color to palette'}
     # add to material color palettes
     palettes = @CCPPalette.swatches.materialPalette
@@ -357,6 +369,17 @@ module.exports = CCP =
       e.target.value = newValue
       # update color
       @UpdateAlpha newValue
+
+    @CCPContainerInput.toggle.addEventListener 'click', =>
+      # close or open the palette
+      @CCPContainerPalette.component.classList.toggle 'invisible'
+      # force toggle the state of the button
+      if @CCPContainerInput.toggle.classList.contains 'icon-fold'
+        @CCPContainerInput.toggle.classList.remove 'icon-fold'
+        @CCPContainerInput.toggle.classList.add 'icon-unfold'
+      else
+        @CCPContainerInput.toggle.classList.remove 'icon-unfold'
+        @CCPContainerInput.toggle.classList.add 'icon-fold'
 
     # toggle the popup palette event from the bottom palette
     @CCPPalette.button.addEventListener 'click', =>

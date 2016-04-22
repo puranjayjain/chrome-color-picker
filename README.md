@@ -15,10 +15,14 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 # Features
 ## Pick Colors in these formats
 * HEX
+* Named ([Web colors](https://en.wikipedia.org/wiki/Web_colors#X11_color_names))
 * RGB
 * RGBa
+* RGB and RGBa %
+* RGB and RGBa ratios
 * HSL
 * HSLa
+* HSL and HSLa ratios
 
 ## Integrated Palette
 - Use the palette with the picker as done in dev tools.
@@ -103,10 +107,7 @@ Try restarting atom or closing and opening atom or reloading atom (`View > Devel
 
 # Versioning
 
-For transparency into our release cycle and in striving to maintain backward
-compatibility, Material Design Lite is maintained under
-[the Semantic Versioning guidelines](http://semver.org/). Sometimes we screw up,
-but we'll adhere to those rules whenever possible.
+For transparency into our release cycle and in striving to maintain backward compatibility, we are maintained under [the Semantic Versioning guidelines](http://semver.org/). Sometimes we screw up, but we'll adhere to those rules whenever possible.
 
 # License
 

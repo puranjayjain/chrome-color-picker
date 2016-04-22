@@ -706,6 +706,13 @@ class TinyColor extends ColorMatchers
     l = Math.round(hsl.l * 100)
     if @_a is 1 then "hsl(#{h}, #{s}%, #{l}%)" else "hsla(#{h}, #{s}%, #{l}%, #{@_roundA})"
 
+  toRatioHslString: ->
+    hsl = @rgbToHsl(@_r, @_g, @_b)
+    h = Math.round(hsl.h * 360)
+    s = Math.round(hsl.s)
+    l = Math.round(hsl.l)
+    if @_a is 1 then "hsl(#{h}, #{s}, #{l})" else "hsla(#{h}, #{s}, #{l}, #{@_roundA})"
+
   toHex: (allow3Char) ->
     @rgbToHex @_r, @_g, @_b, allow3Char
 
@@ -749,9 +756,15 @@ class TinyColor extends ColorMatchers
 
   toPercentageRgbString: ->
     if @_a is 1
-      "rgb(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)} %, #{Math.round(@bound01(@_b, 255) * 100)} %)"
+      "rgb(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)}%, #{Math.round(@bound01(@_b, 255) * 100)}%)"
     else
       "rgba(#{Math.round(@bound01(@_r, 255) * 100)}%, #{Math.round(@bound01(@_g, 255) * 100)}%, #{Math.round(@bound01(@_b, 255) * 100)}%, #{@_roundA})"
+
+  toRatioRgbString: ->
+    if @_a is 1
+      "rgb(#{Math.round(@bound01(@_r, 255))}, #{Math.round(@bound01(@_g, 255))}, #{Math.round(@bound01(@_b, 255))})"
+    else
+      "rgba(#{Math.round(@bound01(@_r, 255))}, #{Math.round(@bound01(@_g, 255))}, #{Math.round(@bound01(@_b, 255))}, #{@_roundA})"
 
   toName: ->
     if @_a is 0
@@ -776,6 +789,8 @@ class TinyColor extends ColorMatchers
       formattedString = @toRgbString()
     if format is 'prgb'
       formattedString = @toPercentageRgbString()
+    if format is 'rrgb'
+      formattedString = @toRatioRgbString()
     if format is 'hex' or format is 'hex6'
       formattedString = @toHexString()
     if format is 'hex3'
@@ -786,6 +801,8 @@ class TinyColor extends ColorMatchers
       formattedString = @toName()
     if format is 'hsl'
       formattedString = @toHslString()
+    if format is 'rhsl'
+      formattedString = @toRatioHslString()
     if format is 'hsv'
       formattedString = @toHsvString()
     formattedString or @toHexString()

@@ -1,6 +1,11 @@
-## 0.4.3
+## 0.5.0
 * removed console logs from code
 * added linter to better check for errors in code
+* added support for RGB and RGBa (% and fractions) e.g rgb(100%, 0%, 0%), rgb(1, 1, 0) see [link](https://github.com/bgrins/TinyColor#rgb-rgba)
+* added support for HSL and HSLa (% and fractions) e.g hsl(0, 100%, 50%), hsl(0, 1.0, 0.5) see [link](https://github.com/bgrins/TinyColor#hsl-hsla)
+* keep the palette closed or open on dialog open setting
+* toggle the palette button
+* Updated readme typo
 
 ## 0.4.2
 * Working on `Auto Set Color` config [issue](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/config.coffee#L13)
