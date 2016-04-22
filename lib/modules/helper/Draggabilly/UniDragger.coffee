@@ -54,7 +54,7 @@ class Unidragger extends Unipointer
       handle = @handles[i]
       @_bindStartEvent handle, isBind
       binderExtra handle
-      handle[bindMethod] 'click', this
+      handle[bindMethod] 'click', @
       i++
     return
 
@@ -128,7 +128,7 @@ class Unidragger extends Unipointer
       x: movePoint.x - (@pointerDownPoint.x)
       y: movePoint.y - (@pointerDownPoint.y)
     # start drag if pointer has moved far enough to start drag
-    if !@isDragging and @hasDragStarted(moveVector)
+    if not @isDragging and @hasDragStarted(moveVector)
       @_dragStart event, pointer
     moveVector
 
@@ -183,7 +183,7 @@ class Unidragger extends Unipointer
 
   _dragMove: (event, pointer, moveVector) ->
     # do not drag if not dragging yet
-    if !@isDragging
+    if not @isDragging
       return
     @dragMove event, pointer, moveVector
     return
@@ -206,7 +206,7 @@ class Unidragger extends Unipointer
     setTimeout (->
       delete @isPreventingClicks
       return
-    ).bind(this)
+    ).bind(@)
     @dragEnd event, pointer
     return
 
@@ -244,7 +244,7 @@ class Unidragger extends Unipointer
       setTimeout (->
         delete @isIgnoringMouseUp
         return
-      ).bind(this), 400
+      ).bind(@), 400
     return
 
   staticClick: (event, pointer) ->

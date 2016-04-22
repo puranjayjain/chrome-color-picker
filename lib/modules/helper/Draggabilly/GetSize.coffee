@@ -32,7 +32,7 @@ class GetSize
   getStyleSize = (value) ->
     num = parseFloat(value)
     # not a percent like '100%', and a number
-    isValid = value.indexOf('%') is -1 and !isNaN(num)
+    isValid = value.indexOf('%') is -1 and not isNaN(num)
     isValid and num
 
   getZeroSize = ->

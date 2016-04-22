@@ -24,11 +24,11 @@ class Unipointer extends EvEmitter
   ###
   _bindStartEvent: (elem, isBind) ->
     # munge isBind, default to true
-    isBind = if isBind is undefined then true else ! !isBind
+    isBind = if isBind is undefined then true else not  not isBind
     bindMethod = if isBind then 'addEventListener' else 'removeEventListener'
     # listen for both, for devices like Chrome Pixel
-    elem[bindMethod] 'mousedown', this
-    elem[bindMethod] 'touchstart', this
+    elem[bindMethod] 'mousedown', @
+    elem[bindMethod] 'touchstart', @
     return
 
   # trigger handler methods for events
@@ -111,27 +111,27 @@ class Unipointer extends EvEmitter
     ]
 
   _bindPostStartEvents: (event) ->
-    if !event
+    if not event
       return
     # get proper events to match start event
     events = @postStartEvents[event.type]
     # bind events to node
     events.forEach ((eventName) ->
-      window.addEventListener eventName, this
+      window.addEventListener eventName, @
       return
-    ), this
+    ), @
     # save these arguments
     @_boundPointerEvents = events
     return
 
   _unbindPostStartEvents: ->
     # check for _boundEvents, in case dragEnd triggered twice (old IE8 bug)
-    if !@_boundPointerEvents
+    if not @_boundPointerEvents
       return
     @_boundPointerEvents.forEach ((eventName) ->
-      window.removeEventListener eventName, this
+      window.removeEventListener eventName, @
       return
-    ), this
+    ), @
     delete @_boundPointerEvents
     return
 

@@ -18,7 +18,9 @@ ccp-handle {
   height: 12px;
   border: 2px solid @amber;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: move;
+  cursor: grab;
+  cursor: -webkit-grab;
 }
 
 ccp-dragger {
@@ -26,6 +28,14 @@ ccp-dragger {
   display: block;
   width: 1px;
   height: 1px;
+
+  &.is-pointer-down {
+    ccp-handle {
+      cursor: move;
+      cursor: grabbing;
+      cursor: -webkit-grabbing;
+    }
+  }
 }
 
 ccp-canvas-overlay {
@@ -59,8 +69,8 @@ ccp-panel {
 
 ccp-side-buttons {
   display: flex;
-	flex-direction: column;
-	margin-left: 4px;
+  flex-direction: column;
+  margin-left: 4px;
 
   & > .btn {
     margin-bottom: 8px;

@@ -8,7 +8,7 @@ module.exports =
 class EvEmitter
 
   on: (eventName, listener) ->
-    if !eventName or !listener
+    if not eventName or not listener
       return
     # set events hash
     events = @_events = @_events or {}
@@ -17,10 +17,10 @@ class EvEmitter
     # only add once
     if listeners.indexOf(listener) is -1
       listeners.push listener
-    this
+    @
 
   once: (eventName, listener) ->
-    if !eventName or !listener
+    if not eventName or not listener
       return
     # add event
     @on eventName, listener
@@ -31,20 +31,20 @@ class EvEmitter
     onceListeners = onceEvents[eventName] = onceEvents[eventName] or []
     # set flag
     onceListeners[listener] = true
-    this
+    @
 
   off: (eventName, listener) ->
     listeners = @_events and @_events[eventName]
-    if !listeners or !listeners.length
+    if not listeners or not listeners.length
       return
     index = listeners.indexOf(listener)
     if index isnt -1
       listeners.splice index, 1
-    this
+    @
 
   emitEvent: (eventName, args) ->
     listeners = @_events and @_events[eventName]
-    if !listeners or !listeners.length
+    if not listeners or not listeners.length
       return
     i = 0
     listener = listeners[i]
@@ -60,8 +60,8 @@ class EvEmitter
         # unset once flag
         delete onceListeners[listener]
       # trigger listener
-      listener.apply this, args
+      listener.apply @, args
       # get next listener
       i += if isOnce then 0 else 1
       listener = listeners[i]
-    this
+    @
