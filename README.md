@@ -6,6 +6,15 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 
 **Note: The color highlight or marker is not part of this package, to obtain that functionality we use [pigments](https://atom.io/packages/pigments)**
 
+# Install
+## Using `apm`:
+
+```
+apm install chrome-color-picker
+```
+## Using Atom
+Or search for `chrome color picker` in Atom Settings (`Settings > Install > Search`).
+
 # Simple Usage
 - Open the dialog using the shortcut key or using the context menu
 - Press Escape to close it.
