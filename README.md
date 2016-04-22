@@ -13,7 +13,7 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 - Press Enter to update the color
 
 # Features
-## Pick Colors in these formats
+## Use Colors in these formats
 * HEX
 * Named ([Web colors](https://en.wikipedia.org/wiki/Web_colors#X11_color_names))
 * RGB
@@ -56,7 +56,7 @@ The plugin uses the following projects (or their sources) or technologies in som
 Feel free to use the source code of the converted files as long as you adhere to their respective licenses.
 
 # Customise the key binding to your taste
-Open your **keymap** file and add this line to it:
+Open your [keymap](http://flight-manual.atom.io/behind-atom/sections/keymaps-in-depth/) file and add this line to it:
 ```CoffeeScript
 'atom-workspace':
   'your-keybinding': 'chrome-color-picker:toggle'
