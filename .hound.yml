@@ -1,2 +1,4 @@
+fail_on_violations: true
+
 coffeescript:
   config_file: coffeelint.json
