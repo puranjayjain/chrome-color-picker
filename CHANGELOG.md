@@ -1,3 +1,6 @@
+## 0.5.1
+* Fixed License file to be displayed on apm
+
 ## 0.5.0
 * removed console logs from code
 * added linter to better check for errors in code
@@ -6,6 +9,7 @@
 * keep the palette closed or open on dialog open setting
 * toggle the palette button
 * Updated readme typo
+* cursor grab and grabbing fixes
 
 ## 0.4.2
 * Working on `Auto Set Color` config [issue](https://github.com/puranjayjain/chrome-color-picker/blob/master/lib/config.coffee#L13)

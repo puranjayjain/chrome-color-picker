@@ -80,14 +80,14 @@ This implementation was built from ground up to:
 
 # FAQs
 
-1) I am seeing strange settings which I'm not able to edit
+#### 1) I am seeing strange settings which I'm not able to edit
 
 **Solution**
   1. Open the developer tools in atom (View > Developers > Toggle Developer Mode or Using `ctrl + alt + i`)
 
   2. Enter this command in the developer tools console `atom.config.unset('chrome-color-picker')` and restart atom
 
-2) How do I know which settings override which ones?
+#### 2) How do I know which settings override which ones?
 
 **Solution**
   - Although there is no guide (yet) for the specificity of settings or which settings are above which ones.
@@ -95,12 +95,12 @@ But you can know about some of them [here](https://github.com/puranjayjain/chrom
 
 Feel free to update the [wiki](https://github.com/puranjayjain/chrome-color-picker/wiki/Setting's-specificity) with your findings.
 
-3) Do you mind feature requests or suggestions?
+#### 3) Do you mind feature requests or suggestions?
 
 **Solution**<br><br>
 They are always welcome, even if they are present in the [milestone](https://github.com/puranjayjain/chrome-color-picker/milestones)
 
-4) Help! the picker won't open !
+#### 4) Help! the picker won't open !
 
 **Solution**<br><br>
 Try restarting atom or closing and opening atom or reloading atom (`View > Developer > Reload Window`)
