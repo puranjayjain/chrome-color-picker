@@ -30,6 +30,11 @@ module.exports =
           description: 'If the palette is open when the dialog is opened or not.'
           type: 'boolean'
           default: true
+        showButtons:
+          title: 'Show the bottom buttons'
+          description: 'If enabled the dialog will show the ok and cancel buttons.'
+          type: 'boolean'
+          default: false
     HexColors:
       title: 'Hex Color Specific Settings'
       type: 'object'

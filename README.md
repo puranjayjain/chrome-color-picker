@@ -13,7 +13,7 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 apm install chrome-color-picker
 ```
 ## Using Atom
-Or search for `chrome color picker` in Atom Settings (`Settings > Install > Search`).
+Search for `chrome color picker` in Atom Settings (`Settings > Install > Search`).
 
 # Simple Usage
 - Open the dialog using the shortcut key or using the context menu
@@ -116,7 +116,7 @@ Try restarting atom or closing and opening atom or reloading atom (`View > Devel
 
 # Versioning
 
-For transparency into our release cycle and in striving to maintain backward compatibility, we are maintained under [the Semantic Versioning guidelines](http://semver.org/). Sometimes we screw up, but we'll adhere to those rules whenever possible.
+For transparency into our release cycle and in striving to maintain backward compatibility, package is maintained under [the Semantic Versioning guidelines](http://semver.org/). Sometimes we screw up, but we'll adhere to those rules whenever possible.
 
 # License
 

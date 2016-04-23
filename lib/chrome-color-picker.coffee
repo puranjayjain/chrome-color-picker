@@ -2,6 +2,7 @@ Config = require './config'
 
 FloatingPanel = require './modules/ui/FloatingPanel'
 InnerPanel = require './modules/ui/InnerPanel'
+BottomButtons = require './modules/ui/BottomButtons'
 
 Swatch = require './modules/core/Swatch'
 Slider = require './modules/core/Slider'
@@ -41,6 +42,8 @@ module.exports = CCP =
   CCPActiveSwatch: null
   CCPSwatchPopup: null
   CCPOverlay: null
+  CCPContainerBottomButtons: null
+  CCPBottomButtons: null
 
   ColorRange: null
   ColorMatcher: null
@@ -151,6 +154,11 @@ module.exports = CCP =
       @keyboardSubscriptions.dispose()
       # remove temp listeners
       @removeTempEvents()
+      # delete the buttons if not required
+      if @CCPBottomButtons? and not atom.config.get 'chrome-color-picker.General.showButtons'
+        @CCPContainerBottomButtons.delete()
+        @CCPBottomButtons = null
+        @CCPContainerBottomButtons = null
       # focus the editor back
       @EditorView.focus()
       # toggle the state of the dialog
@@ -236,10 +244,19 @@ module.exports = CCP =
       # set the position of the dialog
       @CCPContainer.setPlace cursorPosition, @EditorRoot, @EditorView, match
 
+      # create the ok and cancel buttons if needed
+      if not @CCPBottomButtons? and atom.config.get 'chrome-color-picker.General.showButtons'
+        @CCPContainerBottomButtons = new InnerPanel 'ccp-panel', 'bottombuttons'
+        @CCPBottomButtons = new BottomButtons(@CCPContainerBottomButtons.component)
+        @CCPContainer.add @CCPContainerBottomButtons
+        @addBottomButtonEvents()
+
       # set the format
       @CCPContainerInput.changeFormat preferredFormat
+
       # toggle open the dialog
       @CCPContainer.toggle()
+
       # update the visible color
       @UpdateUI color: @OldColor, old: true
 
@@ -514,6 +531,14 @@ module.exports = CCP =
           @NewColor = color
           # if the text was set forcefully then dont do it
           @UpdateUI color: @NewColor, text: false, forced: false
+
+  # add bottom button events
+  addBottomButtonEvents: ->
+    @CCPBottomButtons.ok.addEventListener 'click', =>
+      @save(true)
+
+    @CCPBottomButtons.cancel.addEventListener 'click', =>
+      @close()
 
   # add keybindings to close and open the editor
   addKeyBoardAndTempEvents: ->

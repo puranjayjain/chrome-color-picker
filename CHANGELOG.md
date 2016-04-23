@@ -1,3 +1,7 @@
+## 0.6.0
+* Added buttons to save the color and cancel to close the dialog the dialog
+* Added ability to delete and copy/paste the swatches in custom palettes
+
 ## 0.5.2
 * Persistant changes to toggle palette on dialog close
 * Click outside the dialog to close it
