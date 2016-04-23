@@ -6,3 +6,17 @@
       'command': 'chrome-color-picker:toggle'
     }
   ]
+  'ccp-palette-inner ccp-swatch': [
+    {
+      'label': 'Copy Swatch'
+      'command': 'chrome-color-picker:close'
+    }
+    {
+      'label': 'Paste Swatch'
+      'command': 'chrome-color-picker:close'
+    }
+    {
+      'label': 'Delete Swatch'
+      'command': 'chrome-color-picker:close'
+    }
+  ]

@@ -127,8 +127,8 @@ module.exports = CCP =
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:save': => @save()
 
   deactivate: ->
-    @CCPContainer.destroy()
     @subscriptions.dispose()
+    @CCPContainer.destroy()
 
   serialize: ->
     # TODO serialize palettes
