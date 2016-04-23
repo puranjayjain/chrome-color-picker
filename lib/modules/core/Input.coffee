@@ -162,8 +162,8 @@ class Input extends helper
     @active.component = @[format]
     # show the format
     @active.component.classList.remove 'invisible'
-    # focus the first input
     setTimeout (=>
+      # focus the first input
       @active.component.querySelector('atom-text-editor').focus()
       # reflect that the text was set forcefully
       @forced = true

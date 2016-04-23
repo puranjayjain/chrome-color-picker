@@ -50,6 +50,7 @@ module.exports = CCP =
   EditorView: null
 
   # to manage the disposable events and tooltips
+  tempListeners: {}
   subscriptions: null
   popUpSubscriptions: null
   keyboardSubscriptions: null
@@ -148,6 +149,8 @@ module.exports = CCP =
       @CCPContainer.toggle()
       # dispose temp events
       @keyboardSubscriptions.dispose()
+      # remove temp listeners
+      @removeTempEvents()
       # focus the editor back
       @EditorView.focus()
       # toggle the state of the dialog
@@ -248,7 +251,7 @@ module.exports = CCP =
         @CCPPalette.popUpPalette.classList.add 'invisible'
 
       # add keyboard events
-      @addKeyBoardEvents()
+      @addKeyBoardAndTempEvents()
 
       # toggle the state of the dialog
       @open = true
@@ -377,9 +380,11 @@ module.exports = CCP =
       if @CCPContainerInput.toggle.classList.contains 'icon-fold'
         @CCPContainerInput.toggle.classList.remove 'icon-fold'
         @CCPContainerInput.toggle.classList.add 'icon-unfold'
+        atom.config.set 'chrome-color-picker.General.paletteOpen', false
       else
         @CCPContainerInput.toggle.classList.remove 'icon-unfold'
         @CCPContainerInput.toggle.classList.add 'icon-fold'
+        atom.config.set 'chrome-color-picker.General.paletteOpen', true
 
     # toggle the popup palette event from the bottom palette
     @CCPPalette.button.addEventListener 'click', =>
@@ -511,9 +516,10 @@ module.exports = CCP =
           @UpdateUI color: @NewColor, text: false, forced: false
 
   # add keybindings to close and open the editor
-  addKeyBoardEvents: ->
+  addKeyBoardAndTempEvents: ->
     # create a disposable to get rid of later
     @keyboardSubscriptions = new CompositeDisposable
+
     # create the event to moniter
     @keyboardSubscriptions.add atom.keymaps.onDidMatchBinding (e) =>
       # if the escape key is pressed close
@@ -522,6 +528,24 @@ module.exports = CCP =
       # if the enter key is pressed inside the picker close it
       if e.keystrokes is 'enter' and @inside e.keyboardEventTarget
         @save(true)
+
+    # event to close the dialog on click anywhere outside the dialog
+    @tempListeners.onClick = (e) =>
+      if not @inside e.target
+        @close()
+
+    # event to close the dialog on atom resize
+    @tempListeners.onResize = =>
+      @close()
+
+    # attach the events to the window
+    window.addEventListener 'click', @tempListeners.onClick, true
+    window.addEventListener 'resize', @tempListeners.onResize, true
+
+  # remove event listeners
+  removeTempEvents: ->
+    window.removeEventListener 'click', @tempListeners.onClick, true
+    window.removeEventListener 'resize', @tempListeners.onResize, true
 
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'

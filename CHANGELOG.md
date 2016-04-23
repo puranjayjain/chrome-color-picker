@@ -1,3 +1,8 @@
+## 0.5.2
+* Persistant changes to toggle palette on dialog close
+* Click outside the dialog to close it
+* Resize window to close it
+
 ## 0.5.1
 * Fixed License file to be displayed on apm
 
