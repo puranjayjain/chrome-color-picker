@@ -1,6 +1,7 @@
 helper = require '../helper/helper'
 InnerPanel = require '../ui/InnerPanel'
 Swatch = require './Swatch'
+TinyColor = require '../helper/TinyColor'
 
 module.exports =
 class Palette extends helper
@@ -102,6 +103,16 @@ class Palette extends helper
     @customButton.classList.add 'btn', 'btn-success', 'btn-sm', 'icon', 'icon-plus'
     custom.component.appendChild @customButton
     custom
+
+  # add swatch to custom palette
+  addSwatch: (color) ->
+    # refer tiny color
+    color = TinyColor color
+    # add a new swatch with new color
+    swatch = new Swatch 'square'
+    swatch.component.setAttribute 'style', 'background: ' + color.toRgbString()
+    swatch.component.setAttribute 'data-color', color.toRgbString()
+    @palettes.custom.appendChild swatch.component
 
   # TODO create the page's Palette
   # TODO create the project's Palette

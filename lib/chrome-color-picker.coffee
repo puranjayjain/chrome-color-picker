@@ -45,6 +45,7 @@ module.exports = CCP =
   CCPContainerBottomButtons: null
   CCPBottomButtons: null
 
+  # Other States UI States
   ColorRange: null
   ColorMatcher: null
   OldColor: null
@@ -125,6 +126,54 @@ module.exports = CCP =
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:save': => @save()
+
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:copyColor': => @copyColor()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:pasteColor': => @pasteColor()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:deleteColor': => @deleteColor()
+
+    # create the dynamic context menus
+    @subscriptions.add atom.contextMenu.add {
+      'ccp-panel-inner.material ccp-swatch': [
+        {
+          'label': 'Copy Swatch'
+          'command': 'chrome-color-picker:copyColor'
+          'created': @registerContext
+        }
+      ]
+    }
+
+    # create the dynamic context menus
+    @subscriptions.add atom.contextMenu.add {
+      'ccp-panel-inner.custom': [
+        {
+          'label': 'Copy Swatch'
+          'command': 'chrome-color-picker:copyColor'
+          'created': @registerContext
+        }
+        {
+          'label': 'Paste Swatch'
+          'command': 'chrome-color-picker:pasteColor'
+        }
+        {
+          'type': 'separator'
+        }
+        {
+          'label': 'Delete Swatch'
+          'command': 'chrome-color-picker:deleteColor'
+        }
+      ]
+    }
+
+    # create the dynamic context menus for popUpPalette
+    @subscriptions.add atom.contextMenu.add {
+      'ccp-swatch-popup ccp-swatch': [
+        {
+          'label': 'Copy Swatch'
+          'command': 'chrome-color-picker:copyColor'
+          'created': @registerContextPopUP
+        }
+      ]
+    }
 
   deactivate: ->
     @subscriptions.dispose()
@@ -272,6 +321,87 @@ module.exports = CCP =
 
       # toggle the state of the dialog
       @open = true
+
+  # HACK find a possible alternative to this method someone pls.
+  registerContextPopUP: (e) ->
+    # data element palette inner
+    dataElement = document.getElementsByTagName('ccp-palette-inner')[0]
+
+    # get nth child number of element
+    getNthChild = (child) ->
+      i = 0
+      while (child = child.previousSibling)?
+        i++
+      ++i
+
+    # get css path of element
+    fullPath = (el) ->
+      "#{el.parentNode.nodeName.toLowerCase()} #{el.nodeName.toLowerCase()}:nth-child(#{getNthChild(el)})"
+
+    dataElement.setAttribute 'data-action2', fullPath e.target
+    dataElement.setAttribute 'data-action', fullPath e.target
+
+  # HACK find a possible alternative to this method someone pls.
+  # register current swatch or element for reference
+  registerContext: (e) ->
+    # data element palette inner
+    dataElement = document.getElementsByTagName('ccp-palette-inner')[0]
+
+    # set paste element
+    setPaste = (el) ->
+      # to check the paste target later
+      if el.nodeName is 'CCP-PANEL-INNER' and el.className is 'custom'
+        dataElement.setAttribute 'data-paste', true
+
+    # get nth child number of element
+    getNthChild = (child) ->
+      i = 0
+      while (child = child.previousSibling)?
+        i++
+      ++i
+
+    # get css path of element
+    fullPath = (el) ->
+      "#{el.parentNode.nodeName.toLowerCase()}.#{el.parentNode.className} #{el.nodeName.toLowerCase()}:nth-child(#{getNthChild(el)})"
+
+    # set paste
+    setPaste e.target
+
+    # only register nodes with relevance
+    if e.target.nodeName is 'CCP-SWATCH' and not dataElement.getAttribute 'data-action'
+      dataElement.setAttribute 'data-action', fullPath e.target
+    if e.target.nodeName is 'CCP-SWATCH'
+      dataElement.setAttribute 'data-action2', fullPath e.target
+      setPaste e.target.parentNode
+
+  copyColor: ->
+    # copy data action 2 to 1
+    @CCPPalette.component.setAttribute 'data-action', @CCPPalette.component.getAttribute 'data-action2'
+    # only do if the correct element is copied
+    el = document.querySelector @CCPPalette.component.getAttribute('data-action')
+    if el.nodeName is 'CCP-SWATCH'
+      # add reference to start work, for copy action
+      @CCPPalette.component.setAttribute 'data-paste', true
+
+  pasteColor: ->
+    # also we are only pasting in custom palette
+    if @CCPPalette.component.getAttribute('data-paste')
+      # get the element
+      el = document.querySelector @CCPPalette.component.getAttribute('data-action')
+      color = el.getAttribute 'data-color'
+      # add a new swatch with new color
+      @CCPPalette.addSwatch color
+
+  deleteColor: ->
+    # copy data action 2 to 1
+    @CCPPalette.component.setAttribute 'data-action', @CCPPalette.component.getAttribute 'data-action2'
+    el = document.querySelector @CCPPalette.component.getAttribute('data-action')
+    if el?
+      if el.nodeName is 'CCP-SWATCH' and el.parentNode.className is 'custom'
+        # remove swatch
+        el.parentNode.removeChild el
+        # remove the references to avoid problems
+        @CCPPalette.component.removeAttribute 'data-action'
 
   addTooltips: ->
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
@@ -471,10 +601,7 @@ module.exports = CCP =
 
     @CCPPalette.customButton.addEventListener 'click', (e) =>
       # add a new swatch with new color
-      swatch = new Swatch 'square'
-      swatch.component.setAttribute 'style', 'background: ' + @NewColor.toRgbString()
-      swatch.component.setAttribute 'data-color', @NewColor.toRgbString()
-      e.target.parentNode.appendChild swatch.component
+      @CCPPalette.addSwatch @NewColor
 
     # get all the editors
     hexEditor = @CCPContainerInput.hex.querySelector('atom-text-editor.hex').getModel()
