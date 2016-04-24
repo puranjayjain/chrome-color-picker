@@ -338,6 +338,7 @@ module.exports = CCP =
     fullPath = (el) ->
       "#{el.parentNode.nodeName.toLowerCase()} #{el.nodeName.toLowerCase()}:nth-child(#{getNthChild(el)})"
 
+    dataElement.setAttribute 'data-copy', e.target.getAttribute 'data-color'
     dataElement.setAttribute 'data-action2', fullPath e.target
     dataElement.setAttribute 'data-action', fullPath e.target
 
@@ -385,17 +386,23 @@ module.exports = CCP =
 
   pasteColor: ->
     # also we are only pasting in custom palette
-    if @CCPPalette.component.getAttribute('data-paste')
+    if @CCPPalette.component.getAttribute 'data-paste'
       # get the element
-      el = document.querySelector @CCPPalette.component.getAttribute('data-action')
-      color = el.getAttribute 'data-color'
+      el = document.querySelector @CCPPalette.component.getAttribute 'data-action'
+
+      # if not element but color then use it directly
+      if el?
+        color = el.getAttribute 'data-color'
+      else
+        color = @CCPPalette.component.getAttribute 'data-copy'
+
       # add a new swatch with new color
       @CCPPalette.addSwatch color
 
   deleteColor: ->
     # copy data action 2 to 1
     @CCPPalette.component.setAttribute 'data-action', @CCPPalette.component.getAttribute 'data-action2'
-    el = document.querySelector @CCPPalette.component.getAttribute('data-action')
+    el = document.querySelector @CCPPalette.component.getAttribute 'data-action'
     if el?
       if el.nodeName is 'CCP-SWATCH' and el.parentNode.className is 'custom'
         # remove swatch
