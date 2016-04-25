@@ -3,8 +3,8 @@ ccp-container {
   position: fixed;
   display: flex;
   border-radius: 3px;
-  background-color: @background;
-  border: 1px solid @amber;
+  background-color: @ccpBackground;
+  border: 1px solid @ccpAmber;
   flex-direction: column;
 	z-index: 5;
 
@@ -20,7 +20,7 @@ ccp-container {
     height: @arrow;
     left: ~"calc(50% - "(@arrow / 2)~")";
     bottom: ~"calc(100% - "(@arrow / 2)~")";
-    box-shadow: 1px -1px 0 0 @amber;
+    box-shadow: 1px -1px 0 0 @ccpAmber;
     background-color: inherit;
     transform: rotate(-45deg);
   }
@@ -29,7 +29,7 @@ ccp-container {
     ccp-triangle {
       top: ~"calc(100% - "(@arrow / 2)~")";
       bottom: auto;
-      box-shadow: -1px 1px 0 0 @amber;
+      box-shadow: -1px 1px 0 0 @ccpAmber;
     }
   }
 }

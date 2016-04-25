@@ -42,7 +42,7 @@ ccp-panel-inner {
       }
 
       &:hover {
-        border-color: @amber;
+        border-color: @ccpAmber;
       }
     }
   }
@@ -62,7 +62,7 @@ ccp-palette-popup {
   position: absolute;
   display: flex;
   flex-direction: column;
-  background-color: @background;
+  background-color: @ccpBackground;
   bottom: 0;
   left: 0;
   height: 100%;
@@ -86,8 +86,8 @@ ccp-palette-popup {
     }
 
     &:hover:not(:first-of-type) {
-      background-color: @amber;
-      color: @background;
+      background-color: @ccpAmber;
+      color: @ccpBackground;
     }
 
     ccp-swatch:first-of-type {
@@ -110,7 +110,7 @@ ccp-palette-popup {
     }
 
     &.custom {
-      border-bottom: 1px solid lighten(@background, 10%);
+      border-bottom: 1px solid lighten(@ccpBackground, 10%);
 
       ccp-swatch {
         background: transparent;

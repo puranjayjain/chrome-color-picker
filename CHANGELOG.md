@@ -2,6 +2,7 @@
 * Improved visibility of main Slider
 * Fixes to copy/paste
 * Accessibility fixes
+* Fixed recursive background color issue
 
 ## 0.6.0
 * Added buttons to save the color and cancel to close the dialog the dialog
