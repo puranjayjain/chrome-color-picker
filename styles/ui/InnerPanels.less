@@ -16,7 +16,8 @@ ccp-handle {
   left: -6.5px;
   width: 12px;
   height: 12px;
-  border: 2px solid @amber;
+  border: 2px solid #fff;
+  box-shadow: 0 0 1px #000;
   border-radius: 50%;
   cursor: move;
   cursor: grab;
@@ -31,6 +32,7 @@ ccp-dragger {
 
   &.is-pointer-down {
     ccp-handle {
+      border-color: @amber;
       cursor: move;
       cursor: grabbing;
       cursor: -webkit-grabbing;
@@ -81,7 +83,7 @@ ccp-side-buttons {
   flex-direction: column;
   margin-left: 4px;
 
-  & > .btn {
+  & > .btn:first-of-type {
     margin-bottom: 8px;
   }
 }

@@ -380,9 +380,10 @@ module.exports = CCP =
     @CCPPalette.component.setAttribute 'data-action', @CCPPalette.component.getAttribute 'data-action2'
     # only do if the correct element is copied
     el = document.querySelector @CCPPalette.component.getAttribute('data-action')
-    if el.nodeName is 'CCP-SWATCH'
-      # add reference to start work, for copy action
-      @CCPPalette.component.setAttribute 'data-paste', true
+    if el?
+      if el.nodeName is 'CCP-SWATCH'
+        # add reference to start work, for copy action
+        @CCPPalette.component.setAttribute 'data-paste', true
 
   pasteColor: ->
     # also we are only pasting in custom palette
@@ -396,8 +397,10 @@ module.exports = CCP =
       else
         color = @CCPPalette.component.getAttribute 'data-copy'
 
-      # add a new swatch with new color
-      @CCPPalette.addSwatch color
+      # do only if there is an actual color
+      if color?
+        # add a new swatch with new color
+        @CCPPalette.addSwatch color
 
   deleteColor: ->
     # copy data action 2 to 1

@@ -1,3 +1,8 @@
+## 0.7.0
+* Improved visibility of main Slider
+* Fixes to copy/paste
+* Accessibility fixes
+
 ## 0.6.0
 * Added buttons to save the color and cancel to close the dialog the dialog
 * Added ability to delete and copy/paste the swatches in custom palettes

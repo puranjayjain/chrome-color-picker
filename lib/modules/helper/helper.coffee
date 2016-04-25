@@ -27,3 +27,17 @@ class Helper
   # remove class from the panel
   removeClass: (classes) ->
     @component.classList.remove classes
+
+  # set focusable
+  setFocusable: (el) ->
+    if el
+      el.tabIndex = '1'
+    else
+      @component.tabIndex = '1'
+
+  # remove focusable
+  removeFocusable: (el) ->
+    if el
+      el.tabIndex = '-1'
+    else
+      @component.tabIndex = '-1'

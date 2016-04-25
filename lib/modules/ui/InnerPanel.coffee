@@ -16,7 +16,7 @@ class InnerPanel extends helper
     if type then @component.classList.add type
 
     # set a default tab index to make it focusable
-    @component.tabIndex = '2'
+    @component.tabIndex = '3'
 
   # set a new color to the canvas component
   setColor: (color) ->
