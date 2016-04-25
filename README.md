@@ -4,7 +4,7 @@ A color picker inspired by chrome's dev tools color picker (or [spectrum](https:
 ## Preview
 ![Demo Image](https://raw.githubusercontent.com/puranjayjain/chrome-color-picker/master/demo.gif)
 
-**Note: The color highlight or marker is not part of this package, to obtain that functionality we use [pigments](https://atom.io/packages/pigments)**
+**Note: The color highlight or marker is not part of this package, to obtain that functionality we use [pigments](https://atom.io/packages/pigments) and the syntax theme is [chrome-dark-syntax](https://atom.io/packages/chrome-dark-syntax)**
 
 # Install
 ## Using `apm`:
@@ -73,13 +73,10 @@ Open your [keymap](http://flight-manual.atom.io/behind-atom/sections/keymaps-in-
 **Note: Your keybinding can be e.g ctrl+alt+c and also make sure to disable the default keybinding from the package's settings or resolve it using the keybinding resolver**
 
 ## The commands that are supported currently are:
-* chrome-color-picker:toggle - triggers dialog open/close
-* chrome-color-picker:close  - triggers dialog close
-* chrome-color-picker:save   - triggers the color to be updated back to the editor
-
-## More keys (cannot be modified)
-- Press `escape` to close the dialog
-- Press `enter` to update the color
+* chrome-color-picker:toggle        - triggers dialog open/close
+* chrome-color-picker:close         - triggers dialog close
+* chrome-color-picker:save          - triggers the color to be updated back to the editor
+* chrome-color-picker:saveAndClose  - triggers the color to be updated back to the editor and closed after that
 
 # Purpose to create
 This implementation was built from ground up to:
@@ -120,6 +117,7 @@ For transparency into our release cycle and in striving to maintain backward com
 
 # License
 
-This project is licensed under an **MIT License**.
+Copyright (c) 2016 Puranjay Jain and [Contributors](https://github.com/puranjayjain/chrome-color-picker/graphs/contributors) All Rights Reserved.
+This project is licensed under an [MIT License](https://github.com/puranjayjain/chrome-color-picker/blob/master/LICENSE.md).
 
 The list of all 3rd party licenses along with the main License can be found [here](https://github.com/puranjayjain/chrome-color-picker/blob/master/LICENSE.md)

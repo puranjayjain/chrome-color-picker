@@ -1,5 +1,4 @@
 // swatch styles
-
 ccp-swatch {
   position: relative;
   display: block;
@@ -19,6 +18,15 @@ ccp-swatch {
     height: 14px;
     border-radius: 3px;
     margin: 0 6px;
+  }
+
+  &:hover, &:focus {
+    border-color: @ccpAmber;
+  }
+
+  // TODO replace it with highlight color like with text editor boundaries
+  &:active {
+    border-color: contrast(@ccpBackground);
   }
 }
 

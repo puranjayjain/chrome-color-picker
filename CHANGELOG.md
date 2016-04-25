@@ -2,19 +2,20 @@
 * Improved visibility of main Slider
 * Fixes to copy/paste
 * Accessibility fixes
-* Fixed recursive background color issue
+* Fixed recursive background color [issue#3](https://github.com/puranjayjain/chrome-color-picker/issues/3)
+* Fixed issue with toggling tree view, now the picker closes on tree view toggle
 
 ## 0.6.0
 * Added buttons to save the color and cancel to close the dialog the dialog
 * Added ability to delete and copy/paste the swatches in custom palettes
 
 ## 0.5.2
-* Persistant changes to toggle palette on dialog close
+* Persistent changes to toggle palette on dialog close
 * Click outside the dialog to close it
 * Resize window to close it
 
 ## 0.5.1
-* Fixed License file to be displayed on apm
+* ~~Fixed License file to be displayed on apm~~ - Sorry this [issue](https://github.com/atom/apm/issues/546) is still pending
 
 ## 0.5.0
 * removed console logs from code

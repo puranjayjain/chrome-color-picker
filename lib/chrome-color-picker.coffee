@@ -57,7 +57,6 @@ module.exports = CCP =
   tempListeners: {}
   subscriptions: null
   popUpSubscriptions: null
-  keyboardSubscriptions: null
 
   activate: (state) ->
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -126,7 +125,9 @@ module.exports = CCP =
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:toggle': => @toggle()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:save': => @save()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:saveAndClose': => @save(true)
 
+    # commands not useful to be called from command palette but are needed
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:copyColor': => @copyColor()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:pasteColor': => @pasteColor()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:deleteColor': => @deleteColor()
@@ -199,8 +200,6 @@ module.exports = CCP =
     # check if the dialog is openable
     if @open
       @CCPContainer.toggle()
-      # dispose temp events
-      @keyboardSubscriptions.dispose()
       # remove temp listeners
       @removeTempEvents()
       # delete the buttons if not required
@@ -248,6 +247,7 @@ module.exports = CCP =
       # get the current column from the buffer
       cursorColumn = Cursor.getBufferColumn()
       # REVIEW change this to something better performing like a negative while loop
+      # IDEA try implementing https://atom.io/docs/api/v1.7.2/Cursor#instance-compare
       # Figure out which of the matches is the one the user wants
       match = do -> for _match in matches
         # select the match if in range
@@ -317,7 +317,7 @@ module.exports = CCP =
         @CCPPalette.popUpPalette.classList.add 'invisible'
 
       # add keyboard events
-      @addKeyBoardAndTempEvents()
+      @addTempEvents()
 
       # toggle the state of the dialog
       @open = true
@@ -677,20 +677,8 @@ module.exports = CCP =
     @CCPBottomButtons.cancel.addEventListener 'click', =>
       @close()
 
-  # add keybindings to close and open the editor
-  addKeyBoardAndTempEvents: ->
-    # create a disposable to get rid of later
-    @keyboardSubscriptions = new CompositeDisposable
-
-    # create the event to moniter
-    @keyboardSubscriptions.add atom.keymaps.onDidMatchBinding (e) =>
-      # if the escape key is pressed close
-      if e.keystrokes is 'escape'
-        @close()
-      # if the enter key is pressed inside the picker close it
-      if e.keystrokes is 'enter' and @inside e.keyboardEventTarget
-        @save(true)
-
+  # add temporary events which attach and dettach on open/ close of the dialog
+  addTempEvents: ->
     # event to close the dialog on click anywhere outside the dialog
     @tempListeners.onClick = (e) =>
       if not @inside e.target
@@ -720,7 +708,7 @@ module.exports = CCP =
    * @param {[type]} hue    [update the hue slider]
    * @param {[type]} alpha  [update the alpha slider]
    * @param {[type]} text   [update the inner editors]
-   * @param {[type]} forced  [if the updated was forced or not]
+   * @param {[type]} forced [if the updated was forced or not]
   ###
   UpdateUI: ({color, old, slider, hue, alpha, text, forced} = {}) ->
     # load the default values of the values

@@ -41,3 +41,10 @@ class Helper
       el.tabIndex = '-1'
     else
       @component.tabIndex = '-1'
+
+  # delete focusable
+  deleteFocusable: (el) ->
+    if el
+      el.tabIndex = ''
+    else
+      @component.tabIndex = ''

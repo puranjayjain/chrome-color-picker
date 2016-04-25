@@ -39,12 +39,15 @@ class Input extends helper
     # add a button to go through the list
     @button = document.createElement 'BUTTON'
     @button.classList.add 'btn', 'btn-primary', 'btn-sm', 'icon', 'icon-code'
-    innerButtons.appendChild @button
+    @setFocusable @button
     # add a toggle button to open / close the palette
     @toggle = document.createElement 'BUTTON'
     @toggle.classList.add 'btn', 'btn-info', 'btn-sm', 'icon'
+    @setFocusable @toggle
     # add icon according to the setting of the palette on open
     @toggle.classList.add if atom.config.get 'chrome-color-picker.General.paletteOpen' then 'icon-fold' else 'icon-unfold'
+    # finally append them to the element
+    innerButtons.appendChild @button
     innerButtons.appendChild @toggle
     # append the inner to the main container
     container.appendChild innerButtons
@@ -69,6 +72,8 @@ class Input extends helper
       input.setAttribute 'type', 'text'
       input.classList.add text
       input.setAttribute('mini', true)
+      # set tab index so that the editor is focusable
+      @setFocusable input
       # innerEditor = input.getModel() to get inner text editor instance
       # innerEditor.getText and setText api to change the text
       div = document.createElement 'DIV'

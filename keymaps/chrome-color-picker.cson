@@ -8,6 +8,12 @@
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
 
-# toggle the editor's state
+# toggle the picker's state
 'atom-workspace':
   'ctrl-alt-c': 'chrome-color-picker:toggle'
+
+'ccp-container':
+  # close the picker
+  'escape': 'chrome-color-picker:close'
+  # save the value from the picker
+  'enter': 'chrome-color-picker:saveAndClose'
