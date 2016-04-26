@@ -39,14 +39,32 @@ Search for `chrome color picker` in Atom Settings (`Settings > Install > Search`
 - Click any palette swatch to select it.
 - Double click any material palette swatch to expand it (except black or white swatch).
 
-## Slide using scroll
+## Accessibility
+You can use the entire picker using just the keyboard.<br>
+Use these keys for navigating within the component:
+* `Escape`: To close the picker
+* `Escape`: To save the value to the editor
+* `Tab`: To move to the next part where action can be performed (e.g. button, slider, etc.)
+* `Shift + Tab`: To move to the previous part where action can be performed (e.g. button, slider, etc.)
+* `Space`: Do the action
+
+There are more actions that are possible with keys and mouse
+
+### Slide using scroll
 You can use the mouse wheel to scroll on the sliders and the main canvas to change the values.
 You can also do the following:
 - Use `ctrl + wheel` to increment more value.
 - Use `shift + wheel` to slide from left to right or vice-versa on the main slider (or canvas).
 - Similarly Use `ctrl + shift + wheel` to increment more value.
 
-**Note: ctrl also means cmd in unix based operating systems like linux or OS X**
+**Note: ctrl also means cmd in Unix based operating systems like Linux or OS X**
+
+### Slide using arrow keys
+You can use the arrow keys to scroll on the sliders and the main canvas to change the values.
+You can also do the following:
+- Use `ctrl + arrowKey` to increment more value.
+- All four arrow keys are usable on the main slider.
+- Only Right and Left Arrow keys are usable on the slider hue and alpha.
 
 ## Supports multiple cursors
 When you have multiple cursors it inserts the color in each of their locations
@@ -61,16 +79,18 @@ The plugin uses the following projects (or their sources) or technologies in som
 - [https://github.com/auchenberg/chrome-devtools-app](https://github.com/auchenberg/chrome-devtools-app) to understand the working of the devtools
 - [https://github.com/bgrins/TinyColor](https://github.com/bgrins/TinyColor) for working with colors
 - [https://github.com/desandro/draggabilly](https://github.com/desandro/draggabilly) for sliding across the main canvas
+- [https://github.com/davidtheclark/focus-trap](https://github.com/davidtheclark/focus-trap)
+- [https://github.com/davidtheclark/tabbable](https://github.com/davidtheclark/tabbable)
 
 Feel free to use the source code of the converted files as long as you adhere to their respective licenses.
 
-# Customise the key binding to your taste
+# Customize the key binding to your taste
 Open your [keymap](http://flight-manual.atom.io/behind-atom/sections/keymaps-in-depth/) file and add this line to it:
 ```CoffeeScript
 'atom-workspace':
   'your-keybinding': 'chrome-color-picker:toggle'
 ```
-**Note: Your keybinding can be e.g ctrl+alt+c and also make sure to disable the default keybinding from the package's settings or resolve it using the keybinding resolver**
+**Note: Your key binding can be e.g. `ctrl + alt + c` and also make sure to disable the default key binding from the package's settings or resolve it using the key binding resolver**
 
 ## The commands that are supported currently are:
 * chrome-color-picker:toggle        - triggers dialog open/close

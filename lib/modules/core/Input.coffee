@@ -161,6 +161,7 @@ class Input extends helper
     # hide all inputs
     for name in @formats
       @[name].classList.add 'invisible'
+      @[name].querySelector('atom-text-editor').removeAttribute 'autofocus'
 
     # set it active
     @active.type = format
@@ -169,7 +170,9 @@ class Input extends helper
     @active.component.classList.remove 'invisible'
     setTimeout (=>
       # focus the first input
-      @active.component.querySelector('atom-text-editor').focus()
+      innerEditor = @active.component.querySelector('atom-text-editor')
+      innerEditor.focus()
+      innerEditor.setAttribute 'autofocus', ''
       # reflect that the text was set forcefully
       @forced = true
     ), 100

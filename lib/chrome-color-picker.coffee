@@ -74,6 +74,7 @@ module.exports = CCP =
     @CCPContainerPalette = new InnerPanel 'ccp-panel'
     @CCPOldColor = new Swatch 'circle'
     @CCPNewColor = new Swatch 'circle'
+    @CCPNewColor.removeFocusable()
     @CCPContainerSlider = new InnerPanel 'ccp-container-slider'
     @CCPSliderHue = new Slider 'hue'
     @CCPSliderAlpha = new Slider 'alpha'
@@ -119,9 +120,9 @@ module.exports = CCP =
     @CCPContainer.component.appendChild @CCPPalette.popUpPalette
 
     # init draggabilly
-    @CCPDraggie = new Draggabilly(@CCPDragger.component,
+    @CCPDraggie = new Draggabilly @CCPDragger.component,
     containment: true
-    handle: 'ccp-handle')
+    handle: 'ccp-handle'
 
     # adding event handlers
     @attachEventListeners()
@@ -316,7 +317,8 @@ module.exports = CCP =
       # activate focus trap
       FocusTrap.activate @CCPContainer.component, onDeactivate: =>
         @CCPContainer.removeClass 'is-active'
-      @CCPContainer.addClass 'trap is-active'
+      @CCPContainer.addClass 'trap'
+      @CCPContainer.addClass 'is-active'
 
       # update the visible color
       @UpdateUI color: @OldColor, old: true
@@ -464,6 +466,42 @@ module.exports = CCP =
       y = (124 - @CCPDraggie.position.y) / 124
       @UpdateSlider x, y, false
 
+    # control the main slider using arrow keys
+    @CCPDragger.component.addEventListener 'keydown', (e) =>
+      # load initial values
+      delta = 5
+      x = parseInt @CCPDragger.component.offsetLeft
+      y = 124 - parseInt @CCPDragger.component.offsetTop
+      # set sign according to key
+      if @isRightArrow e
+        x += delta
+      else if @isLeftArrow e
+        x -= delta
+      else if @isUpArrow e
+        y += delta
+      else if @isDownArrow e
+        y -= delta
+      else
+        return
+      # if the ctrl key was down
+      if e.ctrlKey
+        delta *= 2
+      # if the value is less than the min cap it to min
+      if x < 0
+        x = 0
+      if y < 0
+        y = 0
+      # if the value is greater than the max cap it to max
+      if y > 124
+        y = 124
+      if x > 239
+        x = 239
+      # bring them to fractions
+      x /= 239
+      y /= 124
+      # update the slider's position and value
+      @UpdateSlider x, y
+
     # slide the main slider using mouse wheel
     @CCPCanvasOverlay.component.addEventListener 'wheel', (e) =>
       delta = 5 * Math.sign e.wheelDelta
@@ -505,12 +543,64 @@ module.exports = CCP =
     @CCPSliderAlpha.slider.addEventListener 'input', (e) =>
       @UpdateAlpha e.target.value
 
+    @CCPSliderHue.slider.addEventListener 'keydown', (e) =>
+      delta = 0
+      if @isRightArrow e
+        delta = 1
+      else if @isLeftArrow e
+        delta = -1
+      else
+        return
+      # if the ctrl key was down
+      if e.ctrlKey
+        delta *= 10
+      # get the original value from slider
+      newValue = parseInt e.target.value
+      newValue += delta
+      # if the value is less than the min cap it to min
+      if newValue < 0
+        newValue = 0
+      # if the value is greater than the max cap it to max
+      if newValue > 360
+        newValue = 360
+      # update the slider with the new value
+      e.target.value = newValue
+      # update color
+      @UpdateHue newValue
+
+    # arrow key events for sliders
+    @CCPSliderAlpha.slider.addEventListener 'keydown', (e) =>
+      delta = 0
+      if @isRightArrow e
+        delta = 1
+      else if @isLeftArrow e
+        delta = -1
+      else
+        return
+      # if the ctrl key was down
+      if e.ctrlKey
+        delta *= 10
+      # get the original value from slider
+      newValue = parseInt e.target.value
+      newValue += delta
+      # if the value is less than the min cap it to min
+      if newValue < 0
+        newValue = 0
+      # if the value is greater than the max cap it to max
+      if newValue > 100
+        newValue = 100
+      # update the slider with the new value
+      e.target.value = newValue
+      # update color
+      @UpdateAlpha newValue
+
     # mouse wheel events for hue and alpha
     @CCPSliderHue.slider.addEventListener 'wheel', (e) =>
       delta = Math.sign e.wheelDelta
       # if the ctrl key was down
       if e.ctrlKey
         delta *= 10
+      # get the original value from slider
       newValue = parseInt e.target.value
       newValue += delta
       # if the value is less than the min cap it to min
@@ -529,6 +619,7 @@ module.exports = CCP =
       # if the ctrl key was down
       if e.ctrlKey
         delta *= 10
+      # get the original value from slider
       newValue = parseInt e.target.value
       newValue += delta
       # if the value is less than the min cap it to min
@@ -796,3 +887,19 @@ module.exports = CCP =
   # inside the ccp-panel
   inside: (child) ->
     @CCPContainer.component.contains(child)
+
+  # is left arrow key
+  isLeftArrow: (e) ->
+    e.key is 'ArrowLeft' or e.code is 'ArrowLeft' or e.keyCode is 37
+
+  # is up arrow key
+  isUpArrow: (e) ->
+    e.key is 'ArrowUp' or e.code is 'ArrowUp' or e.keyCode is 38
+
+  # is right arrow key
+  isRightArrow: (e) ->
+    e.key is 'ArrowRight' or e.code is 'ArrowRight' or e.keyCode is 39
+
+  # is down arrow key
+  isDownArrow: (e) ->
+    e.key is 'ArrowDown' or e.code is 'ArrowDown' or e.keyCode is 40

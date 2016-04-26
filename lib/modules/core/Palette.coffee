@@ -127,8 +127,13 @@ class Palette extends helper
     # hide popUpPalette
     popUpPalette.classList.add 'invisible'
 
+    # name the palette for use later
     panel2.addClass 'material'
     panel3.addClass 'custom'
+
+    # enable focus when open
+    @setFocusable panel2
+    @setFocusable panel3
 
     # attach event listeners to the palettes
     @attachEventListenersEl(panel2.component)
@@ -153,8 +158,10 @@ class Palette extends helper
     # attach swatches
     for n in [1..5]
       swatch = new Swatch 'square'
+      @removeFocusable(swatch)
       panel2.component.appendChild swatch.component
       swatch = new Swatch 'square'
+      @removeFocusable(swatch)
       panel3.component.appendChild swatch.component
 
     # attach them to the popUpPalette
