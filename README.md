@@ -1,4 +1,6 @@
 # chrome-color-picker
+
+[![Join the chat at https://gitter.im/puranjayjain/chrome-color-picker](https://badges.gitter.im/puranjayjain/chrome-color-picker.svg)](https://gitter.im/puranjayjain/chrome-color-picker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)
 
 ## Preview
