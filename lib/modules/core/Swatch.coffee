@@ -16,6 +16,7 @@ class Swatch extends helper
     # create a custom element for the inner panel if not already done
     @component = @createComponent 'ccp-swatch'
     @component.classList.add type
+    @setFocusable()
 
   # set a new color to the swatch component and the info
   setColor: (color) ->

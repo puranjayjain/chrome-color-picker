@@ -16,6 +16,7 @@ class Sliders extends helper
     # declare inner slider component here
     @slider = document.createElement 'INPUT'
     @slider.setAttribute 'type', 'range'
+    @setFocusable @slider
 
     # create a custom element for the inner panel if not already done
     @component = @createComponent 'ccp-slider'

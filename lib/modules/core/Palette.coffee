@@ -90,7 +90,6 @@ class Palette extends helper
       swatch = new Swatch 'square'
       swatch.component.setAttribute 'data-color', @swatches.materialPalette[n - 1].hex
       swatch.component.setAttribute 'data-name', @swatches.materialPalette[n - 1].color.toLowerCase()
-      @setFocusable swatch
       @swatches.material.push swatch.component
       docfrag.appendChild swatch.component
     material.component.appendChild docfrag
@@ -113,7 +112,6 @@ class Palette extends helper
     swatch = new Swatch 'square'
     swatch.component.setAttribute 'style', 'background: ' + color.toRgbString()
     swatch.component.setAttribute 'data-color', color.toRgbString()
-    @setFocusable swatch
     @palettes.custom.appendChild swatch.component
 
   # TODO create the page's Palette

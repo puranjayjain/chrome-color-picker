@@ -9,6 +9,7 @@ Slider = require './modules/core/Slider'
 Input = require './modules/core/Input'
 Palette = require './modules/core/Palette'
 
+FocusTrap = require './modules/helper/FocusTrap'
 TinyColor = require './modules/helper/TinyColor'
 Draggabilly = require './modules/helper/Draggabilly'
 
@@ -80,6 +81,10 @@ module.exports = CCP =
     @CCPPalette = new Palette
 
     # add properties and attributes to some of them
+    @CCPContainer.component.tabIndex = '0'
+
+    @CCPDragger.setFocusable()
+
     @CCPSliderHue.setMax 360
     @CCPSliderHue.setValue 0
     @CCPSliderAlpha.setValue 100
@@ -209,6 +214,8 @@ module.exports = CCP =
         @CCPContainerBottomButtons = null
       # focus the editor back
       @EditorView.focus()
+      # remove focus trap
+      FocusTrap.deactivate()
       # toggle the state of the dialog
       @open = false
     else
@@ -305,6 +312,11 @@ module.exports = CCP =
 
       # toggle open the dialog
       @CCPContainer.toggle()
+
+      # activate focus trap
+      FocusTrap.activate @CCPContainer.component, onDeactivate: =>
+        @CCPContainer.removeClass 'is-active'
+      @CCPContainer.addClass 'trap is-active'
 
       # update the visible color
       @UpdateUI color: @OldColor, old: true

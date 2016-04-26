@@ -4,6 +4,7 @@
 * Accessibility fixes
 * Fixed recursive background color [issue#3](https://github.com/puranjayjain/chrome-color-picker/issues/3)
 * Fixed issue with toggling tree view, now the picker closes on tree view toggle
+* Moved events to core:cancel and core:confirm for better cross platform support
 
 ## 0.6.0
 * Added buttons to save the color and cancel to close the dialog the dialog
