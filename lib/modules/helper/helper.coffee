@@ -45,6 +45,6 @@ class Helper
   # delete focusable
   deleteFocusable: (el) ->
     if el
-      el.tabIndex = ''
+      el.removeAttribute 'tabindex'
     else
-      @component.tabIndex = ''
+      @component.removeAttribute 'tabindex'

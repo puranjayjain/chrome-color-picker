@@ -12,6 +12,7 @@ Palette = require './modules/core/Palette'
 FocusTrap = require './modules/helper/FocusTrap'
 TinyColor = require './modules/helper/TinyColor'
 Draggabilly = require './modules/helper/Draggabilly'
+html2canvas = require './modules/helper/html2canvas'
 
 {CompositeDisposable} = require 'atom'
 
@@ -51,6 +52,7 @@ module.exports = CCP =
   ColorMatcher: null
   OldColor: null
   NewColor: null
+  OpenPopUpPalette: false
   Editor: null
   EditorView: null
 
@@ -73,8 +75,9 @@ module.exports = CCP =
     @CCPDisplay = new InnerPanel 'ccp-panel', 'notop'
     @CCPContainerPalette = new InnerPanel 'ccp-panel'
     @CCPOldColor = new Swatch 'circle'
+    @CCPOldColor.removeFocusable()
     @CCPNewColor = new Swatch 'circle'
-    @CCPNewColor.removeFocusable()
+    @CCPNewColor.deleteFocusable()
     @CCPContainerSlider = new InnerPanel 'ccp-container-slider'
     @CCPSliderHue = new Slider 'hue'
     @CCPSliderAlpha = new Slider 'alpha'
@@ -315,10 +318,7 @@ module.exports = CCP =
       @CCPContainer.toggle()
 
       # activate focus trap
-      FocusTrap.activate @CCPContainer.component, onDeactivate: =>
-        @CCPContainer.removeClass 'is-active'
-      @CCPContainer.addClass 'trap'
-      @CCPContainer.addClass 'is-active'
+      @setTrap()
 
       # update the visible color
       @UpdateUI color: @OldColor, old: true
@@ -802,6 +802,13 @@ module.exports = CCP =
 
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
+    # toggle the state variable
+    @OpenPopUpPalette = not @OpenPopUpPalette
+    # if the popuppalette is visible then focus it else focus the main picker
+    if @OpenPopUpPalette
+      @setTrap()
+    else
+      @setTrap(@CCPPalette.popUpPalette)
 
   ###*
    * [UpdateUI update the ui controls of the dialog]
@@ -883,6 +890,24 @@ module.exports = CCP =
     @CCPSwatchPopup = null
     @CCPOverlay = null
     @popUpSubscriptions.dispose()
+
+  # set main dialog focus trap
+  setTrap: (el) ->
+    if el?
+      FocusTrap.activate el,
+        onDeactivate: ->
+          el.removeClass 'is-active'
+      # add classes to show the that the trap is activated
+      el.addClass 'trap'
+      el.addClass 'is-active'
+    else
+      FocusTrap.activate @CCPContainer.component,
+        initialFocus: 'ccp-input:not(.invisible) atom-text-editor'
+        onDeactivate: =>
+          @CCPContainer.removeClass 'is-active'
+      # add classes to show the that the trap is activated
+      @CCPContainer.addClass 'trap'
+      @CCPContainer.addClass 'is-active'
 
   # inside the ccp-panel
   inside: (child) ->

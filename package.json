@@ -10,6 +10,8 @@
     "picker",
     "palette",
     "material",
+    "design",
+    "ui",
     "dev-tools"
   ],
   "activationCommands": {

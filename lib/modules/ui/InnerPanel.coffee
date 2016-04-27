@@ -15,9 +15,6 @@ class InnerPanel extends helper
     @component = @createComponent name
     if type then @component.classList.add type
 
-    # set a default tab index to make it non focusable but part of the picker
-    @component.tabIndex = '-1'
-
   # set a new color to the canvas component
   setColor: (color) ->
     @component.setAttribute('style', "background-image: linear-gradient(to right, white, #{color})")

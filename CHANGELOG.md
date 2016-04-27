@@ -1,3 +1,7 @@
+## 0.7.1
+* Patched up keyboard tabbing
+* Corrected tree view toggle events to close the picker
+
 ## 0.7.0
 * Improved visibility of main Slider
 * Fixes to copy/paste
@@ -22,8 +26,8 @@
 ## 0.5.0
 * removed console logs from code
 * added linter to better check for errors in code
-* added support for RGB and RGBa (% and fractions) e.g rgb(100%, 0%, 0%), rgb(1, 1, 0) see [link](https://github.com/bgrins/TinyColor#rgb-rgba)
-* added support for HSL and HSLa (% and fractions) e.g hsl(0, 100%, 50%), hsl(0, 1.0, 0.5) see [link](https://github.com/bgrins/TinyColor#hsl-hsla)
+* added support for RGB and RGBa (% and fractions) e.g. rgb(100%, 0%, 0%), rgb(1, 1, 0) see [link](https://github.com/bgrins/TinyColor#rgb-rgba)
+* added support for HSL and HSLa (% and fractions) e.g. hsl(0, 100%, 50%), hsl(0, 1.0, 0.5) see [link](https://github.com/bgrins/TinyColor#hsl-hsla)
 * keep the palette closed or open on dialog open setting
 * toggle the palette button
 * Updated readme typo
