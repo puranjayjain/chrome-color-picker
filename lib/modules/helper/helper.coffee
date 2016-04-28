@@ -17,8 +17,11 @@ class Helper
     @component.appendChild element.component
 
   # delete the element from it's parentNode
-  delete: ->
-    @component.parentNode.removeChild @component
+  delete: (el) ->
+    if el?
+      el.parentNode.removeChild el
+    else
+      @component.parentNode.removeChild @component
 
   # add class to the panel
   addClass: (classes) ->

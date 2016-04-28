@@ -76,6 +76,20 @@ ccp-panel {
       margin-left: 8px;
     }
   }
+
+  & > svg {
+    	fill: @background-color-error;
+    	margin: 0 6px 0 3px;
+      cursor: pointer;
+
+      &.activated {
+        fill: @background-color-success;
+      }
+
+      &:focus, &:active {
+        fill: @ccpAmber;
+      }
+  }
 }
 
 ccp-side-buttons {

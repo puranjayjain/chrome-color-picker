@@ -1,7 +1,8 @@
-## 0.7.1
+## 0.8.0
 * Patched up keyboard tabbing
 * Corrected tree view toggle events to close the picker
 * Added gitter and slack
+* :tada: Added color picking from screen!
 
 ## 0.7.0
 * Improved visibility of main Slider

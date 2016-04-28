@@ -8,11 +8,11 @@ Swatch = require './modules/core/Swatch'
 Slider = require './modules/core/Slider'
 Input = require './modules/core/Input'
 Palette = require './modules/core/Palette'
+Picker = require './modules/core/Picker'
 
 FocusTrap = require './modules/helper/FocusTrap'
 TinyColor = require './modules/helper/TinyColor'
 Draggabilly = require './modules/helper/Draggabilly'
-html2canvas = require './modules/helper/html2canvas'
 
 {CompositeDisposable} = require 'atom'
 
@@ -46,6 +46,7 @@ module.exports = CCP =
   CCPOverlay: null
   CCPContainerBottomButtons: null
   CCPBottomButtons: null
+  CCPPicker: null
 
   # Other States UI States
   ColorRange: null
@@ -74,6 +75,7 @@ module.exports = CCP =
     @CCPControls = new InnerPanel 'ccp-panel'
     @CCPDisplay = new InnerPanel 'ccp-panel', 'notop'
     @CCPContainerPalette = new InnerPanel 'ccp-panel'
+    @CCPPicker = new Picker
     @CCPOldColor = new Swatch 'circle'
     @CCPOldColor.removeFocusable()
     @CCPNewColor = new Swatch 'circle'
@@ -105,6 +107,7 @@ module.exports = CCP =
 
     @CCPCanvas.add @CCPCanvasOverlay
 
+    @CCPControls.add @CCPPicker
     @CCPControls.add @CCPOldColor
     @CCPControls.add @CCPNewColor
     @CCPControls.add @CCPContainerSlider
@@ -220,6 +223,8 @@ module.exports = CCP =
       @EditorView.focus()
       # remove focus trap
       FocusTrap.deactivate()
+      # close the picker
+      @CCPPicker.close()
       # toggle the state of the dialog
       @open = false
     else
@@ -333,13 +338,6 @@ module.exports = CCP =
       # add keyboard events
       @addTempEvents()
 
-      # IDEA to pick colors
-      html2canvas document.body, onrendered: (canvas) ->
-        canvas.id = 'canvas'
-        document.getElementsByTagName('ccp-container')[0].appendChild canvas
-        # document.body.appendChild canvas
-        return
-
       # toggle the state of the dialog
       @open = true
 
@@ -435,6 +433,7 @@ module.exports = CCP =
         @CCPPalette.component.removeAttribute 'data-action'
 
   addTooltips: ->
+    @subscriptions.add atom.tooltips.add @CCPPicker.component, {title: 'Toggle on / off the color picker'}
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
     @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible color modes'}
