@@ -791,7 +791,12 @@ module.exports = CCP =
     # event to close the dialog on click anywhere outside the dialog
     @tempListeners.onClick = (e) =>
       if not @inside e.target
-        @close()
+        # if the picker is open then get the color and close just the picker
+        if @CCPPicker.state
+          @UpdateUI color: TinyColor @CCPPicker.color
+          @CCPPicker.close()
+        else
+          @close()
 
     # event to close the dialog on atom resize
     @tempListeners.onResize = =>

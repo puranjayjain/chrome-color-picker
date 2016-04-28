@@ -7,6 +7,7 @@ class Picker extends helper
   canvas: null
   picker: null
   onMousemove: null
+  color: 'rgba(0, 0, 0, 0)'
 
   constructor: ->
     # from spectrum.js in chrome dev tools app
@@ -31,9 +32,29 @@ class Picker extends helper
   attachEventListeners: ->
     # event to close the dialog on atom resize
     @onMousemove = (e) =>
-      console.log e
-      # position zoom
-      @picker.setAttribute 'style', "left:#{e.x}px;top:#{e.y}px"
+      @canvas = document.getElementById 'ccp-canvas'
+      updateUI = =>
+        color = [0, 0, 0, 0]
+        # position zoom and add color
+        if @canvas?
+          # https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas#A_color_picker
+          color = @canvas.getContext('2d').getImageData(e.pageX, e.pageY, 1, 1).data
+        # update the global color definition
+        @color = "rgba(#{color[0]}, #{color[1]}, #{color[2]}, #{Math.floor(color[3] / 255)})"
+        # window size
+        windowSize = atom.getSize()
+        # keep the x and y in bounds
+        x = e.x + 20
+        y = e.y + 20
+        # NOTE
+        # no need to calculate as the size is fixed to 75 also subtract some extra width
+        if (x + 120) > windowSize.width
+          x = windowSize.width - 120
+        if (y + 170) > windowSize.height
+          y = windowSize.height - 170
+        @picker.setAttribute 'style', "background: #{@color};transform: translate3d(#{x}px, #{y}px, 0)"
+      # https://css-tricks.com/using-requestanimationframe/
+      requestAnimationFrame updateUI
 
     # attach the events to the window
     window.addEventListener 'mousemove', @onMousemove, true
@@ -49,20 +70,22 @@ class Picker extends helper
 
   # toggle the state of the picker
   toggle: ->
+    @canvas = document.getElementById 'ccp-canvas'
     if @state
       # remove element if null
       if @canvas?
-        @canvas.delete()
+        @delete @canvas
       @removeTempEvents()
       # delete zoom
       @delete @picker
     else
+      # remove element if null
+      if @canvas?
+        @delete @canvas
       # IDEA to pick colors
       html2canvas document.body, onrendered: (canvas) ->
-        @canvas = canvas
         canvas.id = 'ccp-canvas'
         document.getElementsByTagName('ccp-container')[0].appendChild canvas
-        # document.body.appendChild canvas
         return
       # add zoom
       @picker = @createComponent 'ccp-picker-zoom'
