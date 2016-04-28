@@ -7,6 +7,9 @@
 
 ((window, document) ->
 
+  # global variables
+  borderSide = undefined
+
   toPX = (element, attribute, value) ->
     rsLeft = element.runtimeStyle and element.runtimeStyle[attribute]
     left = undefined
@@ -1111,11 +1114,10 @@
       paddingTop = getCSSInt(element, 'paddingTop')
       paddingRight = getCSSInt(element, 'paddingRight')
       paddingBottom = getCSSInt(element, 'paddingBottom')
-      d1 = bounds.left + paddingLeft + borders[3].width
-      d2 = bounds.top + paddingTop + borders[0].width
-      d3 = bounds.width - (borders[1].width + borders[3].width + paddingLeft + paddingRight)
-      d4 = bounds.height - (borders[0].width + borders[2].width + paddingTop + paddingBottom)
-      drawImage ctx, image, 0, 0, image.width, image.height, d1, d2, d3, d4
+      bLeft = bounds.left + paddingLeft + borders[3].width
+      bTop = bounds.top + paddingTop + borders[0].width
+      bWidth = bounds.width - (borders[1].width + borders[3].width + paddingLeft + paddingRight)
+      drawImage ctx, image, 0, 0, image.width, image.height, bLeft, bTop, bWidth, bounds.height - (borders[0].width + borders[2].width + paddingTop + paddingBottom)
       return
 
     getBorderData = (element) ->
@@ -1282,12 +1284,11 @@
       rightHeight = height - brv
       bottomWidth = width - brh
       leftHeight = height - blv
-      innerCurve = getCurvePoints(x + Math.min(topWidth, width + borders[3].width), y + borders[0].width, (if topWidth > width + borders[3].width then 0 else trh - (borders[3].width)), trv - (borders[0].width))
       {
         topLeftOuter: getCurvePoints(x, y, tlh, tlv).topLeft.subdivide(0.5)
         topLeftInner: getCurvePoints(x + borders[3].width, y + borders[0].width, Math.max(0, tlh - (borders[3].width)), Math.max(0, tlv - (borders[0].width))).topLeft.subdivide(0.5)
         topRightOuter: getCurvePoints(x + topWidth, y, trh, trv).topRight.subdivide(0.5)
-        topRightInner: innerCurve.topRight.subdivide(0.5)
+        topRightInner: getCurvePoints(x + Math.min(topWidth, width + borders[3].width), y + borders[0].width, (if topWidth > width + borders[3].width then 0 else trh - (borders[3].width)), trv - (borders[0].width)).topRight.subdivide(0.5)
         bottomRightOuter: getCurvePoints(x + bottomWidth, y + rightHeight, brh, brv).bottomRight.subdivide(0.5)
         bottomRightInner: getCurvePoints(x + Math.min(bottomWidth, width + borders[3].width), y + Math.min(rightHeight, height + borders[0].width), Math.max(0, brh - (borders[1].width)), Math.max(0, brv - (borders[2].width))).bottomRight.subdivide(0.5)
         bottomLeftOuter: getCurvePoints(x, y + leftHeight, blh, blv).bottomLeft.subdivide(0.5)
@@ -2055,6 +2056,7 @@
           else
             Util.log 'html2canvas: Cleanup after timeout: ' + options.timeout + ' ms.'
           for src in images
+            # `src = src`
             if images.hasOwnProperty(src)
               img = images[src]
               if typeof img is 'object' and img.callbackname and img.succeeded is undefined
@@ -2128,14 +2130,15 @@
             else
               nonPositioned.push v
             return
-          ((arr) ->
+
+          do walk = (arr = nonPositioned.concat(floated, positioned)) ->
             arr.forEach (v) ->
               list.push v
               if v.children
                 walk v.children
+                return
               return
-            return
-          ) nonPositioned.concat(floated, positioned)
+
           list.forEach (v) ->
             if v.context
               sortZ v.context
@@ -2146,7 +2149,8 @@
         return
 
       rootContext = ((rootNode) ->
-        rootContext = {}
+        # `var rootContext`
+        irootContext = {}
 
         insert = (context, node, specialParent) ->
           zi = if node.zIndex.zindex is 'auto' then 0 else Number(node.zIndex.zindex)
@@ -2176,8 +2180,8 @@
             return
           return
 
-        insert rootContext, rootNode
-        rootContext
+        insert irootContext, rootNode
+        irootContext
       )(parseQueue)
       sortZ rootContext
       queue
@@ -2405,3 +2409,5 @@
 
   return
 ) window, document
+
+module.exports = window.html2canvas

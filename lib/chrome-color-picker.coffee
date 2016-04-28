@@ -333,6 +333,13 @@ module.exports = CCP =
       # add keyboard events
       @addTempEvents()
 
+      # IDEA to pick colors
+      html2canvas document.body, onrendered: (canvas) ->
+        canvas.id = 'canvas'
+        document.getElementsByTagName('ccp-container')[0].appendChild canvas
+        # document.body.appendChild canvas
+        return
+
       # toggle the state of the dialog
       @open = true
 

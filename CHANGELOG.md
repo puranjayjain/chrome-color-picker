@@ -1,6 +1,7 @@
 ## 0.7.1
 * Patched up keyboard tabbing
 * Corrected tree view toggle events to close the picker
+* Added gitter and slack
 
 ## 0.7.0
 * Improved visibility of main Slider

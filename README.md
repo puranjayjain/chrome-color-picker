@@ -85,6 +85,7 @@ The plugin uses the following projects (or their sources) or technologies in som
 - [https://github.com/desandro/draggabilly](https://github.com/desandro/draggabilly) for sliding across the main canvas
 - [https://github.com/davidtheclark/focus-trap](https://github.com/davidtheclark/focus-trap)
 - [https://github.com/davidtheclark/tabbable](https://github.com/davidtheclark/tabbable)
+- [https://github.com/niklasvh/html2canvas](https://github.com/niklasvh/html2canvas)
 
 Feel free to use the source code of the converted files as long as you adhere to their respective licenses.
 
