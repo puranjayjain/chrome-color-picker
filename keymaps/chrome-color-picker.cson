@@ -17,3 +17,5 @@
   'escape': 'chrome-color-picker:close'
   # save the value from the picker
   'enter': 'chrome-color-picker:saveAndClose'
+  # toggle the color picker tool
+  'ctrl+alt+e': 'chrome-color-picker:pickcolor'

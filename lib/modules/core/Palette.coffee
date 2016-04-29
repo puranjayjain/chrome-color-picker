@@ -2,6 +2,7 @@ helper = require '../helper/helper'
 InnerPanel = require '../ui/InnerPanel'
 Swatch = require './Swatch'
 TinyColor = require '../helper/TinyColor'
+JSTabber = require '../helper/JSTabber'
 
 module.exports =
 class Palette extends helper
@@ -165,4 +166,12 @@ class Palette extends helper
     popUpPalette.appendChild @panel1.component
     popUpPalette.appendChild @panel2.component
     popUpPalette.appendChild @panel3.component
+    # HACK keyboard tab manually
+    JSTabber = new JSTabber (
+      [
+        @popUpPaletteButton
+        @panel2.component
+        @panel3.component
+      ]
+    )
     popUpPalette

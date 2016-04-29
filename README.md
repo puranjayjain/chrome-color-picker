@@ -98,13 +98,14 @@ Open your [keymap](http://flight-manual.atom.io/behind-atom/sections/keymaps-in-
 'atom-workspace':
   'your-keybinding': 'chrome-color-picker:toggle'
 ```
-**Note: Your key binding can be e.g. `ctrl + alt + c` and also make sure to disable the default key binding from the package's settings or resolve it using the key binding resolver**
+**Note: Your key binding can be e.g. `alt + ctrl + c` and also make sure to disable the default key binding from the package's settings or resolve it using the key binding resolver**
 
 ## The commands that are supported currently are:
 * chrome-color-picker:toggle        - triggers dialog open/close
 * chrome-color-picker:close         - triggers dialog close
 * chrome-color-picker:save          - triggers the color to be updated back to the editor
 * chrome-color-picker:saveAndClose  - triggers the color to be updated back to the editor and closed after that
+* chrome-color-picker:pickcolor     - toggle the color picker eyedropper tool to pick colors from screen
 
 # Purpose to create
 This implementation was built from ground up to:

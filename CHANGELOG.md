@@ -3,6 +3,7 @@
 * Corrected tree view toggle events to close the picker
 * Added gitter and slack
 * :tada: Added color picking from screen!
+* a fix to override the tabbing order within the popUpPalette
 
 ## 0.7.0
 * Improved visibility of main Slider

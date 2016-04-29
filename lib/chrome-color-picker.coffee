@@ -138,6 +138,7 @@ module.exports = CCP =
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:close': => @close()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:save': => @save()
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:saveAndClose': => @save(true)
+    @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:pickcolor': => @toggleColorPicker()
 
     # commands not useful to be called from command palette but are needed
     @subscriptions.add atom.commands.add 'atom-workspace', 'chrome-color-picker:copyColor': => @copyColor()
@@ -395,6 +396,10 @@ module.exports = CCP =
       dataElement.setAttribute 'data-action2', fullPath e.target
       setPaste e.target.parentNode
 
+  toggleColorPicker: ->
+    if @open
+      @CCPPicker.toggle()
+
   copyColor: ->
     # copy data action 2 to 1
     @CCPPalette.component.setAttribute 'data-action', @CCPPalette.component.getAttribute 'data-action2'
@@ -434,7 +439,11 @@ module.exports = CCP =
         @CCPPalette.component.removeAttribute 'data-action'
 
   addTooltips: ->
-    @subscriptions.add atom.tooltips.add @CCPPicker.component, {title: 'Toggle on / off the color picker'}
+    @subscriptions.add atom.tooltips.add @CCPPicker.component, {
+      title: 'Toggle on / off the color picker'
+      keyBindingCommand: 'chrome-color-picker:pickcolor'
+      keyBindingTarget: @CCPContainer.component
+    }
     @subscriptions.add atom.tooltips.add @CCPOldColor.component, {title: 'Previously set color'}
     @subscriptions.add atom.tooltips.add @CCPNewColor.component, {title: 'Currently set color'}
     @subscriptions.add atom.tooltips.add @CCPContainerInput.button, {title: 'Cycle between possible color modes'}
@@ -780,6 +789,8 @@ module.exports = CCP =
           @UpdateUI color: @NewColor, text: false, forced: false
 
     # attach event listeners to the popuppalettes
+
+
     @CCPPalette.panel2.component.addEventListener 'click', (e) =>
       # hide all palettes
       for key, value of @CCPPalette.palettes
@@ -840,8 +851,10 @@ module.exports = CCP =
       @setTrap(@CCPContainer.component,
                @CCPContainer.component.querySelector('ccp-input:not(.invisible) atom-text-editor'))
     else
-      @setTrap(@CCPPalette.popUpPalette,
-               @CCPPalette.popUpPalette.querySelector('ccp-panel.material'))
+      setTimeout (=>
+        @setTrap(@CCPPalette.popUpPalette,
+                 @CCPPalette.popUpPalette.querySelector('ccp-panel.material'))
+      ), 100
     # toggle the state variable
     @OpenPopUpPalette = not @OpenPopUpPalette
 

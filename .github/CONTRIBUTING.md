@@ -17,3 +17,5 @@ or<br/>
 - Create a symbolic link to it with the name `chrome-color-picker` :link:
 
 Lastly, Thank you for helping out :grin:
+
+**Note by contributing you ahere to the [code_of_conduct](https://github.com/puranjayjain/chrome-color-picker/blob/master/.github/CODE_OF_CONDUCT.md)**

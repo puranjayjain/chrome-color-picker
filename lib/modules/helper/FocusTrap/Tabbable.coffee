@@ -26,7 +26,7 @@ module.exports = (el) ->
   while i < l
     candidate = candidates[i]
     candidateIndex = candidate.tabIndex
-    if candidateIndex < 0 or candidate.tagName is 'INPUT' and candidate.type is 'hidden' or candidate.tagName is 'A' and !candidate.href and !candidate.tabIndex or candidate.disabled or isHidden(candidate)
+    if candidateIndex < 0 or (candidate.tagName is 'INPUT' and candidate.type is 'hidden') or (candidate.tagName is 'A' and not candidate.href and not candidate.tabIndex) or candidate.disabled or isHidden(candidate)
       i++
       continue
     if candidateIndex is 0
