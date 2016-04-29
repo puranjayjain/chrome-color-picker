@@ -7,6 +7,7 @@ module.exports =
 class Palette extends helper
   swatches: {}
   customButton: null
+  popUpPalette: null
   popUpPaletteButton: null
   palettes: {}
 
@@ -120,24 +121,20 @@ class Palette extends helper
   # create the page popup palette
   initPopupPalette: ->
     popUpPalette = @createComponent 'ccp-palette-popup'
-    panel1 = new InnerPanel 'ccp-panel'
-    panel2 = new InnerPanel 'ccp-panel'
-    panel3 = new InnerPanel 'ccp-panel'
+    @panel1 = new InnerPanel 'ccp-panel'
+    @panel2 = new InnerPanel 'ccp-panel'
+    @panel3 = new InnerPanel 'ccp-panel'
 
     # hide popUpPalette
     popUpPalette.classList.add 'invisible'
 
     # name the palette for use later
-    panel2.addClass 'material'
-    panel3.addClass 'custom'
+    @panel2.addClass 'material'
+    @panel3.addClass 'custom'
 
     # enable focus when open
-    @setFocusable panel2
-    @setFocusable panel3
-
-    # attach event listeners to the palettes
-    @attachEventListenersEl(panel2.component)
-    @attachEventListenersEl(panel3.component)
+    @setFocusable @panel2.component
+    @setFocusable @panel3.component
 
     # create internal structures of the panels
     h_panel1 = document.createElement 'H3'
@@ -150,33 +147,22 @@ class Palette extends helper
     h_panel3.textContent = 'Custom'
 
     # attach them to the panels
-    panel1.component.appendChild h_panel1
-    panel1.component.appendChild @popUpPaletteButton
-    panel2.component.appendChild h_panel2
-    panel3.component.appendChild h_panel3
+    @panel1.component.appendChild h_panel1
+    @panel1.component.appendChild @popUpPaletteButton
+    @panel2.component.appendChild h_panel2
+    @panel3.component.appendChild h_panel3
 
     # attach swatches
     for n in [1..5]
       swatch = new Swatch 'square'
-      @removeFocusable(swatch)
-      panel2.component.appendChild swatch.component
+      @deleteFocusable swatch.component
+      @panel2.component.appendChild swatch.component
       swatch = new Swatch 'square'
-      @removeFocusable(swatch)
-      panel3.component.appendChild swatch.component
+      @deleteFocusable swatch.component
+      @panel3.component.appendChild swatch.component
 
     # attach them to the popUpPalette
-    popUpPalette.appendChild panel1.component
-    popUpPalette.appendChild panel2.component
-    popUpPalette.appendChild panel3.component
+    popUpPalette.appendChild @panel1.component
+    popUpPalette.appendChild @panel2.component
+    popUpPalette.appendChild @panel3.component
     popUpPalette
-
-  # attach event listeners to given palette button
-  attachEventListenersEl: (el) ->
-    el.addEventListener 'click', (e) =>
-      # hide all palettes
-      for key, value of @palettes
-        value.classList.add 'invisible'
-      # unhide the one to use
-      @palettes[el.className].classList.remove 'invisible'
-      # close the popup
-      @popUpPalette.classList.toggle 'invisible'

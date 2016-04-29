@@ -32,11 +32,11 @@ class Helper
     @component.classList.remove classes
 
   # set focusable
-  setFocusable: (el) ->
+  setFocusable: (el, value = 1) ->
     if el
-      el.tabIndex = '1'
+      el.tabIndex = value
     else
-      @component.tabIndex = '1'
+      @component.tabIndex = value
 
   # remove focusable
   removeFocusable: (el) ->

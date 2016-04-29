@@ -23,6 +23,7 @@ class Picker extends helper
     d2 = '16h80c0 0 1.332 0 2 0 4.606 0 9.213-1.758 12.728-5.272l236.059-236.059 53.213 53.213 67.882-67.882-60.686-60.686 86.059-86.059c24.993-24.994 24.993-65.516 0-90.51zM86.545 '
     d3 = '480h-54.545v-54.545l234.787-234.786 54.544 54.544-234.786 234.787z'
     path.setAttribute 'd', d1 + d2 + d3
+    @setFocusable @component
     @component.appendChild path
     # add event listener to the picker to trigger open/close
     @component.addEventListener 'click', =>

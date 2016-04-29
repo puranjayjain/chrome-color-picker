@@ -53,7 +53,7 @@ module.exports = CCP =
   ColorMatcher: null
   OldColor: null
   NewColor: null
-  OpenPopUpPalette: false
+  OpenPopUpPalette: off
   Editor: null
   EditorView: null
 
@@ -312,7 +312,7 @@ module.exports = CCP =
       # create the ok and cancel buttons if needed
       if not @CCPBottomButtons? and atom.config.get 'chrome-color-picker.General.showButtons'
         @CCPContainerBottomButtons = new InnerPanel 'ccp-panel', 'bottombuttons'
-        @CCPBottomButtons = new BottomButtons(@CCPContainerBottomButtons.component)
+        @CCPBottomButtons = new BottomButtons @CCPContainerBottomButtons.component
         @CCPContainer.add @CCPContainerBottomButtons
         @addBottomButtonEvents()
 
@@ -323,7 +323,8 @@ module.exports = CCP =
       @CCPContainer.toggle()
 
       # activate focus trap
-      @setTrap()
+      @setTrap(@CCPContainer.component,
+               @CCPContainer.component.querySelector('ccp-input:not(.invisible) atom-text-editor'))
 
       # update the visible color
       @UpdateUI color: @OldColor, old: true
@@ -778,6 +779,25 @@ module.exports = CCP =
           # if the text was set forcefully then dont do it
           @UpdateUI color: @NewColor, text: false, forced: false
 
+    # attach event listeners to the popuppalettes
+    @CCPPalette.panel2.component.addEventListener 'click', (e) =>
+      # hide all palettes
+      for key, value of @CCPPalette.palettes
+        value.classList.add 'invisible'
+      # unhide the one to use
+      @CCPPalette.palettes[@CCPPalette.panel2.component.className].classList.remove 'invisible'
+      # close the popup
+      @togglePopUp()
+
+    @CCPPalette.panel3.component.addEventListener 'click', (e) =>
+      # hide all palettes
+      for key, value of @CCPPalette.palettes
+        value.classList.add 'invisible'
+      # unhide the one to use
+      @CCPPalette.palettes[@CCPPalette.panel3.component.className].classList.remove 'invisible'
+      # close the popup
+      @togglePopUp()
+
   # add bottom button events
   addBottomButtonEvents: ->
     @CCPBottomButtons.ok.addEventListener 'click', =>
@@ -813,13 +833,17 @@ module.exports = CCP =
 
   togglePopUp: ->
     @CCPPalette.popUpPalette.classList.toggle 'invisible'
+    # if the popuppalette is visible then focus it else focus the main picker
+    # deactivate the current one before activating a new one
+    FocusTrap.deactivate()
+    if @OpenPopUpPalette
+      @setTrap(@CCPContainer.component,
+               @CCPContainer.component.querySelector('ccp-input:not(.invisible) atom-text-editor'))
+    else
+      @setTrap(@CCPPalette.popUpPalette,
+               @CCPPalette.popUpPalette.querySelector('ccp-panel.material'))
     # toggle the state variable
     @OpenPopUpPalette = not @OpenPopUpPalette
-    # if the popuppalette is visible then focus it else focus the main picker
-    if @OpenPopUpPalette
-      @setTrap()
-    else
-      @setTrap(@CCPPalette.popUpPalette)
 
   ###*
    * [UpdateUI update the ui controls of the dialog]
@@ -903,22 +927,14 @@ module.exports = CCP =
     @popUpSubscriptions.dispose()
 
   # set main dialog focus trap
-  setTrap: (el) ->
-    if el?
-      FocusTrap.activate el,
-        onDeactivate: ->
-          el.removeClass 'is-active'
-      # add classes to show the that the trap is activated
-      el.addClass 'trap'
-      el.addClass 'is-active'
-    else
-      FocusTrap.activate @CCPContainer.component,
-        initialFocus: 'ccp-input:not(.invisible) atom-text-editor'
-        onDeactivate: =>
-          @CCPContainer.removeClass 'is-active'
-      # add classes to show the that the trap is activated
-      @CCPContainer.addClass 'trap'
-      @CCPContainer.addClass 'is-active'
+  setTrap: (el, initialFocus) ->
+    FocusTrap.activate el,
+      initialFocus: initialFocus
+      onDeactivate: ->
+        el.classList.remove 'is-active'
+    # add classes to show the that the trap is activated
+    el.classList.add 'trap'
+    el.classList.add 'is-active'
 
   # inside the ccp-panel
   inside: (child) ->

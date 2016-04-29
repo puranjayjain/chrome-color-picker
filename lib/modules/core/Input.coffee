@@ -73,7 +73,7 @@ class Input extends helper
       input.classList.add text
       input.setAttribute('mini', true)
       # set tab index so that the editor is focusable
-      @setFocusable input
+      @removeFocusable input
       # innerEditor = input.getModel() to get inner text editor instance
       # innerEditor.getText and setText api to change the text
       div = document.createElement 'DIV'
@@ -161,10 +161,19 @@ class Input extends helper
     # hide all inputs
     for name in @formats
       @[name].classList.add 'invisible'
+      @removeFocusable @[name].querySelector 'atom-text-editor'
 
     # set it active
     @active.type = format
     @active.component = @[format]
+    # set active focusable to all inner inputs
+    # converts NodeList to Array
+    editorNodes = @[format].querySelectorAll 'atom-text-editor'
+    # returns NodeList
+    # https://developer.mozilla.org/en-US/docs/Web/API/NodeList
+    editors = Array.from editorNodes
+    for editor in editors
+      @setFocusable editor
     # show the format
     @active.component.classList.remove 'invisible'
     @forced = true
@@ -202,7 +211,7 @@ class Input extends helper
       color = color.replace '0%', '0'
       # 1.0 => 1
       color = color.replace '1.0', '1'
-      # remove '0'
+      # 0. => .
       color = color.replace '0.', '.'
     # if uppercase color settings
     if @active.type is 'hex' and atom.config.get 'chrome-color-picker.HexColors.uppercaseHex'

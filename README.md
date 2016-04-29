@@ -70,10 +70,13 @@ You can also do the following:
 - All four arrow keys are usable on the main slider.
 - Only Right and Left Arrow keys are usable on the slider hue and alpha.
 
-## Supports multiple cursors
+## Supports multiple cursors [Beta]
 When you have multiple cursors it inserts the color in each of their locations
 
-**Note: this feature is still not stable so feel free to point out any issues with it**
+## Color Picking from screen [Beta]
+You can now pick colors from anywhere on the screen
+
+**Note: Features marked [Beta] are not stable and might not work as expected so feel free to point out any issues with them**
 
 # Powered by
 The plugin uses the following projects (or their sources) or technologies in some manner:
