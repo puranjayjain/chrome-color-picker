@@ -2,8 +2,9 @@
 * Patched up keyboard tabbing
 * Corrected tree view toggle events to close the picker
 * Added gitter and slack
-* :tada: Added color picking from screen!
+* :tada: Added color picking from screen :tv: the eyedropper tool is here!
 * a fix to override the tabbing order within the popUpPalette
+* now works without shadowroot
 
 ## 0.7.0
 * Improved visibility of main Slider

@@ -10,16 +10,19 @@ class JSTabber
    * @return {[type]}          [description]
   ###
   constructor: (elements) ->
-    for index, element of elements
-      console.log index
+    nodeElements = []
+    for element, index in elements
+      # make an element nodeName.class array for use later
+      nodeElements.push "#{element.nodeName}.#{element.className}"
       # add element event for keyboard behavior
       element.addEventListener 'keydown', (e) =>
+        elementName = "#{e.target.nodeName}.#{e.target.className}"
+        index = nodeElements.indexOf elementName
         isNext = true
         if e.shiftKey
           isNext = false
         if @isTabKey e
-          newElement = @moveTo index, elements, isNext
-          console.log newElement
+          newElement = @moveTo parseInt(index), elements, isNext
           # focus it to the new element
           newElement.focus()
 
@@ -29,21 +32,19 @@ class JSTabber
 
   # move to next element
   moveTo: (index, elements, isNext = true) ->
-    console.log index
     # move to next item in list
     if isNext
       # if the item is last item move to First item
-      if _index is (elements.length - 1)
+      if index is (elements.length - 1)
         index = 0
       else
-        ++index
+        index++
     # move to previous item in list
     else
       # if it is the first item move to last item
       if index is 0
         index = (elements.length - 1)
       else
-        --index
-    console.log index
+        index--
     # return the relevant element
     elements[index]

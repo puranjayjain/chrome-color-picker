@@ -11,11 +11,11 @@ There are a number of ways you can help by Contributing to this project, Here ar
 - Uninstall the current package from atom :negative_squared_cross_mark:
 - Fork the latest release from github :fork_and_knife:
 - Clone it in your device to the following path:
-`path-to-atom-installation\packages`<br/>
-or<br/>
+`path-to-atom-installation\packages`<br>
+or<br>
 - Another Path in your device and
 - Create a symbolic link to it with the name `chrome-color-picker` :link:
 
 Lastly, Thank you for helping out :grin:
 
-**Note by contributing you ahere to the [code_of_conduct](https://github.com/puranjayjain/chrome-color-picker/blob/master/.github/CODE_OF_CONDUCT.md)**
+**Note by contributing you adhere to the [code_of_conduct](https://github.com/puranjayjain/chrome-color-picker/blob/master/.github/CODE_OF_CONDUCT.md)**
