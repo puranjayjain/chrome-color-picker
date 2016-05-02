@@ -1,6 +1,9 @@
+## 0.8.1
+* Corrected tree view toggle events to close the picker
+* moved the eyedropper shortcut key to correct location
+
 ## 0.8.0
 * Patched up keyboard tabbing
-* Corrected tree view toggle events to close the picker
 * Added gitter and slack
 * :tada: Added color picking from screen :tv: the eyedropper tool is here!
 * a fix to override the tabbing order within the popUpPalette

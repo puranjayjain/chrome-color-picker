@@ -18,4 +18,6 @@ or<br>
 
 Lastly, Thank you for helping out :grin:
 
+Additional Link [https://github.com/atom/atom/blob/master/docs/contributing-to-packages.md](https://github.com/atom/atom/blob/master/docs/contributing-to-packages.md)
+
 **Note by contributing you adhere to the [code_of_conduct](https://github.com/puranjayjain/chrome-color-picker/blob/master/.github/CODE_OF_CONDUCT.md)**

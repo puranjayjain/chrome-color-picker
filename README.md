@@ -146,7 +146,7 @@ For transparency into our release cycle and in striving to maintain backward com
 
 # License
 
-Copyright (c) 2016 Puranjay Jain and [Contributors](https://github.com/puranjayjain/chrome-color-picker/graphs/contributors) All Rights Reserved.
+Copyright &copy; 2016 Puranjay Jain and [Contributors](https://github.com/puranjayjain/chrome-color-picker/graphs/contributors) All Rights Reserved.
 This project is licensed under an [MIT License](https://github.com/puranjayjain/chrome-color-picker/blob/master/LICENSE.md).
 
 The list of all 3rd party licenses along with the main License can be found [here](https://github.com/puranjayjain/chrome-color-picker/blob/master/LICENSE.md)

@@ -11,11 +11,11 @@
 # toggle the picker's state
 'atom-workspace':
   'ctrl-alt-c': 'chrome-color-picker:toggle'
+  # toggle the color picker tool
+  'alt-shift-e': 'chrome-color-picker:pickcolor'
 
 'ccp-container':
   # close the picker
   'escape': 'chrome-color-picker:close'
   # save the value from the picker
   'enter': 'chrome-color-picker:saveAndClose'
-  # toggle the color picker tool
-  'ctrl+alt+e': 'chrome-color-picker:pickcolor'
