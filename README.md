@@ -47,7 +47,7 @@ Search for `chrome color picker` in Atom Settings (`Settings > Install > Search`
 You can use the entire picker using just the keyboard.<br>
 Use these keys for navigating within the component:
 * `Escape`: To close the picker
-* `Escape`: To save the value to the editor
+* `Enter`: To save the value to the editor
 * `Tab`: To move to the next part where action can be performed (e.g. button, slider, etc.)
 * `Shift + Tab`: To move to the previous part where action can be performed (e.g. button, slider, etc.)
 * `Space`: Do the action
