@@ -1,4 +1,6 @@
 # chrome-color-picker
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/puranjayjain/chrome-color-picker.svg)](https://greenkeeper.io/)
 A color picker inspired by chrome's dev tools color picker (or [spectrum](https://github.com/bgrins/spectrum) color picker)
 
 [![Join us on the Atom Community on Slack](http://atom-slack.herokuapp.com/badge.svg)](http://atom-slack.herokuapp.com/) [![Gitter](https://badges.gitter.im/puranjayjain/chrome-color-picker.svg)](https://gitter.im/puranjayjain/chrome-color-picker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
