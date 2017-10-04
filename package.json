@@ -27,6 +27,6 @@
   "dependencies": {},
   "devDependencies": {
     "js2coffee": "^2.2.0",
-    "coffeelint": "^1.16.0"
+    "coffeelint": "^2.0.4"
   }
 }
