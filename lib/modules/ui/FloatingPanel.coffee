@@ -30,7 +30,7 @@ class FloatingPanel extends helper
     # clean slate
     @component.classList.remove 'down'
     @triangle.removeAttribute 'style'
-    top = Cursor.top - Editor.getScrollTop() + Cursor.height + tabs.clientHeight + 10
+    top = Cursor.top - Editor.getScrollTop() + Cursor.height + tabs.clientHeight + 40
     # get the actual cursor's bounds and prefer the selection
     ActualCursor = EditorRoot.querySelector('.highlight.selection > .region')
     # if this is not found then the region must be present
