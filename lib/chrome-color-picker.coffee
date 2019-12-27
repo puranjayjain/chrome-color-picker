@@ -238,7 +238,8 @@ module.exports = CCP =
       # get the editor's view (htmlelement)
       @EditorView = atom.views.getView @Editor
       # get the shadow root of the editor
-      @EditorRoot = @EditorView.shadowRoot or @EditorView.querySelector '.editor-contents'
+      # @EditorRoot = @EditorView.shadowRoot or @EditorView.querySelector '.editor-contents'
+      @EditorRoot = @EditorView
       # get the last cursor (assuming multiple cursors)
       Cursor = @Editor.getLastCursor()
 
